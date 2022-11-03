@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F3F2"
+
+    android:background="@color/appBackground"
     tools:context=".SignupFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -46,7 +47,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-
+android:id="@+id/usernameField"
 
             android:layout_height="wrap_content" />
 
@@ -69,6 +70,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:id="@+id/phonenumberField"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -90,6 +92,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:id="@+id/emailField"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +115,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-
+android:id="@+id/passwordField"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,13 +142,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signupButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:text="SIGNUP"
+
         android:textColor="@color/white"
 
 
@@ -166,7 +170,7 @@
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/signupButton" />
 
     <ImageView
         android:id="@+id/imageView"
