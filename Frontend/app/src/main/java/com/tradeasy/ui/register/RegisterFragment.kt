@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -34,15 +41,16 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
         binding.alreadyHaveAnAccount.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
         register();
+        observe();
     }
-
+// REGISTER
     private fun register() {
         binding.registerButton.setOnClickListener {
             val username = binding.usernameField.text.toString().trim()
@@ -51,11 +59,51 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
                 val user = User(username, phoneNumber.toInt(), email, password,"None")
-                viewModel.register(user)
-                findNavController().navigate(R.id.action_registerFragment_to_settingsFragment)
+                viewModel.userRegister(user)
+
             }
 
 
         }
+    }
+// STATE OBSERVER
+    private fun observe() {
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
+    }
+    // STATE HANDLER
+    private fun handleStateChange(state: UserRegisterActivityState) {
+        when (state) {
+            is UserRegisterActivityState.Init -> Unit
+            is UserRegisterActivityState.RegisterError -> handleRegisterError(state.rawResponse)
+            is UserRegisterActivityState.RegisterSuccess -> handleRegisterSuccess(state.user)
+            is UserRegisterActivityState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is UserRegisterActivityState.IsLoading -> handleLoading(state.isLoading)
+        }
+    }
+    // ERROR HANDLER
+    private fun handleRegisterError(response: String) {
+        AlertDialog.Builder(requireActivity()).apply {
+            setMessage(response)
+            setPositiveButton("ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.show()
+    }
+    // LOADING HANDLER
+    private fun handleLoading(isLoading: Boolean) {
+        /*binding.loginButton.isEnabled = !isLoading
+        binding.registerButton.isEnabled = !isLoading
+        binding.loadingProgressBar.isIndeterminate = isLoading
+        if(!isLoading){
+            binding.loadingProgressBar.progress = 0
+        }*/
+    }
+    // SUCCESS HANDLER
+    private fun handleRegisterSuccess(userRegisterEntity: User) {
+        println(userRegisterEntity.phoneNumber)
+        findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
     }
 }

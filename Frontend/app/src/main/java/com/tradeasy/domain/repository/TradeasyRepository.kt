@@ -5,9 +5,14 @@ import com.tradeasy.utils.BaseResult
 import kotlinx.coroutines.flow.Flow
 
 interface TradeasyRepository {
-    suspend fun register(user: User)
 
-    suspend fun login(user: User):Flow<BaseResult<User>>
 
+    // USER REGISTER
+    suspend fun userRegister(user: User): Flow<BaseResult<User>>
+
+    // USER LOGIN
+    suspend fun userLogin(user: User): Flow<BaseResult<User>>
+
+    // USER DETAILS
     suspend fun getUserDetails(): Flow<BaseResult<User>>
 }

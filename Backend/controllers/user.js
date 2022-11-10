@@ -47,19 +47,18 @@ export function register(req, res) {
             password: hashedPassword,
             profilePicture,
           });
-          req.session.user = user;
+          session.user = user;
           req.session.save();
           return user.save();
         })
         .then((result) => {
-          res.status(201).json({ message: "User created successfully" });
+          res.status(201).json( result);
         });
     })
     .catch((err) => {
       console.log(err);
     });
 }
-
 export function putOnce(req, res) {
   let newUser = {};
   if(req.file == undefined) {

@@ -26,8 +26,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,7 +35,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
         binding.newMember.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
@@ -45,6 +44,7 @@ class LoginFragment : Fragment() {
         observe()
     }
 
+    //LOGIN
     private fun login() {
         binding.registerButton.setOnClickListener {
             val username = binding.usernameField.text.toString().trim()
@@ -56,26 +56,27 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun observe(){
-        viewModel.mState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state -> handleStateChange(state) }
-            .launchIn(lifecycleScope)
+    // STATE OBSERVER
+    private fun observe() {
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
     }
 
+    //  STATE HANDLER
     private fun handleStateChange(state: LoginActivityState) {
         when (state) {
             is LoginActivityState.Init -> Unit
             is LoginActivityState.ErrorLogin -> handleErrorLogin(state.rawResponse)
             is LoginActivityState.SuccessLogin -> handleSuccessLogin(state.user)
-            is LoginActivityState.ShowToast -> Toast.makeText(requireActivity(),
-                state.message,
-                Toast.LENGTH_SHORT).show()
+            is LoginActivityState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
             is LoginActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
 
-            private fun handleErrorLogin(response: String) {
+    // IF THERE IS AN ERROR WHILE LOGGING IN
+    private fun handleErrorLogin(response: String) {
         AlertDialog.Builder(requireActivity()).apply {
             setMessage(response)
             setPositiveButton("ok") { dialog, _ ->
@@ -84,6 +85,7 @@ class LoginFragment : Fragment() {
         }.show()
     }
 
+    // IF LOGGING IN IS LOADING
     private fun handleLoading(isLoading: Boolean) {
         /*binding.loginButton.isEnabled = !isLoading
         binding.registerButton.isEnabled = !isLoading
@@ -93,8 +95,8 @@ class LoginFragment : Fragment() {
         }*/
     }
 
+    // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessLogin(loginEntity: User) {
-        println(loginEntity.phoneNumber)
-        findNavController().navigate(R.id.action_loginFragment_to_settingsFragment)
+        findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
     }
 }

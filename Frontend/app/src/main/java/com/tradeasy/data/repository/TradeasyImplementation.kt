@@ -12,22 +12,36 @@ import javax.inject.Inject
 
 class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
     TradeasyRepository {
-    override suspend fun register(user: User) {
-        val response = api.registerApi(user)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                println("Success")
+
+    // USER REGISTER IMPLEMENTATION
+    override suspend fun userRegister(user: User): Flow<BaseResult<User>> {
+        return flow {
+            try {
+                val response = api.userRegisterApi(user)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    val registeredUser = User(
+                        body?.username,
+                        body?.phoneNumber,
+                        body?.email,
+                        body?.password,
+                        body?.profilePicture
+                    )
+                    emit(BaseResult.Success<User>(registeredUser))
+                } else {
+                    emit(BaseResult.Error<User>("Error"))
+                }
+            } catch (e: Exception) {
+                emit(BaseResult.Error<User>("Error"))
             }
-        } else {
-            println("Error")
         }
     }
 
-    // login
-    override suspend fun login(user: User): Flow<BaseResult<User>> {
+    // USER LOGIN IMPLEMENTATION
+    override suspend fun userLogin(user: User): Flow<BaseResult<User>> {
         return flow {
             try {
-                val response = api.loginApi(user)
+                val response = api.userLoginApi(user)
                 if (response.isSuccessful) {
                     val body = response.body()
                     val loggedUser = User(
@@ -47,19 +61,15 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
         }
     }
 
-    // User details
+    // GETTING USER DETAILS IMPLEMENTATION
     override suspend fun getUserDetails(): Flow<BaseResult<User>> {
         return flow {
             val response = api.getUserDetailsApi()
             if (response.isSuccessful) {
-                println("repo succ")
+                println("response successfully")
                 val body = response.body()!!
                 val user = User(
-                    body.username,
-                    body.phoneNumber,
-                    body.email,
-                    body.password,
-                    body.profilePicture
+                    body.username, body.phoneNumber, body.email, body.password, body.profilePicture
                 )
                 emit(BaseResult.Success(user))
             } else {
@@ -68,4 +78,6 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
             }
         }
     }
+
+
 }

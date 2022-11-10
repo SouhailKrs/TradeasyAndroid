@@ -1,4 +1,4 @@
-package com.tradeasy.ui.userSettings
+package com.tradeasy.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,28 +12,29 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentSettingsBinding
+import com.tradeasy.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
-    private lateinit var binding: FragmentSettingsBinding
+class ProfileFragment : Fragment() {
+    private lateinit var binding: FragmentProfileBinding
     private val viewModel: UserDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-            View.GONE
+        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
+            View.VISIBLE
         viewModel.getData()
         observe()
     }
@@ -53,7 +54,15 @@ class SettingsFragment : Fragment() {
                 Toast.makeText(requireActivity(), "loading", Toast.LENGTH_SHORT).show()
             }
             is ActivityState.SuccessLogin -> {
-                println(state.user.username)
+
+                val username= binding.username
+                val email = binding.email
+                username.text = state.user.username
+                email.text = state.user.email
+                if(state.user.profilePicture=="None"){
+
+                    binding.profilePicture.setImageResource(R.drawable.default_profile_picture)
+                }
 
             }
             is ActivityState.ErrorLogin -> {

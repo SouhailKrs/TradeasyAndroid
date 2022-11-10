@@ -1,53 +1,67 @@
 package com.tradeasy.ui.register
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.model.User
 import com.tradeasy.domain.usecase.RegisterUseCase
 import com.tradeasy.utils.BaseResult
-import com.tradeasy.utils.TradeasyState
-
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val getSignUpCase: RegisterUseCase,
-    savedStateHandle: SavedStateHandle
+    private val userRegisterUseCase: RegisterUseCase
 ) : ViewModel() {
-    private val _state = mutableStateOf(TradeasyState())
-    val state: State<TradeasyState> = _state
+    private val state = MutableStateFlow<UserRegisterActivityState>(UserRegisterActivityState.Init)
+    val mState: StateFlow<UserRegisterActivityState> get() = state
 
 
-     fun register(user: User) {
+    private fun setLoading() {
+        state.value = UserRegisterActivityState.IsLoading(true)
+    }
+
+    private fun hideLoading() {
+        state.value = UserRegisterActivityState.IsLoading(false)
+    }
+
+    private fun showToast(message: String) {
+        state.value = UserRegisterActivityState.ShowToast(message)
+    }
+
+
+    fun userRegister(user: User) {
         viewModelScope.launch {
-            getSignUpCase.execute(user).onEach { result ->
-                when (result) {
-                    is BaseResult.Success -> {
-
-                        _state.value = TradeasyState( success = true)
-                    }
-                    is BaseResult.Error -> {
-
-                        _state.value = TradeasyState(
-                            error = result.message ?: "An unexpected error occurred"
-                        )
-                    }
-                    is BaseResult.Loading -> {
-
-                        _state.value = TradeasyState(isLoading = true)
+            userRegisterUseCase.execute(user).onStart {
+                setLoading()
+            }.catch { exception ->
+                hideLoading()
+                showToast(exception.printStackTrace().toString())
+            }.collect { baseResult ->
+                hideLoading()
+                when (baseResult) {
+                    is BaseResult.Error -> state.value =
+                        UserRegisterActivityState.RegisterError(baseResult.message!!)
+                    is BaseResult.Success -> state.value =
+                        UserRegisterActivityState.RegisterSuccess(baseResult.U!! as User)
+                    else -> {
+                        state.value = UserRegisterActivityState.ShowToast("Something went wrong")
                     }
                 }
-            }.launchIn(viewModelScope)
-
-
+            }
         }
     }
+}
+
+sealed class UserRegisterActivityState {
+    object Init : UserRegisterActivityState()
+    data class IsLoading(val isLoading: Boolean) : UserRegisterActivityState()
+    data class ShowToast(val message: String) : UserRegisterActivityState()
+    data class RegisterSuccess(val user: User) : UserRegisterActivityState()
+    data class RegisterError(val rawResponse: String) : UserRegisterActivityState()
 
 }

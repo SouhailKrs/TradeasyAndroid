@@ -26,7 +26,7 @@
         android:icon="@drawable/ic_outline_favorite_border_24"
         android:title="Favorites"/>
     <item
-        android:id="@+id/page_5"
+        android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Profile"/>
