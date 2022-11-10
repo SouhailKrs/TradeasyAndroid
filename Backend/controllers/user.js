@@ -14,10 +14,10 @@ export function login(req, res) {
         if (doMatch) {
           req.session.user = user;
           req.session.save();
-          res.status(200).json({ 
+          res.status(200).json({
             message: "User signed in successfully",
             user: user
-           });
+          });
         } else {
           res.status(401).json({ message: "Invalid credentials" });
           res.status(404).json({ message: "Incorrect password" });
@@ -29,7 +29,7 @@ export function login(req, res) {
     });
 }
 function between(x, min, max) {
-  if( x >= min && x <= max)
+  if (x >= min && x <= max)
     return true;
 }
 
@@ -39,18 +39,32 @@ export function register(req, res) {
 
   const TN='+216';
   const twoNumbers = parseInt(phoneNumber.substring(4, 6));
-  User.findOne({ email: email })
+  
+
+   User.findOne({ $or: [{ username: username }, { email: email }, { phoneNumber: phoneNumber }] })
     .then((user) => {
       if (user) {
-        return res.status(422).json({ message: "User already exists" });
-      }else if(isNaN(phoneNumber) || !(phoneNumber.toString().substring(0, 4)===TN) || phoneNumber.toString().length!=12 || between(twoNumbers, 1,19 )|| between(twoNumbers, 30,39 ) || between(twoNumbers, 60,89 )){
+        if(user.username === username && user.email === email && user.phoneNumber === phoneNumber){
+          return res.status(400).json({ message: "Username, email and phone number already exist" });
+        }
+      if (user.email === email) {
+        return res.status(423).json({ message: "Email already exists" });
+      }
+      else if (user.username === username) {
+        return res.status(421).json({ message: "Username already exists" });
+      }
+      else if (user.phoneNumber === phoneNumber) {
+        return res.status(422).json({ message: "Phone number already exists" });
+      }
+    }
+      else if(isNaN(phoneNumber) || !(phoneNumber.toString().substring(0, 4)===TN) || phoneNumber.toString().length!=12 || between(twoNumbers, 1,19 )|| between(twoNumbers, 30,39 ) || between(twoNumbers, 60,89 )){
         
-        return res.status(422).json({ message: "Invalid phone number" });
+        return res.status(424).json({ message: "Invalid phone number" });
     
       }
       else if(!validateEmail(email)){
         console.log(x,isValid);
-        return res.status(422).json({ message: "Invalid Email" });
+        return res.status(425).json({ message: "Invalid Email" });
     
       }
       return bcrypt
@@ -76,20 +90,20 @@ export function register(req, res) {
 
 export function putOnce(req, res) {
   let newUser = {};
-  if(req.file == undefined) {
+  if (req.file == undefined) {
     newUser = {
-        username: req.body.username,
-        phoneNumber: req.body.phoneNumber,
-        email: req.body.email,
-        password: req.body.password,
+      username: req.body.username,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      password: req.body.password,
     }
   }
   else {
     newUser = {
-        username: req.body.username,
-        phoneNumber: req.body.phoneNumber,
-        email: req.body.email,
-        password: req.body.password,
+      username: req.body.username,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      password: req.body.password,
     }
   }
   User.findByIdAndUpdate(req.params.id, newUser)

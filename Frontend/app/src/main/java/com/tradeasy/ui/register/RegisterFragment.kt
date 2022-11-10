@@ -49,8 +49,13 @@ class RegisterFragment : Fragment() {
             val email = binding.emailField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val userRegister = UserRegister(username, phoneNumber.toInt(), email, password)
+                val userRegister = UserRegister(username, phoneNumber, email, password)
                 viewModel.register(userRegister)
+            }else{
+                binding.usernameField.error = "Please enter username"
+                binding.phoneNumberField.error = "Please enter phone number"
+                binding.emailField.error = "Please enter email"
+                binding.passwordField.error = "Please enter password"
             }
 
 

@@ -48,6 +48,9 @@ class LoginFragment : Fragment() {
             {
                val userLogin= UserLogin(username,password)
                 viewModel.login( userLogin)
+            } else {
+                binding.usernameField.error = "Please enter username"
+                binding.passwordField.error = "Please enter password"
             }
 
 
