@@ -4,7 +4,7 @@ import { body } from "express-validator";
 
 
 
-import { login, register, putOnce,getUser, logout } from "../controllers/user.js";
+import { login, register, putOnce, AuthenticatedUser, Refresh, getUser, logout } from "../controllers/user.js";
 
 const router = express.Router();
 
@@ -15,31 +15,32 @@ router
     body("phoneNumber"),
     body("email"),
     body("password").isLength({ min: 8 }),
-   
+
     register
   );
 
-  router
+router
   .route("/login")
   .post(
     body("username"),
-    
+    body("phoneNumber"),
+    body("email"),
     body("password"),
-   
     login
   );
 
 router
   .route("/:id")
   .put(
-   
+
     body("username").isLength({ min: 5 }),
     body("phoneNumber"),
     body("email"),
     body("password").isLength({ min: 8 }),
     putOnce
   );
-
-  router.route("/details").get(getUser);
-  router.route("/logout").get(logout);
+router.route("/users").get(AuthenticatedUser);
+router.route("/refresh").post(Refresh);
+router.route("/details").get(getUser);
+router.route("/logout").get(logout);
 export default router;
