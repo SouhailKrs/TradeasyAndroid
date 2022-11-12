@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.model.User
 import com.tradeasy.domain.usecase.RegisterUseCase
 import com.tradeasy.utils.BaseResult
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,9 +46,9 @@ class RegisterViewModel @Inject constructor(
                 hideLoading()
                 when (baseResult) {
                     is BaseResult.Error -> state.value =
-                        UserRegisterActivityState.RegisterError(baseResult.message!!)
+                        UserRegisterActivityState.RegisterError(baseResult.rawResponse)
                     is BaseResult.Success -> state.value =
-                        UserRegisterActivityState.RegisterSuccess(baseResult.U!! as User)
+                        UserRegisterActivityState.RegisterSuccess(baseResult.data)
                     else -> {
                         state.value = UserRegisterActivityState.ShowToast("Something went wrong")
                     }
@@ -62,6 +63,6 @@ sealed class UserRegisterActivityState {
     data class IsLoading(val isLoading: Boolean) : UserRegisterActivityState()
     data class ShowToast(val message: String) : UserRegisterActivityState()
     data class RegisterSuccess(val user: User) : UserRegisterActivityState()
-    data class RegisterError(val rawResponse: String) : UserRegisterActivityState()
+    data class RegisterError(val rawResponse: WrappedResponse<User>) : UserRegisterActivityState()
 
 }

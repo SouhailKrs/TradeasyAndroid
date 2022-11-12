@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.model.User
 import com.tradeasy.domain.usecase.UserDetailsUseCase
 import com.tradeasy.utils.BaseResult
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,26 +37,24 @@ class UserDetailsViewModel @Inject constructor(private val userDetailsUseCase: U
     fun getData() {
         viewModelScope.launch {
             userDetailsUseCase.execute().onStart {
-                    setLoading()
-                    println("start")
-                }.catch { exception ->
-                    hideLoading()
-                    println("exception: " + exception.message)
-                    showToast(exception.printStackTrace().toString())
-                }.collect { baseResult ->
-                    hideLoading()
-                    when (baseResult) {
-                        is BaseResult.Error -> {
-                            state.value = ActivityState.ErrorLogin(baseResult.message!!)
-                        }
-                        is BaseResult.Success -> {
-                            state.value = ActivityState.SuccessLogin(baseResult.U as User)
-                        }
-                        else -> {
-                            state.value = ActivityState.ErrorLogin("Something went wrong")
-                        }
+                setLoading()
+                println("start")
+            }.catch { exception ->
+                hideLoading()
+                println("exception: " + exception.message)
+                showToast(exception.printStackTrace().toString())
+            }.collect { baseResult ->
+                hideLoading()
+                when (baseResult) {
+                    is BaseResult.Error -> {
+                        state.value = ActivityState.ErrorGettingUserData(baseResult.rawResponse)
                     }
+                    is BaseResult.Success -> {
+                        state.value = ActivityState.SuccessGettingUserData(baseResult.data)
+                    }
+
                 }
+            }
         }
     }
 
@@ -66,6 +65,6 @@ sealed class ActivityState {
     object Init : ActivityState()
     data class IsLoading(val isLoading: Boolean) : ActivityState()
     data class ShowToast(val message: String) : ActivityState()
-    data class SuccessLogin(val user: User) : ActivityState()
-    data class ErrorLogin(val rawResponse: String) : ActivityState()
+    data class SuccessGettingUserData(val user: User) : ActivityState()
+    data class ErrorGettingUserData(val rawResponse: WrappedResponse<User>) : ActivityState()
 }

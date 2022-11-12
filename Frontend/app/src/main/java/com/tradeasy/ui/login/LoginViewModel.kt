@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.model.User
 import com.tradeasy.domain.usecase.LoginUseCase
 import com.tradeasy.utils.BaseResult
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,22 +38,21 @@ class LoginViewModel @Inject constructor(
     fun login(user: User) {
         viewModelScope.launch {
             getLoginCase.execute(user).onStart {
-                    setLoading()
-                }.catch { exception ->
-                    hideLoading()
-                    showToast(exception.printStackTrace().toString())
-                }.collect { baseResult ->
-                    hideLoading()
-                    when (baseResult) {
-                        is BaseResult.Error -> state.value =
-                            LoginActivityState.ErrorLogin(baseResult.message!!)
-                        is BaseResult.Success -> state.value =
-                            LoginActivityState.SuccessLogin(baseResult.U!! as User)
-                        else -> {
-                            state.value = LoginActivityState.ShowToast("Something went wrong")
-                        }
+                setLoading()
+            }.catch { exception ->
+                hideLoading()
+                showToast(exception.printStackTrace().toString())
+            }.collect { baseResult ->
+                hideLoading()
+                when (baseResult) {
+                    is BaseResult.Error -> {
+                        state.value = LoginActivityState.ErrorLogin(baseResult.rawResponse)
+                        println(baseResult.rawResponse)
                     }
+                    is BaseResult.Success -> state.value =
+                        LoginActivityState.SuccessLogin(baseResult.data)
                 }
+            }
         }
     }
 }
@@ -62,5 +62,5 @@ sealed class LoginActivityState {
     data class IsLoading(val isLoading: Boolean) : LoginActivityState()
     data class ShowToast(val message: String) : LoginActivityState()
     data class SuccessLogin(val user: User) : LoginActivityState()
-    data class ErrorLogin(val rawResponse: String) : LoginActivityState()
+    data class ErrorLogin(val rawResponse: WrappedResponse<User>) : LoginActivityState()
 }

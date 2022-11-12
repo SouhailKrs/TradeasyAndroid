@@ -16,26 +16,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.utils.SharedPrefs
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
-    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        return binding.root;
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,10 +48,11 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-        register();
-        observe();
+        register()
+        observe()
     }
-// REGISTER
+
+    // REGISTER
     private fun register() {
         binding.registerButton.setOnClickListener {
             val username = binding.usernameField.text.toString().trim()
@@ -58,7 +60,7 @@ class RegisterFragment : Fragment() {
             val email = binding.emailField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password,"None")
+                val user = User(username, phoneNumber.toInt(), email, password, "None")
                 viewModel.userRegister(user)
 
             }
@@ -66,16 +68,19 @@ class RegisterFragment : Fragment() {
 
         }
     }
-// STATE OBSERVER
+
+    // STATE OBSERVER
     private fun observe() {
         viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
     }
+
     // STATE HANDLER
     private fun handleStateChange(state: UserRegisterActivityState) {
         when (state) {
             is UserRegisterActivityState.Init -> Unit
             is UserRegisterActivityState.RegisterError -> handleRegisterError(state.rawResponse)
+
             is UserRegisterActivityState.RegisterSuccess -> handleRegisterSuccess(state.user)
             is UserRegisterActivityState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
@@ -83,15 +88,17 @@ class RegisterFragment : Fragment() {
             is UserRegisterActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
+
     // ERROR HANDLER
-    private fun handleRegisterError(response: String) {
+    private fun handleRegisterError(response: WrappedResponse<User>) {
         AlertDialog.Builder(requireActivity()).apply {
-            setMessage(response)
+            setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
             }
         }.show()
     }
+
     // LOADING HANDLER
     private fun handleLoading(isLoading: Boolean) {
         /*binding.loginButton.isEnabled = !isLoading
@@ -101,9 +108,13 @@ class RegisterFragment : Fragment() {
             binding.loadingProgressBar.progress = 0
         }*/
     }
+
     // SUCCESS HANDLER
     private fun handleRegisterSuccess(userRegisterEntity: User) {
-        println(userRegisterEntity.phoneNumber)
+       //save to shared prefs
+
+
+
         findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
     }
 }

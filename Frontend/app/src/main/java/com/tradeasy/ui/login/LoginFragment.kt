@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -76,9 +77,9 @@ class LoginFragment : Fragment() {
     }
 
     // IF THERE IS AN ERROR WHILE LOGGING IN
-    private fun handleErrorLogin(response: String) {
+    private fun handleErrorLogin(response: WrappedResponse<User>) {
         AlertDialog.Builder(requireActivity()).apply {
-            setMessage(response)
+            setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
             }
@@ -93,10 +94,12 @@ class LoginFragment : Fragment() {
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
+        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
     }
 
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessLogin(loginEntity: User) {
+
         findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
     }
 }

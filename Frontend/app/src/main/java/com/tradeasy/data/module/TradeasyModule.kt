@@ -2,7 +2,6 @@ package com.tradeasy.data.module
 
 import com.tradeasy.data.remote.TradeasyApi
 import com.tradeasy.data.repository.TradeasyImplementation
-import com.tradeasy.di.NetworkModule
 import com.tradeasy.domain.repository.TradeasyRepository
 import dagger.Module
 import dagger.Provides

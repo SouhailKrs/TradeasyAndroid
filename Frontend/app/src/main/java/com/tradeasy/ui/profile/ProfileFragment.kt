@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
+import com.tradeasy.domain.model.User
+import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -49,11 +52,8 @@ class ProfileFragment : Fragment() {
 
     private fun handleStateChange(state: ActivityState) {
         when (state) {
-            is ActivityState.IsLoading -> {
-               println("loading")
-                Toast.makeText(requireActivity(), "loading", Toast.LENGTH_SHORT).show()
-            }
-            is ActivityState.SuccessLogin -> {
+            is ActivityState.Init->Unit
+            is ActivityState.SuccessGettingUserData -> {
 
                 val username= binding.username
                 val email = binding.email
@@ -65,14 +65,28 @@ class ProfileFragment : Fragment() {
                 }
 
             }
-            is ActivityState.ErrorLogin -> {
-
-                Toast.makeText(requireActivity(), state.rawResponse, Toast.LENGTH_SHORT).show()
+            is ActivityState.ErrorGettingUserData -> handleErrorLogin(state.rawResponse)
+            is ActivityState.ShowToast -> {
+                Toast.makeText(requireActivity(), state.message, Toast.LENGTH_SHORT).show()
             }
-            else -> {
-                Toast.makeText(requireActivity(), "else", Toast.LENGTH_SHORT).show()
-            }
+            is ActivityState.IsLoading -> handleLoading(state.isLoading)
         }
+    }
+    private fun handleErrorLogin(response: WrappedResponse<User>) {
+        AlertDialog.Builder(requireActivity()).apply {
+            setMessage(response.message)
+            setPositiveButton("ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.show()
+    }
+    private fun handleLoading(isLoading: Boolean) {
+        /*binding.loginButton.isEnabled = !isLoading
+        binding.registerButton.isEnabled = !isLoading
+        binding.loadingProgressBar.isIndeterminate = isLoading
+        if(!isLoading){
+            binding.loadingProgressBar.progress = 0
+        }*/
     }
 
 }

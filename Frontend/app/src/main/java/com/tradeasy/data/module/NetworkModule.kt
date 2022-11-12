@@ -1,6 +1,8 @@
-package com.tradeasy.di
+package com.tradeasy.data.module
 
 import com.tradeasy.utils.Constants
+import com.tradeasy.utils.RequestInterceptor
+import com.tradeasy.utils.SharedPrefs
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +37,9 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
+    @Provides
+    fun provideRequestInterceptor(prefs: SharedPrefs) : RequestInterceptor {
+        return RequestInterceptor(prefs)
+    }
 
 }
