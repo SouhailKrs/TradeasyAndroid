@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
@@ -38,6 +39,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.VISIBLE
+        binding.editProfileBtn.setOnClickListener{findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)}
         viewModel.getData()
         observe()
     }

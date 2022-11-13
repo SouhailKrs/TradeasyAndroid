@@ -1,4 +1,4 @@
-package com.tradeasy.ui.login
+package com.tradeasy.ui.editProfile.updatePassword
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentLoginBinding
+import com.tradeasy.databinding.FragmentChangePasswordBinding
+import com.tradeasy.domain.model.UpdatePasswordRequest
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,14 +23,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
-    private lateinit var binding: FragmentLoginBinding
-    private val viewModel: LoginViewModel by viewModels()
+class UpdatePasswordFragment : Fragment() {
+    private lateinit var binding: FragmentChangePasswordBinding
+    private val viewModel: UpdatePasswordViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -38,22 +40,42 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
-        binding.newMember.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-        login()
+
+        updatePassword()
         observe()
     }
 
     //LOGIN
-    private fun login() {
-        binding.registerButton.setOnClickListener {
-            val username = binding.usernameField.text.toString().trim()
-            val password = binding.passwordField.text.toString().trim()
-            if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, null, "", password, "None",false)
-                viewModel.login(user)
+    private fun updatePassword() {
+        binding.updatePasswordBtn.setOnClickListener {
+            val currentPassword=binding.currentPassword.text.toString().trim()
+            val newPassword=binding.newPassword.text.toString().trim()
+            val confirmPassword=binding.confirmPassword.text.toString().trim()
+           if(currentPassword.isEmpty()){
+               binding.currentPassword.error="Enter Current Password"
+               binding.currentPassword.requestFocus()
+               return@setOnClickListener
+           }
+            if(newPassword.isEmpty()){
+                binding.newPassword.error="Enter New Password"
+                binding.newPassword.requestFocus()
+                return@setOnClickListener
             }
+            if(confirmPassword.isEmpty()){
+                binding.confirmPassword.error="Enter Confirm Password"
+                binding.confirmPassword.requestFocus()
+                return@setOnClickListener
+            }
+            if(newPassword!=confirmPassword){
+                binding.confirmPassword.error="Password Not Match"
+                binding.confirmPassword.requestFocus()
+                return@setOnClickListener
+            }
+            else{
+                val req = UpdatePasswordRequest(currentPassword,newPassword)
+                viewModel.updatePassword(req)
+            }
+
         }
     }
 
@@ -64,15 +86,15 @@ class LoginFragment : Fragment() {
     }
 
     //  STATE HANDLER
-    private fun handleStateChange(state: LoginActivityState) {
+    private fun handleStateChange(state: UpdatePasswordActivityState) {
         when (state) {
-            is LoginActivityState.Init -> Unit
-            is LoginActivityState.ErrorLogin -> handleErrorLogin(state.rawResponse)
-            is LoginActivityState.SuccessLogin -> handleSuccessLogin(state.user)
-            is LoginActivityState.ShowToast -> Toast.makeText(
+            is UpdatePasswordActivityState.Init -> Unit
+            is UpdatePasswordActivityState.ErrorUpdate -> handleErrorLogin(state.rawResponse)
+            is UpdatePasswordActivityState.SuccessUpdate -> handleSuccessLogin(state.user)
+            is UpdatePasswordActivityState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
-            is LoginActivityState.IsLoading -> handleLoading(state.isLoading)
+            is UpdatePasswordActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
 
@@ -98,7 +120,7 @@ class LoginFragment : Fragment() {
     }
 
     // IF LOGGED IN SUCCESSFULLY
-    private fun handleSuccessLogin(loginEntity: User) {
+    private fun handleSuccessLogin(user: User) {
 
         findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
     }

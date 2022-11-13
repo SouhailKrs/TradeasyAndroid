@@ -1,6 +1,7 @@
 package com.tradeasy.data.remote
 
 
+import com.tradeasy.domain.model.UpdatePasswordRequest
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.WrappedResponse
 import retrofit2.Response
@@ -19,4 +20,6 @@ interface TradeasyApi {
     // USER DETAILS API
     @GET("/user/details")
     suspend fun getUserDetailsApi(): Response<WrappedResponse<User>>
+    @POST("/user/updatePassword")
+    suspend fun updateUserPasswordAPI(@Body req:UpdatePasswordRequest): Response<WrappedResponse<User>>
 }

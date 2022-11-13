@@ -1,5 +1,6 @@
 package com.tradeasy.domain.repository
 
+import com.tradeasy.domain.model.UpdatePasswordRequest
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
@@ -16,4 +17,7 @@ interface TradeasyRepository {
 
     // USER DETAILS
     suspend fun getUserDetails(): Flow<BaseResult<User,WrappedResponse<User>>>
+    // UPDATE USER PASSWORD
+    suspend fun updateUserPassword(req:UpdatePasswordRequest): Flow<BaseResult<User,WrappedResponse<User>>>
+
 }
