@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,25 +17,32 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: UserDetailsViewModel by viewModels()
-
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
+    override fun onResume() {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        super.onResume()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
@@ -42,6 +50,19 @@ class ProfileFragment : Fragment() {
         binding.editProfileBtn.setOnClickListener{findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)}
         viewModel.getData()
         observe()
+        binding.logoutBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Logout")
+            builder.setMessage("Are you sure you want to logout?")
+            builder.setPositiveButton("Yes") { _, _ ->
+                sharedPrefs.clear()
+                findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
     }
 
     private fun observe() {

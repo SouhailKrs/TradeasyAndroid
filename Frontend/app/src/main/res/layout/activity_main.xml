@@ -38,12 +38,14 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="61dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/navbar_style"
         android:requiresFadingEdge="none"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@drawable/navbar_selector"
         app:itemTextColor="@color/black"
         app:labelVisibilityMode="labeled"
+
+
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
