@@ -9,7 +9,7 @@ const userSchema = new Schema(
             unique:true
         },
         phoneNumber: {
-            type: String,
+            type: Number,
             required: true,
             unique:true
         },
@@ -22,6 +22,16 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+        profilePicture: {
+            type: String,
+            required: false
+        },
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+       
+       
     },
     {
         timestamps: true
