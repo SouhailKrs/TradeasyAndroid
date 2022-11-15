@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
@@ -46,9 +45,8 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
-            View.GONE
-        binding.alreadyHaveAnAccount.setOnClickListener {
+       // view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
+        binding.navToLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 

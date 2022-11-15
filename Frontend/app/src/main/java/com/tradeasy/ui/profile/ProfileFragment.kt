@@ -28,6 +28,7 @@ import javax.inject.Inject
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: UserDetailsViewModel by viewModels()
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -35,6 +36,10 @@ class ProfileFragment : Fragment() {
     ): View {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val user = sharedPrefs.getUser()
+        if(user == null) {
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        }
 
         return binding.root
     }

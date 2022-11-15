@@ -35,9 +35,10 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+//        view?.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return binding.root
 
@@ -46,9 +47,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
-            View.GONE
-        binding.newMember.setOnClickListener {
+        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
+        binding.navToRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         login()

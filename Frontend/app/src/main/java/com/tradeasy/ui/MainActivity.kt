@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.databinding.ActivityMainBinding
+import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.profile.ProfileFragment
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,20 +28,24 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     private val profileFragment = ProfileFragment()
+    private val loginFragment = LoginFragment()
 
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
 
 
-        setContentView(com.tradeasy.R.layout.activity_main)
+        val view = binding.root
+        setContentView(view)
 
-        handleNavigation()
+        //remove dark mode
+        
+
+      // handleNavigation()
 // NAV HOST WITH BOTTOM NAVIGATION VIEW
          val navHostFragment =
             supportFragmentManager.findFragmentById(com.tradeasy.R.id.fragmentContainerView) as NavHostFragment
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         return true
 
     }
-private fun handleNavigation(){
+/*private fun handleNavigation(){
     val navHostFragment =
         supportFragmentManager.findFragmentById(com.tradeasy.R.id.fragmentContainerView) as NavHostFragment
     val navController = navHostFragment.navController
@@ -100,10 +105,26 @@ private fun handleNavigation(){
 
         graph.setStartDestination(com.tradeasy.R.id.loginFragment)
         navController.graph = graph
-    }
+    }*/
 
 
-}
+/*private  fun handleBottomNavView(){
+    binding.bottomNavigationView.menu.findItem(com.tradeasy.R.id.profileFragment).setOnMenuItemClickListener {
+
+
+        if(sharedPrefs.getUser() == null){
+            supportFragmentManager.beginTransaction().replace(com.tradeasy.R.id.fragmentContainerView, loginFragment).commit()
+            true
+        }
+        else{
+            false
+        }
+
+
+
+    }*/
+
+
 
 
 
