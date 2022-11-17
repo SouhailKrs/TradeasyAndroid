@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,8 +14,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentChangePasswordBinding
+import com.tradeasy.databinding.FragmentUpdatePasswordBinding
 import com.tradeasy.domain.model.UpdatePasswordRequest
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.WrappedResponse
@@ -24,22 +26,24 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class UpdatePasswordFragment : Fragment() {
-    private lateinit var binding: FragmentChangePasswordBinding
+    private lateinit var binding: FragmentUpdatePasswordBinding
     private val viewModel: UpdatePasswordViewModel by viewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
+        binding = FragmentUpdatePasswordBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
-            View.GONE
+            View.VISIBLE
 
         updatePassword()
         observe()
@@ -89,8 +93,8 @@ class UpdatePasswordFragment : Fragment() {
     private fun handleStateChange(state: UpdatePasswordActivityState) {
         when (state) {
             is UpdatePasswordActivityState.Init -> Unit
-            is UpdatePasswordActivityState.ErrorUpdate -> handleErrorLogin(state.rawResponse)
-            is UpdatePasswordActivityState.SuccessUpdate -> handleSuccessLogin(state.user)
+            is UpdatePasswordActivityState.ErrorUpdate -> handleErrorUpdate(state.rawResponse)
+            is UpdatePasswordActivityState.SuccessUpdate -> handleSuccessUpdate(state.user)
             is UpdatePasswordActivityState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
@@ -99,7 +103,7 @@ class UpdatePasswordFragment : Fragment() {
     }
 
     // IF THERE IS AN ERROR WHILE LOGGING IN
-    private fun handleErrorLogin(response: WrappedResponse<User>) {
+    private fun handleErrorUpdate(response: WrappedResponse<User>) {
         AlertDialog.Builder(requireActivity()).apply {
             setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
@@ -120,8 +124,10 @@ class UpdatePasswordFragment : Fragment() {
     }
 
     // IF LOGGED IN SUCCESSFULLY
-    private fun handleSuccessLogin(user: User) {
+    private fun handleSuccessUpdate(user: User) {
 
-        findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+        //sncakbar
+        Snackbar.make(requireView(), "Password Updated Successfully", Snackbar.LENGTH_LONG).show()
+        findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
     }
 }

@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
     private lateinit var newRecycler: RecyclerView
+    private lateinit var bestRecycler2: RecyclerView
     private lateinit var newArrayList: ArrayList<Products>
     private lateinit var binding: FragmentHomeBinding
 
@@ -20,8 +25,13 @@ class HomeFragment : Fragment() {
     lateinit var title: Array<String>
     lateinit var description: Array<String>
     lateinit var price: Array<Int>
-
+    lateinit var btndown : ImageView
+    lateinit var btnup : ImageView
+    lateinit var categoryLayout1: LinearLayout
+    lateinit var categoryLayout2: LinearLayout
     override fun onCreateView(
+
+
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -36,11 +46,31 @@ class HomeFragment : Fragment() {
         price = arrayOf(1600,1700,1800,1900)
 
         newRecycler = binding.homepageRV
+        bestRecycler2 = binding.homepageRVHH
         //vertical layout manager
         newRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         newRecycler.setHasFixedSize(true)
-
+        bestRecycler2.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        bestRecycler2.setHasFixedSize(true)
         newArrayList = arrayListOf<Products>()
+
+        btndown = binding.dropdownicon
+        categoryLayout1 = binding.linearLayout2
+        categoryLayout2 = binding.linearLayout5
+        btnup = binding.dropupicon
+
+        btndown.setOnClickListener {
+            categoryLayout1.visibility = View.VISIBLE
+            categoryLayout2.visibility = View.VISIBLE
+            btndown.visibility = View.GONE
+            btnup.visibility = View.VISIBLE
+        }
+        btnup.setOnClickListener {
+            categoryLayout1.visibility = View.GONE
+            categoryLayout2.visibility = View.GONE
+            btndown.visibility = View.VISIBLE
+            btnup.visibility = View.GONE
+        }
 
         getUserData()
 
@@ -54,7 +84,14 @@ class HomeFragment : Fragment() {
             newArrayList.add(products)
         }
         newRecycler.adapter = ProductsAdapter(newArrayList)
+        bestRecycler2.adapter = ProductsSaleAdapter(newArrayList)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility  =
+            View.VISIBLE
+    }
 
 }

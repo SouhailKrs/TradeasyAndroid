@@ -44,6 +44,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
@@ -115,9 +116,10 @@ class RegisterFragment : Fragment() {
     // SUCCESS HANDLER
     private fun handleRegisterSuccess(userRegisterEntity: User) {
        //save to shared prefs
+        sharedPrefs.setUser(userRegisterEntity)
 
 
 
-        findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
+        findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 }

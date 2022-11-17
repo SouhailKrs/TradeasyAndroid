@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/registerFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -14,7 +14,7 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_registerFragment_to_profileFragment"
+            android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -25,10 +25,10 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-
         <action
-            android:id="@+id/action_loginFragment_to_profileFragment"
+            android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -39,8 +39,8 @@
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -62,16 +62,11 @@
     </fragment>
     <fragment
         android:id="@+id/updatePasswordFragment"
-        android:name="com.tradeasy.ui.editProfile.updatePassword.ChangePasswordFragment"
+        android:name="com.tradeasy.ui.editProfile.updatePassword.UpdatePasswordFragment"
         android:label="fragment_update_password"
-        tools:layout="@layout/fragment_change_password">
+        tools:layout="@layout/fragment_update_password">
         <action
-            android:id="@+id/action_changePasswordFragment_to_updatePasswordSuccessFragment"
-            app:destination="@id/updatePasswordSuccessFragment" />
+            android:id="@+id/action_updatePasswordFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/updatePasswordSuccessFragment"
-        android:name="com.tradeasy.ui.editProfile.updatePassword.UpdatePasswordSuccessFragment"
-        android:label="fragment_update_password_success"
-        tools:layout="@layout/fragment_update_password_success" />
 </navigation>

@@ -11,8 +11,8 @@ import com.tradeasy.R
 class ProductsAdapter(private val productsList: ArrayList<Products>) : RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-    val itemView = LayoutInflater.from(parent.context).inflate(R.layout.row_recentlyviewed, parent, false)
-            return MyViewHolder(itemView)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.row_recentlyviewed, parent, false)
+        return MyViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
