@@ -14,7 +14,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.SharedPrefs
@@ -29,6 +28,7 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel: LoginViewModel by viewModels()
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
@@ -47,10 +47,18 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
+        view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
+            View.GONE
         binding.navToRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            findNavController().navigate(com.tradeasy.R.id.action_loginFragment_to_registerFragment)
         }
+// Close the  login fragment
+        binding.closeLoginFragment.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+
+
         login()
         observe()
     }
@@ -61,10 +69,12 @@ class LoginFragment : Fragment() {
             val username = binding.usernameField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, null, "", password, "None",false)
+                val user = User(username, null, "", password, "None", false)
                 viewModel.login(user)
             }
+
         }
+
     }
 
     // STATE OBSERVER
@@ -110,6 +120,12 @@ class LoginFragment : Fragment() {
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessLogin(loginEntity: User) {
         sharedPrefs.setUser(loginEntity)
-        findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+      //  shoppingCartVisibility()
+        findNavController().navigate(com.tradeasy.R.id.action_loginFragment_to_profileFragment)
+
+
     }
+
+
+
 }

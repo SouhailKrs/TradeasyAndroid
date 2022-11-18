@@ -29,9 +29,9 @@ class UserDetailsViewModel @Inject constructor(private val userDetailsUseCase: U
         state.value = ActivityState.IsLoading(false)
     }
 
-    private fun showToast(message: String) {
+   /* private fun showToast(message: String) {
         state.value = ActivityState.ShowToast(message)
-    }
+    }*/
 
 
     fun getData() {
@@ -42,7 +42,7 @@ class UserDetailsViewModel @Inject constructor(private val userDetailsUseCase: U
             }.catch { exception ->
                 hideLoading()
                 println("exception: " + exception.message)
-                showToast(exception.printStackTrace().toString())
+                //showToast(exception.printStackTrace().toString())
             }.collect { baseResult ->
                 hideLoading()
                 when (baseResult) {

@@ -7,9 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="buttonColor">#DB3120</color>
-    <color name="appBackground">#F4F4F4</color>
+    <color name="buttonColor">#EB4A5A</color>
+    <color name="appBackground">#FBFBFA</color>
     <color name="grey">#ACABAD</color>
+    <color name="grey2">#e3e6e7</color>
     <color name="blacksh">#353232</color>
 <!--    <color name="appBackground">#F5F7FA</color>-->
 </resources>

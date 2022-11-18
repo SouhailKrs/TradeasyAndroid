@@ -13,9 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,7 @@ import javax.inject.Inject
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
+    val loginFragment = LoginFragment()
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
@@ -35,7 +38,7 @@ class RegisterFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return binding.root
@@ -43,12 +46,20 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-       // view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
+
+        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
+            View.GONE
         binding.navToLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
+        binding.closeRegisterFragment.setOnClickListener {
+            findNavController().popBackStack()
+            // add the login fragment to the back stack
+            findNavController().popBackStack(R.id.loginFragment, true)
+
+        }
+
 
         register()
         observe()
@@ -62,7 +73,7 @@ class RegisterFragment : Fragment() {
             val email = binding.emailField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password, "None",false)
+                val user = User(username, phoneNumber.toInt(), email, password, "None", false)
                 viewModel.userRegister(user)
 
             }
@@ -113,8 +124,10 @@ class RegisterFragment : Fragment() {
 
     // SUCCESS HANDLER
     private fun handleRegisterSuccess(userRegisterEntity: User) {
-       //save to shared prefs
+        //save to shared prefs
         sharedPrefs.setUser(userRegisterEntity)
+
+
 
 
 

@@ -16,15 +16,15 @@
 
         android:title="Selling"/>
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/searchFragment"
         android:enabled="true"
         android:icon="@drawable/ic_outline_search_24"
         android:title="Search"/>
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/notificationsFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_outline_favorite_border_24"
-        android:title="Favorites"/>
+        android:icon="@drawable/ic_baseline_notifications_none_24"
+        android:title="Notifications"/>
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"
