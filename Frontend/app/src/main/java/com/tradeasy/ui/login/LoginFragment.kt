@@ -12,10 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.ui.navigation.Navigation
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,14 +50,15 @@ class LoginFragment : Fragment() {
         view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToRegister.setOnClickListener {
-            findNavController().navigate(com.tradeasy.R.id.action_loginFragment_to_registerFragment)
+            Navigation().loginToRegister(requireView())
+
         }
 // Close the  login fragment
         binding.closeLoginFragment.setOnClickListener {
-            findNavController().popBackStack()
+           // findNavController().popBackStack()
+          Navigation().loginToHome(requireView())
+
         }
-
-
 
         login()
         observe()
@@ -121,7 +122,8 @@ class LoginFragment : Fragment() {
     private fun handleSuccessLogin(loginEntity: User) {
         sharedPrefs.setUser(loginEntity)
       //  shoppingCartVisibility()
-        findNavController().navigate(com.tradeasy.R.id.action_loginFragment_to_profileFragment)
+
+        Navigation().loginToProfile(requireView())
 
 
     }

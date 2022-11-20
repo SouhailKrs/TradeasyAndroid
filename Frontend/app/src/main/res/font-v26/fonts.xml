@@ -15,5 +15,11 @@
     <font
         android:fontStyle="normal"
         android:font="@font/neue" />
+    <font
+        android:fontStyle="normal"
+        android:font="@font/proxima_nova" />
+    <font
+        android:fontStyle="normal"
+        android:font="@font/brasley_medium" />
 
 </font-family>

@@ -10,7 +10,7 @@
 
         android:title="Home"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/sellingFragment"
         android:enabled="true"
         android:icon="@drawable/ic_outline_shopping_cart_24"
 

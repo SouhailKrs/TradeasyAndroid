@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.domain.model.User
+import com.tradeasy.ui.navigation.Navigation
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,7 @@ class ProfileFragment : Fragment() {
             binding.username.visibility = View.GONE
             binding.logoutConstraint.visibility = View.GONE
             binding.profileSpacer.layoutParams.height = 50
+            constraintsOnClickOffline()
             binding.editProfileBtn.setOnClickListener {
                 findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
 
@@ -142,6 +144,29 @@ class ProfileFragment : Fragment() {
             binding.loadingProgressBar.progress = 0
         }*/
     }
+
+    // where to go when the user in offline
+    private fun constraintsOnClickOffline(){
+        binding.savedConstraint.setOnClickListener {
+           Navigation().profileToLogin(requireView())
+        }
+        binding.bidsConstraint.setOnClickListener {
+            Navigation().profileToLogin(requireView())
+        }
+        binding.purchasesConstraint.setOnClickListener {
+            Navigation().profileToLogin(requireView())
+        }
+        binding.recentlyViewedConstraint.setOnClickListener {
+            Navigation().profileToLogin(requireView())
+        }
+        binding.paymentConstraint.setOnClickListener {
+            Navigation().profileToLogin(requireView())
+        }
+
+
+    }
+
+
 
 
 

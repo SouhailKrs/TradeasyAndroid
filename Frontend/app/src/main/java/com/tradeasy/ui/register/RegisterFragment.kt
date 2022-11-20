@@ -12,12 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
 import com.tradeasy.ui.login.LoginFragment
+import com.tradeasy.ui.navigation.Navigation
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,12 +51,14 @@ class RegisterFragment : Fragment() {
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            Navigation().registerToLogin(requireView())
+
         }
         binding.closeRegisterFragment.setOnClickListener {
-            findNavController().popBackStack()
-            // add the login fragment to the back stack
-            findNavController().popBackStack(R.id.loginFragment, true)
+
+            Navigation().registerToHome(requireView())
+
+
 
         }
 
@@ -131,6 +133,6 @@ class RegisterFragment : Fragment() {
 
 
 
-        findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
+        Navigation().registerToProfile(requireView())
     }
 }

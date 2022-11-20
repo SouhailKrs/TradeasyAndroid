@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 // remove dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-// remove cart item from app bar if user is not logged in
 
 
 // NAV HOST WITH BOTTOM NAVIGATION VIEW
@@ -84,11 +83,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-//    val item: MenuItem = menu.findItem(R.id.shopping_cart)
-//    item.isVisible = sharedPrefs.getUser() != null
-//    return true
-//
-//}
+override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+    val item: MenuItem = menu.findItem(R.id.shopping_cart)
+    item.isVisible = sharedPrefs.getUser() != null
+
+    // refresh menu
+    invalidateOptionsMenu()
+    return true
+
+}
 
 }

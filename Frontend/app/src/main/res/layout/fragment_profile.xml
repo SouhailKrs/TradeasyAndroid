@@ -121,7 +121,7 @@
                 android:weightSum="5">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout2"
+                    android:id="@+id/savedConstraint"
                     android:layout_width="match_parent"
 
                     android:layout_height="wrap_content"
@@ -176,6 +176,7 @@
                     android:background="?android:attr/listDivider" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bidsConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -231,6 +232,7 @@
                     android:background="?android:attr/listDivider" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/purchasesConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="?android:attr/selectableItemBackground"
@@ -283,6 +285,7 @@
                     android:background="?android:attr/listDivider" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recentlyViewedConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="?android:attr/selectableItemBackground"
@@ -336,6 +339,7 @@
                     android:background="?android:attr/listDivider" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/paymentConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
