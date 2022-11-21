@@ -22,6 +22,15 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+        profilePicture: {
+            type: String,
+            required: false
+        },
+       
+        token: {
+            type: String,
+            
+        },
        
     },
     {

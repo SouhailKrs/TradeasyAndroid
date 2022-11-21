@@ -1,0 +1,66 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/notificationIcon"
+        app:layout_constraintStart_toEndOf="@+id/notificationIcon"
+        app:layout_constraintTop_toTopOf="@+id/notificationIcon" />
+
+    <TextView
+        android:id="@+id/notificationContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/brasley_medium"
+        android:text="TextView"
+        android:textColor="@color/grey3"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/divider7"
+        app:layout_constraintTop_toTopOf="@+id/notificationIcon" />
+
+    <TextView
+        android:id="@+id/oneNotificationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/avenir_regular"
+        android:text="TextView"
+        android:textColor="@color/grey3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/notificationIcon"
+        app:layout_constraintStart_toEndOf="@+id/divider7"
+        app:layout_constraintTop_toBottomOf="@+id/notificationContent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/notificationIcon"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="5dp"
+        android:adjustViewBounds="true"
+        android:background="@color/grey"
+
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.NavigationView.Item"
+        app:srcCompat="@drawable/ic_baseline_sell_24" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

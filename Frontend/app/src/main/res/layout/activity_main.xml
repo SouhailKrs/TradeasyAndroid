@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/appBackground"
     tools:context=".ui.MainActivity">
+<<<<<<< HEAD
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -22,6 +23,32 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2"
+=======
+<include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="@color/appBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView">
+
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+>>>>>>> Souhail
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -29,8 +56,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation" />
 
+=======
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:navGraph="@navigation/navigation" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navbar_style"
+        android:requiresFadingEdge="none"
+        app:itemIconTint="@drawable/navbar_selector"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="labeled"
+
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navbar" />
+
+>>>>>>> Souhail
 
 </androidx.constraintlayout.widget.ConstraintLayout>

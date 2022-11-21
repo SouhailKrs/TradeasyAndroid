@@ -1,6 +1,7 @@
 package com.tradeasy.domain.usecase
 
 
+<<<<<<< HEAD
 import com.tradeasy.domain.model.UserRegister
 import com.tradeasy.domain.repository.TradeasyRepository
 import com.tradeasy.utils.BaseResult
@@ -23,4 +24,17 @@ class RegisterUseCase@Inject constructor(private val tradeasyRepository: Tradeas
                 emit(BaseResult.Error<UserRegister>("Couldn't reach server. Check your internet connection."))
             }
         }
+=======
+import com.tradeasy.domain.model.User
+import com.tradeasy.domain.repository.TradeasyRepository
+import com.tradeasy.utils.BaseResult
+import com.tradeasy.utils.WrappedResponse
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class RegisterUseCase@Inject constructor(private val tradeasyRepository: TradeasyRepository) {
+    suspend fun execute(user: User): Flow<BaseResult<User,WrappedResponse<User>>> {
+        return tradeasyRepository.userRegister(user)
+    }
+>>>>>>> Souhail
 }

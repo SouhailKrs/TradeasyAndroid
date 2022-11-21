@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape android:shape="rectangle"  xmlns:android="http://schemas.android.com/apk/res/android">
 
+<<<<<<< HEAD
 <solid android:color="@color/white" />
     <corners
 
         android:topLeftRadius="45dp"
+=======
+    <solid android:color="@color/white" />
+    <corners
+
+        android:topLeftRadius="45dp"
+
+>>>>>>> Souhail
         android:topRightRadius="45dp" />
 
 
