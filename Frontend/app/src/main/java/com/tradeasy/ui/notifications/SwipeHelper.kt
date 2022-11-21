@@ -3,12 +3,14 @@ package com.tradeasy.ui.notifications
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.tradeasy.R
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -51,6 +53,9 @@ abstract class SwipeHelper(
     }
 
     private fun drawButtons(
+
+
+
         canvas: Canvas,
         buttons: List<UnderlayButton>,
         itemView: View,
@@ -133,18 +138,20 @@ abstract class SwipeHelper(
         private val bitmap: Bitmap,
 
 
-        @ColorRes private val colorRes: Int,
+        @ColorInt private val colorRes: Int,
         private val clickListener: UnderlayButtonClickListener
     ) {
         private var clickableRegion: RectF? = null
 // the delete button zone
+private val displayMetrics = DisplayMetrics()
+        val width = displayMetrics.widthPixels
+        val height = displayMetrics.heightPixels
 
         private val horizontalPadding = 100.0f
         val intrinsicWidth: Float
 
         init {
             val paint = Paint()
-
             paint.typeface = Typeface.DEFAULT_BOLD
             paint.textAlign = Paint.Align.LEFT
             val titleBounds = Rect()
@@ -158,7 +165,8 @@ abstract class SwipeHelper(
 
             val bounds = Rect()
             // Draw background
-            paint.color = ContextCompat.getColor(context, colorRes)
+            paint.color = ContextCompat.getColor(context, R.color.buttonColor )
+
             canvas.drawRect(rect, paint)
 
             // Draw title
@@ -199,7 +207,7 @@ private fun List<SwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
     return map { it.intrinsicWidth }.reduce { acc, fl -> acc + fl }
 }
 fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap {
-    var drawable = context?.let { ContextCompat.getDrawable(it, drawableId) }
+    val drawable = context?.let { ContextCompat.getDrawable(it, drawableId) }
     val bitmap = Bitmap.createBitmap(
         drawable!!.intrinsicWidth,
         drawable.intrinsicHeight, Bitmap.Config.ARGB_8888

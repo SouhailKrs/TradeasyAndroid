@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentEditProfileBinding
+import com.tradeasy.ui.navigation.editProfileToUpdateEmail
+import com.tradeasy.ui.navigation.editProfileToUpdatePassword
+import com.tradeasy.ui.navigation.editProfileToUpdatePn
+import com.tradeasy.ui.navigation.editProfileToUpdateUsername
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -18,16 +22,21 @@ import javax.inject.Inject
 
 class EditProfileFragment : Fragment() {
     private lateinit var binding: FragmentEditProfileBinding
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
+
+        toolbar.text = "Edit profile"
+        constraintsNavigation()
+
         sharedPrefs.getUser()?.let {
             binding.usernameView.text = it.username
             binding.emailView.text = it.email
@@ -48,18 +57,34 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.VISIBLE
-binding.updatePasswordConstraint.setOnClickListener{
-    findNavController().navigate(R.id.action_editProfileFragment_to_updatePasswordFragment)
 
-
-}
 
     }
 
 
+    private fun constraintsNavigation() {
+
+        binding.updatePasswordConstraint.setOnClickListener {
+            editProfileToUpdatePassword(requireView())
+        }
+        binding.updateUsernameConstraint.setOnClickListener {
 
 
+            editProfileToUpdateUsername(requireView())
+        }
+        binding.updateEmailConstraint.setOnClickListener {
 
+            editProfileToUpdateEmail(requireView())
+
+        }
+        binding.updatePnConstraint.setOnClickListener {
+
+            editProfileToUpdatePn(requireView())
+
+        }
+
+
+    }
 
 
 }

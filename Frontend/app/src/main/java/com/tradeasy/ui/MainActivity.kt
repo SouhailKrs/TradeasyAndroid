@@ -1,18 +1,13 @@
 package com.tradeasy.ui
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.WindowManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tradeasy.R
 import com.tradeasy.databinding.ActivityMainBinding
 import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.profile.ProfileFragment
@@ -26,7 +21,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val splashScreenViewModel: SplashScreenViewModel by viewModels()
+
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
@@ -38,8 +33,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
 // remove dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+
+        val toolbar: Toolbar = findViewById(com.tradeasy.R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
 // NAV HOST WITH BOTTOM NAVIGATION VIEW
@@ -51,15 +53,25 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(bottomNavView, navController)
 
         // ACTION BAR PARAMS
-        supportActionBar!!.setBackgroundDrawable(
-            ColorDrawable(
-                ContextCompat.getColor(
-                    this, com.tradeasy.R.color.appBackground
-                )
-            )
-        )
-        supportActionBar!!.elevation = 0F
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+//        supportActionBar!!.setBackgroundDrawable(
+//            ColorDrawable(
+//                ContextCompat.getColor(
+//                    this, com.tradeasy.R.color.white
+//                )
+//            )
+//        )
+
+ //change action bar title color
+
+
+
+       // this.supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+
+        // Displaying the custom layout in the ActionBar
+
+
+       // supportActionBar!!.elevation = 0F
+        //supportActionBar!!.setDisplayShowTitleEnabled(true)
 
         // START APP IN FULLSCREEN
         window.setFlags(
@@ -71,26 +83,26 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
-        val inflater = menuInflater
-        inflater.inflate(com.tradeasy.R.menu.app_bar, menu)
-        val item: MenuItem = menu.findItem(R.id.shopping_cart)
-        item.isVisible = sharedPrefs.getUser() != null
-
-
-        return true
-
-    }
-
-override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-    val item: MenuItem = menu.findItem(R.id.shopping_cart)
-    item.isVisible = sharedPrefs.getUser() != null
-
-    // refresh menu
-    invalidateOptionsMenu()
-    return true
-
-}
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//
+//        val inflater = menuInflater
+//        inflater.inflate(com.tradeasy.R.menu.app_bar, menu)
+//        val item: MenuItem = menu.findItem(com.tradeasy.R.id.shopping_cart)
+//        item.isVisible = sharedPrefs.getUser() != null
+//
+//
+//        return true
+//
+//    }
+//
+//override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+//    val item: MenuItem = menu.findItem(com.tradeasy.R.id.shopping_cart)
+//    item.isVisible = sharedPrefs.getUser() != null
+//
+//    // refresh menu
+//    invalidateOptionsMenu()
+//    return true
+//
+//}
 
 }

@@ -12,10 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.model.User
-import com.tradeasy.ui.navigation.Navigation
+import com.tradeasy.ui.navigation.loginToProfile
+import com.tradeasy.ui.navigation.loginToRegister
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,13 +53,37 @@ class LoginFragment : Fragment() {
         view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToRegister.setOnClickListener {
-            Navigation().loginToRegister(requireView())
+            loginToRegister(requireView())
+
 
         }
-// Close the  login fragment
+// CLOSE THE LOGIN FRAGMENT AND GO TO HOME FRAGMENT
         binding.closeLoginFragment.setOnClickListener {
-           // findNavController().popBackStack()
-          Navigation().loginToHome(requireView())
+
+
+        //  Navigation().loginToHome(requireView())
+          //  findNavController().popBackStack()
+            findNavController().navigate(R.id.homeFragment)
+          findNavController().popBackStack(R.id.loginFragment, true)
+
+val currentFragment = findNavController().currentDestination?.label
+
+
+          println(findNavController().currentDestination?.displayName)
+            if (currentFragment == "fragment_selling") {
+
+findNavController().popBackStack()
+                findNavController().navigate(R.id.homeFragment)
+
+
+            }
+            if (currentFragment == "fragment_profile") {
+
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.profileFragment)
+
+
+            }
 
         }
 
@@ -123,7 +150,7 @@ class LoginFragment : Fragment() {
         sharedPrefs.setUser(loginEntity)
       //  shoppingCartVisibility()
 
-        Navigation().loginToProfile(requireView())
+        loginToProfile(requireView())
 
 
     }

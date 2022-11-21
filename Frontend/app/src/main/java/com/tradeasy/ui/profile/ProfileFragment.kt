@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -15,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.domain.model.User
-import com.tradeasy.ui.navigation.Navigation
+import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,11 @@ class ProfileFragment : Fragment() {
     ): View {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
+        toolbar.text = "Profile"
 
+        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        toolbarTxt.visibility = View.GONE
         val user = sharedPrefs.getUser()
         if (user == null) {
 
@@ -148,19 +153,19 @@ class ProfileFragment : Fragment() {
     // where to go when the user in offline
     private fun constraintsOnClickOffline(){
         binding.savedConstraint.setOnClickListener {
-           Navigation().profileToLogin(requireView())
+           profileToLogin(requireView())
         }
         binding.bidsConstraint.setOnClickListener {
-            Navigation().profileToLogin(requireView())
+            profileToLogin(requireView())
         }
         binding.purchasesConstraint.setOnClickListener {
-            Navigation().profileToLogin(requireView())
+            profileToLogin(requireView())
         }
         binding.recentlyViewedConstraint.setOnClickListener {
-            Navigation().profileToLogin(requireView())
+            profileToLogin(requireView())
         }
         binding.paymentConstraint.setOnClickListener {
-            Navigation().profileToLogin(requireView())
+            profileToLogin(requireView())
         }
 
 

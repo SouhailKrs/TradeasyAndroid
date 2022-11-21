@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,12 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
+        toolbar.text = "Tradeasy"
+        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        toolbarTxt.visibility = View.GONE
+
         imageId = arrayOf(R.drawable.iphone,R.drawable.iphone,R.drawable.iphone,R.drawable.iphone)
         title = arrayOf("Iphone 11","Iphone 12","Iphone 13","Iphone 14")
         description = arrayOf(

@@ -17,7 +17,9 @@ import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.model.User
 import com.tradeasy.ui.login.LoginFragment
-import com.tradeasy.ui.navigation.Navigation
+import com.tradeasy.ui.navigation.registerToHome
+import com.tradeasy.ui.navigation.registerToLogin
+import com.tradeasy.ui.navigation.registerToProfile
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,12 +53,12 @@ class RegisterFragment : Fragment() {
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToLogin.setOnClickListener {
-            Navigation().registerToLogin(requireView())
+          registerToLogin(requireView())
 
         }
         binding.closeRegisterFragment.setOnClickListener {
 
-            Navigation().registerToHome(requireView())
+           registerToHome(requireView())
 
 
 
@@ -133,6 +135,6 @@ class RegisterFragment : Fragment() {
 
 
 
-        Navigation().registerToProfile(requireView())
+        registerToProfile(requireView())
     }
 }

@@ -1,10 +1,13 @@
 package com.tradeasy.ui.notifications
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentNotificationsBinding
 import com.tradeasy.domain.model.Notification
 import com.tradeasy.utils.SharedPrefs
@@ -23,9 +27,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
     private lateinit var binding: FragmentNotificationsBinding
-    private lateinit var notification: String
+        private lateinit var notificationCount: String
     private var toast: Toast? = null
-private lateinit var notificationList: MutableList<Notification>
+    private lateinit var notificationList: MutableList<Notification>
+    private var numberOfNotifications :TextView? = null
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
@@ -34,10 +39,13 @@ private lateinit var notificationList: MutableList<Notification>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
 
+        toolbar.text = "Notifications"
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         // hide bottom navigation bar
-       // requireActivity().findViewById<View>(com.tradeasy.R.id.bottomNavigationView).visibility = View.GONE
+        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        toolbarTxt.visibility = View.GONE
 
         setUpRecyclerView()
         return binding.root
@@ -45,10 +53,10 @@ private lateinit var notificationList: MutableList<Notification>
 
 
     private fun getTimeAgo(time: Long): String? {
-         val SECOND_MILLIS = 1000
-         val MINUTE_MILLIS = 60 * SECOND_MILLIS
-         val HOUR_MILLIS = 60 * MINUTE_MILLIS
-         val DAY_MILLIS = 24 * HOUR_MILLIS
+        val SECOND_MILLIS = 1000
+        val MINUTE_MILLIS = 60 * SECOND_MILLIS
+        val HOUR_MILLIS = 60 * MINUTE_MILLIS
+        val DAY_MILLIS = 24 * HOUR_MILLIS
         var timeAgo = time
 
         if (timeAgo < 1000000000000L) {
@@ -100,10 +108,10 @@ private lateinit var notificationList: MutableList<Notification>
 // remove the recycleview divider
 
         // timestamp
-        val timestamp = 1668878540666
+        val timestamp = 1669063578092
         val time = getTimeAgo(timestamp)
         println("time $time")
-        notificationList  = mutableListOf<Notification>(
+        notificationList = mutableListOf<Notification>(
 
             Notification("You have a new bid on your product", "$time", "Bid"),
             Notification("Your item has been sold", "$time", "Bid"),
@@ -117,31 +125,29 @@ private lateinit var notificationList: MutableList<Notification>
             Notification("Your item has been sold", "$time", "Sold"),
             Notification("Your item has been sold", "$time", "Sold"),
 
-            )
 
+            )
 
 
         if (notificationList.size == 1) {
 
-            notification = notificationList.size.toString() + " notification"
+            notificationCount = notificationList.size.toString() + " notification"
 
 
         }
         if (notificationList.isEmpty()) {
-            notification = " no notifications"
+            notificationCount = " no notifications"
         } else if (notificationList.size > 1) {
-            notification = notificationList.size.toString() + " notifications"
+            notificationCount = notificationList.size.toString() + " notifications"
         }
 
-        val numberOfNotifications = binding.numberOfNotifications
 
-        numberOfNotifications.text = HtmlCompat.fromHtml(
-            "<span>You have </span><span><font color=#4B78A8>$notification</span><span> today </span>",
+         numberOfNotifications = binding.numberOfNotifications
+        numberOfNotifications!!.text = HtmlCompat.fromHtml(
+            "<span>You have </span><span><font color=#4B78A8>$notificationCount</span><span> today </span>",
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
         binding.notificationsDay.text = dayLongName
-
-
 
 
         val notificationRV = binding.notificationsRV
@@ -149,8 +155,21 @@ private lateinit var notificationList: MutableList<Notification>
         notificationRV.adapter = adapter
 
         notificationRV.setHasFixedSize(true)
+        // remove divider
+        notificationRV.addItemDecoration(
+            DividerItemDecoration(
+                notificationRV.context,
+                DividerItemDecoration.VERTICAL,
 
-        notificationRV.addItemDecoration(DividerItemDecoration(context, 0))
+            )
+        )
+
+        for (i in 0 until notificationRV.itemDecorationCount) {
+            if (notificationRV.getItemDecorationAt(i) is DividerItemDecoration) notificationRV.removeItemDecorationAt(
+                i
+            )
+        }
+       // notificationRV.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         notificationRV.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -160,7 +179,7 @@ private lateinit var notificationList: MutableList<Notification>
                 val deleteButton = deleteButton(position)
 
 
-                  buttons = listOf(deleteButton)
+                buttons = listOf(deleteButton)
 
 
                 return buttons
@@ -169,40 +188,48 @@ private lateinit var notificationList: MutableList<Notification>
 
         itemTouchHelper.attachToRecyclerView(notificationRV)
     }
+    @SuppressLint("ResourceType")
+    private fun deleteButton(position: Int): SwipeHelper.UnderlayButton {
 
-    private fun deleteButton(position: Int) : SwipeHelper.UnderlayButton {
+
+        val greenColorValue:Int = Color.parseColor("#00ff00")
 
         val idDrawable: Int = com.tradeasy.R.drawable.ic_outline_delete_24
         val bitmap: Bitmap = getBitmapFromVectorDrawable(context, idDrawable)
         return SwipeHelper.UnderlayButton(
 
             requireActivity(),
-
             bitmap,
+            // set a custom color for the button
 
-
-
-
-            android.R.color.holo_red_dark,
-            object : SwipeHelper.UnderlayButtonClickListener {
+            R.color.buttonColor, object : SwipeHelper.UnderlayButtonClickListener {
                 override fun onClick() {
-                    val deletedNotification: Notification =
-                        notificationList[position]
+                    val deletedNotification: Notification = notificationList[position]
 
-                    val adapter  = binding.notificationsRV.adapter as NotificationsAdapter
+                    val adapter = binding.notificationsRV.adapter as NotificationsAdapter
                     notificationList.removeAt(position)
                     adapter.notifyItemRemoved(position)
-                   Snackbar.make(binding.root, "Notification deleted ", Snackbar.LENGTH_LONG).setAction("Undo") {
-                       notificationList.add(position, deletedNotification)
-                       adapter.notifyItemInserted(position)
-                   }.show()
+                    val numberOfNotifications = binding.numberOfNotifications
+                    notificationCount = notificationList.size.toString() + " notifications"
+                    numberOfNotifications.text = HtmlCompat.fromHtml(
+                        "<span>You have </span><span><font color=#4B78A8>$notificationCount</span><span> today </span>",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                    println(notificationCount)
+                    Snackbar.make(binding.root, "Notification deleted ", Snackbar.LENGTH_LONG)
+                        .setAction("Undo") {
+                            notificationList.add(position, deletedNotification)
+                            notificationCount = notificationList.size.toString() + " notifications"
+
+                            numberOfNotifications.text = HtmlCompat.fromHtml(
+                                "<span>You have </span><span><font color=#4B78A8>$notificationCount</span><span> today </span>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                            )
+                            adapter.notifyItemInserted(position)
+                        }.show()
 
                 }
             })
     }
-    private fun toast(text: String) {
-        toast?.cancel()
-        toast = Toast.makeText(requireActivity(), text, Toast.LENGTH_SHORT)
-        toast?.show()
-    }
+
 }

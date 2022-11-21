@@ -25,6 +25,12 @@ class SellingFragment : Fragment() {
 
         binding = FragmentSellingBinding.inflate(inflater, container, false)
 
+        if(sharedPrefs.getUser() == null ){
+
+            findNavController().navigate(R.id.loginFragment)
+
+
+        }
 
         return binding.root
     }
@@ -32,11 +38,7 @@ class SellingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(sharedPrefs.getUser() == null){
 
-
-            findNavController().navigate(R.id.action_sellingFragment_to_loginFragment)
-        }
 
 
 

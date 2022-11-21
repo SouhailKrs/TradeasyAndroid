@@ -86,7 +86,7 @@ app:cardElevation="0dp"
             android:weightSum="4">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/updateUsernameConstraint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -116,6 +116,7 @@ app:cardElevation="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/avenir_regular"
                     android:text="souhail_998"
                     android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -155,10 +156,10 @@ app:cardElevation="0dp"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/black" />
+                android:background="?android:attr/listDivider" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+                android:id="@+id/updatePnConstraint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -189,6 +190,7 @@ app:cardElevation="0dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/avenir_regular"
                     android:text="defefeffeef"
                     android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -227,10 +229,10 @@ app:cardElevation="0dp"
 
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/black" />
+                android:background="?android:attr/listDivider" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
+                android:id="@+id/updateEmailConstraint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -280,6 +282,7 @@ app:cardElevation="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/avenir_regular"
                     android:text="souhail@gmail.com"
                     android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -294,7 +297,7 @@ app:cardElevation="0dp"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/black" />
+                android:background="?android:attr/listDivider" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/updatePasswordConstraint"
@@ -331,6 +334,7 @@ app:cardElevation="0dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/avenir_regular"
                     android:text="Change Password"
                     android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
