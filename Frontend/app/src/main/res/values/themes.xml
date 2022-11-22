@@ -30,12 +30,4 @@
 
     <!-- Splash Screen. -->
 
-    <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
-        <item name="android:windowBackground">@drawable/app_logo</item>
-
-
-
-
-    </style>
 </resources>

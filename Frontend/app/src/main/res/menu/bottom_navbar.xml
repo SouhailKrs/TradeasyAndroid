@@ -4,15 +4,6 @@
 
     >
     <item
-<<<<<<< HEAD
-        android:id="@+id/page_1"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_home_24"
-
-        android:title="Home"/>
-    <item
-        android:id="@+id/page_2"
-=======
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_outline_home_24"
@@ -20,31 +11,16 @@
         android:title="Home"/>
     <item
         android:id="@+id/sellingFragment"
->>>>>>> Souhail
         android:enabled="true"
         android:icon="@drawable/ic_outline_shopping_cart_24"
 
         android:title="Selling"/>
     <item
-<<<<<<< HEAD
-        android:id="@+id/page_3"
-=======
         android:id="@+id/searchFragment"
->>>>>>> Souhail
         android:enabled="true"
         android:icon="@drawable/ic_outline_search_24"
         android:title="Search"/>
     <item
-<<<<<<< HEAD
-        android:id="@+id/page_4"
-        android:enabled="true"
-        android:icon="@drawable/ic_outline_favorite_border_24"
-        android:title="Favorites"/>
-    <item
-        android:id="@+id/page_5"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_person_24"
-=======
         android:id="@+id/notificationsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_notifications_none_24"
@@ -53,6 +29,5 @@
         android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/navbar_profile"
->>>>>>> Souhail
         android:title="Profile"/>
 </menu>

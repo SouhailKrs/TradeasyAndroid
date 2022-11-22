@@ -6,25 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/appBackground"
     tools:context=".ui.MainActivity">
-<<<<<<< HEAD
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         android:background="@drawable/navbar_style"
-        app:labelVisibilityMode="labeled"
-        app:itemTextColor="@color/black"
-        app:itemIconTint="@drawable/navbar_selector"
-        app:menu="@menu/bottom_navbar" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView2"
-=======
-<include
+    <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -48,7 +30,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
->>>>>>> Souhail
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -56,11 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation" />
-
-=======
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:navGraph="@navigation/navigation" />
 
@@ -81,6 +57,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navbar" />
 
->>>>>>> Souhail
 
 </androidx.constraintlayout.widget.ConstraintLayout>

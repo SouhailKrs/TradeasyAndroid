@@ -1,13 +1,6 @@
 package com.tradeasy.ui.login
 
 import android.os.Bundle
-<<<<<<< HEAD
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-=======
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
->>>>>>> Souhail
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
-<<<<<<< HEAD
-import com.tradeasy.domain.model.UserLogin
-import dagger.hilt.android.AndroidEntryPoint
-=======
 import com.tradeasy.domain.model.User
 import com.tradeasy.ui.navigation.loginToProfile
 import com.tradeasy.ui.navigation.loginToRegister
@@ -38,26 +26,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
->>>>>>> Souhail
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel: LoginViewModel by viewModels()
 
-<<<<<<< HEAD
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding= FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root;
-=======
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
@@ -70,35 +44,11 @@ class LoginFragment : Fragment() {
 //        view?.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         return binding.root
->>>>>>> Souhail
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-<<<<<<< HEAD
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility=View.GONE
-        binding.newMember.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-        login();
-    }
-    private fun login(){
-        binding.registerButton.setOnClickListener {
-            val username = binding.usernameField.text.toString().trim()
-            val password = binding.passwordField.text.toString().trim()
-            if(username.isNotEmpty()  || password.isNotEmpty())
-            {
-               val userLogin= UserLogin(username,password)
-                viewModel.login( userLogin)
-            }
-
-
-
-
-
-        }}
-=======
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.GONE
@@ -207,5 +157,4 @@ findNavController().popBackStack()
 
 
 
->>>>>>> Souhail
 }

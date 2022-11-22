@@ -3,22 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-<<<<<<< HEAD
-    app:startDestination="@id/registerFragment">
-=======
     app:startDestination="@id/homeFragment">
->>>>>>> Souhail
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.tradeasy.ui.register.RegisterFragment"
-<<<<<<< HEAD
-        android:label="fragment_signup"
-        tools:layout="@layout/fragment_register" >
-        <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-=======
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -30,7 +19,6 @@
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
->>>>>>> Souhail
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -40,9 +28,6 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-<<<<<<< HEAD
-    </fragment>
-=======
 
         <action
             android:id="@+id/action_loginFragment_to_profileFragment"
@@ -143,5 +128,4 @@
         android:name="com.tradeasy.ui.editProfile.updateEmail.UpdateEmailFragment"
         android:label="fragment_update_email"
         tools:layout="@layout/fragment_update_email" />
->>>>>>> Souhail
 </navigation>
