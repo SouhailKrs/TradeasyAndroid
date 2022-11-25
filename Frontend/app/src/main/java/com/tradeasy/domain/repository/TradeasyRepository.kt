@@ -15,8 +15,6 @@ interface TradeasyRepository {
     // USER LOGIN
     suspend fun userLogin(user: User): Flow<BaseResult<User,WrappedResponse<User>>>
 
-    // USER DETAILS
-    suspend fun getUserDetails(): Flow<BaseResult<User,WrappedResponse<User>>>
     // UPDATE USER PASSWORD
     suspend fun updateUserPassword(req:UpdatePasswordRequest): Flow<BaseResult<User,WrappedResponse<User>>>
 

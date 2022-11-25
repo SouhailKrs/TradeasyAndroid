@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,12 +43,20 @@ class NotificationsFragment : Fragment() {
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
 
         toolbar.text = "Notifications"
+
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         // hide bottom navigation bar
         val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
         toolbarTxt.visibility = View.GONE
 
         setUpRecyclerView()
+
+        if(sharedPrefs.getUser() == null ){
+
+            findNavController().navigate(R.id.loginFragment)
+
+
+        }
         return binding.root
     }
 
@@ -108,7 +117,7 @@ class NotificationsFragment : Fragment() {
 // remove the recycleview divider
 
         // timestamp
-        val timestamp = 1669063578092
+        val timestamp = 1669108970626
         val time = getTimeAgo(timestamp)
         println("time $time")
         notificationList = mutableListOf<Notification>(

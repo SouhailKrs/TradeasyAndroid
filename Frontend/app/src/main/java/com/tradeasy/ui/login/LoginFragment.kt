@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.model.User
-import com.tradeasy.ui.navigation.loginToProfile
 import com.tradeasy.ui.navigation.loginToRegister
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
@@ -61,8 +60,6 @@ class LoginFragment : Fragment() {
         binding.closeLoginFragment.setOnClickListener {
 
 
-        //  Navigation().loginToHome(requireView())
-          //  findNavController().popBackStack()
             findNavController().navigate(R.id.homeFragment)
           findNavController().popBackStack(R.id.loginFragment, true)
 
@@ -70,7 +67,7 @@ val currentFragment = findNavController().currentDestination?.label
 
 
           println(findNavController().currentDestination?.displayName)
-            if (currentFragment == "fragment_selling") {
+            if (currentFragment == "fragment_selling" || currentFragment=="fragment_notifications") {
 
 findNavController().popBackStack()
                 findNavController().navigate(R.id.homeFragment)
@@ -97,7 +94,7 @@ findNavController().popBackStack()
             val username = binding.usernameField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, null, "", password, "None", false)
+                val user = User(username, null, "", password, "None", false,"")
                 viewModel.login(user)
             }
 
@@ -148,9 +145,12 @@ findNavController().popBackStack()
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessLogin(loginEntity: User) {
         sharedPrefs.setUser(loginEntity)
+        sharedPrefs.setToken(loginEntity.token!!)
       //  shoppingCartVisibility()
 
-        loginToProfile(requireView())
+
+        println(loginEntity.token)
+
 
 
     }

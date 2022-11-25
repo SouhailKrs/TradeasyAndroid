@@ -52,26 +52,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView)
         NavigationUI.setupWithNavController(bottomNavView, navController)
 
-        // ACTION BAR PARAMS
-//        supportActionBar!!.setBackgroundDrawable(
-//            ColorDrawable(
-//                ContextCompat.getColor(
-//                    this, com.tradeasy.R.color.white
-//                )
-//            )
-//        )
 
- //change action bar title color
-
-
-
-       // this.supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-
-        // Displaying the custom layout in the ActionBar
-
-
-       // supportActionBar!!.elevation = 0F
-        //supportActionBar!!.setDisplayShowTitleEnabled(true)
 
         // START APP IN FULLSCREEN
         window.setFlags(
@@ -83,26 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//
-//        val inflater = menuInflater
-//        inflater.inflate(com.tradeasy.R.menu.app_bar, menu)
-//        val item: MenuItem = menu.findItem(com.tradeasy.R.id.shopping_cart)
-//        item.isVisible = sharedPrefs.getUser() != null
-//
-//
-//        return true
-//
-//    }
-//
-//override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-//    val item: MenuItem = menu.findItem(com.tradeasy.R.id.shopping_cart)
-//    item.isVisible = sharedPrefs.getUser() != null
-//
-//    // refresh menu
-//    invalidateOptionsMenu()
-//    return true
-//
-//}
+
 
 }

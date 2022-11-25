@@ -77,7 +77,7 @@ class RegisterFragment : Fragment() {
             val email = binding.emailField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password, "None", false)
+                val user = User(username, phoneNumber.toInt(), email, password, "None", false,"")
                 viewModel.userRegister(user)
 
             }
@@ -130,9 +130,7 @@ class RegisterFragment : Fragment() {
     private fun handleRegisterSuccess(userRegisterEntity: User) {
         //save to shared prefs
         sharedPrefs.setUser(userRegisterEntity)
-
-
-
+        userRegisterEntity.token?.let { sharedPrefs.setToken(it) }
 
 
         registerToProfile(requireView())

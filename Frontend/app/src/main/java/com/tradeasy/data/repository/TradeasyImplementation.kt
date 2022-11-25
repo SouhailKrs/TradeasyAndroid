@@ -21,7 +21,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
     override suspend fun userRegister(user: User): Flow<BaseResult<User, WrappedResponse<User>>> {
         return flow {
             val response = api.userRegisterApi(user)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 val body = response.body()!!
                 val registerEntity = User(
                     body.data?.username!!,
@@ -29,13 +29,15 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.email!!,
                     body.data?.password!!,
                     body.data?.profilePicture!!,
-                    body.data?.isVerified!!
+                    body.data?.isVerified!!,
+                    body.token
 
                 )
                 emit(BaseResult.Success(registerEntity))
-            }else{
-                val type = object : TypeToken<WrappedResponse<User>>(){}.type
-                val err : WrappedResponse<User> = Gson().fromJson(response.errorBody()!!.charStream(), type)
+            } else {
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err: WrappedResponse<User> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)
                 err.code = response.code()
                 emit(BaseResult.Error(err))
             }
@@ -46,7 +48,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
     override suspend fun userLogin(user: User): Flow<BaseResult<User, WrappedResponse<User>>> {
         return flow {
             val response = api.userLoginApi(user)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 val body = response.body()!!
                 val loginEntity = User(
                     body.data?.username!!,
@@ -54,12 +56,14 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.email!!,
                     body.data?.password!!,
                     body.data?.profilePicture!!,
-                    body.data?.isVerified!!
+                    body.data?.isVerified!!,
+                    body.token
                 )
                 emit(BaseResult.Success(loginEntity))
-            }else{
-                val type = object : TypeToken<WrappedResponse<User>>(){}.type
-                val err : WrappedResponse<User> = Gson().fromJson(response.errorBody()!!.charStream(), type)
+            } else {
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err: WrappedResponse<User> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)
                 err.code = response.code()
                 emit(BaseResult.Error(err))
             }
@@ -67,31 +71,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
     }
 
     // GETTING USER DETAILS IMPLEMENTATION
-    override suspend fun getUserDetails(): Flow<BaseResult<User, WrappedResponse<User>>> {
-        return flow {
-            val response = api.getUserDetailsApi()
-            if (response.isSuccessful) {
-                println("response successfully")
-                val body = response.body()!!
-                val user = User(
-                    body.data?.username!!,
-                    body.data?.phoneNumber!!,
-                    body.data?.email!!,
-                    body.data?.password!!,
-                    body.data?.profilePicture!!,
-                    body.data?.isVerified!!
-                )
-                emit(BaseResult.Success(user))
-            } else {
-                val type = object : TypeToken<WrappedResponse<User>>(){}.type
-                val err = Gson().fromJson<WrappedResponse<User>>(response.errorBody()!!.charStream(), type)!!
-                err.code = response.code()
-                emit(BaseResult.Error(err))
-
-            }
-        }
-    }
-    override suspend fun updateUserPassword(req:UpdatePasswordRequest): Flow<BaseResult<User, WrappedResponse<User>>> {
+    override suspend fun updateUserPassword(req: UpdatePasswordRequest): Flow<BaseResult<User, WrappedResponse<User>>> {
         return flow {
             val response = api.updateUserPasswordAPI(req)
             if (response.isSuccessful) {
@@ -103,19 +83,22 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.email!!,
                     body.data?.password!!,
                     body.data?.profilePicture!!,
-                    body.data?.isVerified!!
+                    body.data?.isVerified!!,
+                    body.token
                 )
                 emit(BaseResult.Success(user))
             } else {
-                val type = object : TypeToken<WrappedResponse<User>>(){}.type
-                val err = Gson().fromJson<WrappedResponse<User>>(response.errorBody()!!.charStream(), type)!!
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<User>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
                 err.code = response.code()
                 emit(BaseResult.Error(err))
 
             }
         }
     }
-
 
 
 }

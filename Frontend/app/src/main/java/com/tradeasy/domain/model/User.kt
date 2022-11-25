@@ -11,10 +11,11 @@ data class User(
     @SerializedName("password") val password: String?,
     @SerializedName("profilePicture") val profilePicture: String?,
     @SerializedName("isVerified") val isVerified: Boolean?,
+    @SerializedName("token") val token: String?
 )
     // data class constructor
 {
-    constructor():this("",null,"","","None",false)
+    constructor():this("",null,"","","None",false,"")
 
 
 }
