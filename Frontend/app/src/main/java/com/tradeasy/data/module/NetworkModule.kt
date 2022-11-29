@@ -19,24 +19,25 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttp(): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            connectTimeout(60, TimeUnit.SECONDS)
-            readTimeout(60, TimeUnit.SECONDS)
-            writeTimeout(60, TimeUnit.SECONDS)
+    fun provideRetrofit(okHttp: OkHttpClient) : Retrofit {
+        return Retrofit.Builder().apply {
+            addConverterFactory(GsonConverterFactory.create())
+            client(okHttp)
+            baseUrl(Constants.BASE_URL)
         }.build()
     }
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttp: OkHttpClient): Retrofit {
-        return Retrofit
-            .Builder()
-            .baseUrl(Constants.BASE_URL)
-            .client(okHttp)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    fun provideOkHttp(requestInterceptor: RequestInterceptor) : OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            connectTimeout(60, TimeUnit.SECONDS)
+            readTimeout(60, TimeUnit.SECONDS)
+            writeTimeout(60, TimeUnit.SECONDS)
+            addInterceptor(requestInterceptor)
+        }.build()
     }
+
     @Provides
     fun provideRequestInterceptor(prefs: SharedPrefs) : RequestInterceptor {
         return RequestInterceptor(prefs)

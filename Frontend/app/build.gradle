@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -92,5 +93,8 @@ dependencies {
 
     // recycler view
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    // Material card view
+
 
 }

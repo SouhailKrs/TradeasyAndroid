@@ -33,6 +33,7 @@ class NotificationsAdapter(var notifications: List<Notification>) :
         val notification = notifications[position]
         holder.notificationContent.text = notification.content
         holder.oneNotificationDate.text = notification.date
+
         if(notification.type=="Sold") {
             holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.ic_baseline_sell_24)
         }

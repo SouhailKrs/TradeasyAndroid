@@ -21,6 +21,10 @@ buildscript {
         mavenCentral()
 
     }
+    dependencies {
+        //safe args
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
+    }
 }
 
 

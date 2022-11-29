@@ -148,7 +148,7 @@ findNavController().popBackStack()
         sharedPrefs.setToken(loginEntity.token!!)
       //  shoppingCartVisibility()
 
-
+findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         println(loginEntity.token)
 
 

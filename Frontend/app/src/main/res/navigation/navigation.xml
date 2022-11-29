@@ -62,7 +62,11 @@
         android:id="@+id/homeFragment"
         android:name="com.tradeasy.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_bidFragment"
+            app:destination="@id/bidFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.tradeasy.ui.editProfile.EditProfileFragment"
@@ -112,6 +116,9 @@
         <action
             android:id="@+id/action_sellingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateUsernameFragment"
@@ -128,4 +135,27 @@
         android:name="com.tradeasy.ui.editProfile.updateEmail.UpdateEmailFragment"
         android:label="fragment_update_email"
         tools:layout="@layout/fragment_update_email" />
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.tradeasy.ui.selling.product.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" />
+    <fragment
+        android:id="@+id/bidFragment"
+        android:name="com.tradeasy.ui.selling.bid.BidFragment"
+        android:label="fragment_bid"
+        tools:layout="@layout/fragment_bid" >
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <argument
+            android:name="bidTime"
+            app:argType="string" />
+        <argument
+            android:name="productPrice"
+            app:argType="float" />
+        <argument
+            android:name="forBid"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

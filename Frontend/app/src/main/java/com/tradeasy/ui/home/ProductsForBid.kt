@@ -7,26 +7,36 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.R
+import com.tradeasy.domain.model.Product
 
-class ProductsSaleAdapter(private val productsList: ArrayList<Products>) : RecyclerView.Adapter<ProductsSaleAdapter.MyViewHolder>() {
+class ProductsForBid(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<ProductsForBid.MyViewHolder>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsForBid.MyViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.row_happyhour, parent, false)
-        return MyViewHolder(itemView)
+        return ProductsForBid.MyViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = productsList[position]
-        holder.productTitle.text = currentItem.title
+    override fun onBindViewHolder(holder: ProductsForBid.MyViewHolder, position: Int) {
+        val currentItem = products[position]
+        holder.productTitle.text = currentItem.name
         holder.productDescription.text = currentItem.description
         holder.productPrice.text = currentItem.price.toString()
-        holder.productImage.setImageResource(currentItem.image)
+        holder.itemView.setOnClickListener{
+            onItemClick(currentItem)
+        }
+       // holder.productImage.setImageResource(currentItem.image!!.toInt())
     }
 
     override fun getItemCount(): Int {
-        return productsList.size
+        return products.size
     }
+    fun updateList(mProducts: List<Product>){
+        products.clear()
+        products.addAll(mProducts)
+        notifyDataSetChanged()
+    }
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productImage: ImageView = itemView.findViewById(R.id.product_img)

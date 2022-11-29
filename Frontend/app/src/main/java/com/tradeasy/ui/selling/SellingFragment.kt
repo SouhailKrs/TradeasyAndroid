@@ -31,6 +31,9 @@ class SellingFragment : Fragment() {
 
 
         }
+        binding.goToAddProduct.setOnClickListener {
+            findNavController().navigate(R.id.addProductFragment)
+        }
 
         return binding.root
     }

@@ -58,9 +58,7 @@ class SharedPrefs(private val context: Context) {
     }
 
     fun clear() {
-        sharedPref.edit().run {
-            remove(PREF_USER)
-        }.apply()
+        sharedPref.edit().clear().apply()
     }
 
 
