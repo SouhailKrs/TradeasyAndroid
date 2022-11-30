@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="Happy Hours"
+            android:text="Recent items for bid"
             android:textColor="@color/blacksh"
             android:textSize="20dp"
             android:textStyle="bold"
