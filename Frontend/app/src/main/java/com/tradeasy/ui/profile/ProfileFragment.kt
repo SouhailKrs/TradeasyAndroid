@@ -59,10 +59,7 @@ class ProfileFragment : Fragment() {
             binding.editProfileBtn.setOnClickListener {
                 findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_editProfileFragment)
 
-
             }
-
-
 
             if (sharedPrefs.getUser()?.profilePicture == "None") {
 
@@ -70,7 +67,6 @@ class ProfileFragment : Fragment() {
             }
             sharedPrefs.getUser()?.let {
                 binding.username.text = it.username
-
 
             }
 

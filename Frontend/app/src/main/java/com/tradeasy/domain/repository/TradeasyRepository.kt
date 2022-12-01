@@ -1,9 +1,6 @@
 package com.tradeasy.domain.repository
 
-import com.tradeasy.domain.model.Bid
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.UpdatePasswordRequest
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.model.*
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
@@ -29,6 +26,7 @@ interface TradeasyRepository {
   // PLACE BID
     suspend fun placeBid(bid: Bid): Flow<BaseResult<Bid,WrappedResponse<Bid>>>
 
-
+    // SEARCH PRODUCTS BY NAME
+    suspend fun searchProductByName(name: SearchReq):    Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 
 }

@@ -1,0 +1,35 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/searchedProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/brasley_medium"
+        android:text="TextView"
+        android:textColor="@color/grey3"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/searchedProductDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/avenir_regular"
+        android:text="TextView"
+        android:textColor="@color/grey3"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/searchedProductName"
+        app:layout_constraintTop_toBottomOf="@+id/searchedProductName" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

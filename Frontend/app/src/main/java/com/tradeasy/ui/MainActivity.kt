@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
+
 // NAV HOST WITH BOTTOM NAVIGATION VIEW
         val navHostFragment =
             supportFragmentManager.findFragmentById(com.tradeasy.R.id.fragmentContainerView) as NavHostFragment

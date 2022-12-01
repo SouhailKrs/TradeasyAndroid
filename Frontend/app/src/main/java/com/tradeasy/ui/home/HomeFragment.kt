@@ -55,33 +55,18 @@ class HomeFragment : Fragment() {
         toolbar.text = "Tradeasy"
         val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
         toolbarTxt.visibility = View.GONE
-        imageId = arrayOf(R.drawable.iphone,R.drawable.iphone,R.drawable.iphone,R.drawable.iphone,R.drawable.iphone,R.drawable.iphone)
-        title = arrayOf("Iphone 6","Iphone 8","Iphone X","Iphone 11","Iphone 12","Iphone 13","Iphone 14")
-        description = arrayOf(
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
-            "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
 
-            )
-        price = arrayOf(600,800,1600,1700,1800,1900)
 
-        newRecycler = binding.homepageRV
         //vertical layout manager
-        newRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        newRecycler.setHasFixedSize(true)
+
 
         newArrayList = arrayListOf<Products>()
         setupRecyclerView()
 
-        println("token home: " + sharedPrefs.getToken())
 
 
         observe()
 
-        getUserData()
         setFragmentResultListener("success_create"){ requestKey, bundle ->
             if(bundle.getBoolean("success_create")){
                 viewModel.fetchProductsForBid()

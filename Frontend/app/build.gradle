@@ -61,7 +61,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.2'
     implementation 'androidx.navigation:navigation-ui:2.5.2'
 
-    //aa
+    //hilt
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     // http
@@ -94,7 +94,6 @@ dependencies {
     // recycler view
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    // Material card view
 
 
 }

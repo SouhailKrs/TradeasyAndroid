@@ -1,10 +1,7 @@
 package com.tradeasy.data.remote
 
 
-import com.tradeasy.domain.model.Bid
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.UpdatePasswordRequest
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.model.*
 import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
 import retrofit2.Response
@@ -24,12 +21,14 @@ interface TradeasyApi {
     @POST("/user/updatePassword")
     suspend fun updateUserPasswordAPI(@Body req:UpdatePasswordRequest): Response<WrappedResponse<User>>
     // GET PRODUCTS FOR API
-    @GET("product/productsforbid")
+    @GET("/product/productsforbid")
     suspend fun getProductsForBidApi():  Response<WrappedListResponse<Product>>
 
-    @POST("product/user/add")
+    @POST("/product/user/add")
     suspend fun addProductApi(@Body product: Product) : Response<WrappedResponse<Product>>
     @POST("/bid/place")
     suspend fun placeBidApi(@Body bid: Bid) : Response<WrappedResponse<Bid>>
+    @POST("/product/searchbyname")
+    suspend fun searchProductByNameApi(@Body name: SearchReq):  Response<WrappedListResponse<Product>>
 
 }

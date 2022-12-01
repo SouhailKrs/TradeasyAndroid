@@ -4,10 +4,7 @@ package com.tradeasy.data.repository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tradeasy.data.remote.TradeasyApi
-import com.tradeasy.domain.model.Bid
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.UpdatePasswordRequest
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.model.*
 import com.tradeasy.domain.repository.TradeasyRepository
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedListResponse
@@ -102,47 +99,6 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
         }
     }
 
-// GET PRODUCTS FOR BID IMPLEMENTATION
-
-    override suspend fun getProductsForBid(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
-        return flow {
-            val response = api.getProductsForBidApi()
-            if (response.isSuccessful) {
-                val body = response.body()!!
-                val products = mutableListOf<Product>()
-
-                body.data?.forEach { productResponse ->
-                    products.add(
-                        Product(
-                            productResponse.userId,
-                            productResponse.category,
-                            productResponse.name,
-                            productResponse.description,
-                            productResponse.price,
-                            productResponse.image,
-                            productResponse.quantity,
-                            productResponse.addedDate,
-                            productResponse.forBid,
-                            productResponse.bidEndDate,
-                            productResponse.bade,
-                            productResponse.sold,
-                            productResponse.productId
-
-
-                            )
-                    )
-                }
-                emit(BaseResult.Success(products))
-            } else {
-                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
-                val err = Gson().fromJson<WrappedListResponse<Product>>(
-                    response.errorBody()!!.charStream(), type
-                )!!
-                err.code = response.code()
-                emit(BaseResult.Error(err))
-            }
-        }
-    }
 
     override suspend fun addProduct(product: Product): Flow<BaseResult<Product, WrappedResponse<Product>>> {
         return flow {
@@ -163,7 +119,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.bade!!,
                     body.data?.sold!!,
                     body.data?.productId!!
-                    )
+                )
                 emit(BaseResult.Success(product))
             } else {
                 val type = object : TypeToken<WrappedResponse<Product>>() {}.type
@@ -196,4 +152,87 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
             }
         }
     }
+
+    // SEARCH PRODUCT BY NAME IMPLEMENTATION
+    override suspend fun searchProductByName(name: SearchReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.searchProductByNameApi(name)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.productId
+                        )
+                    )
+                    println("products  $products")
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
+    // GET PRODUCTS FOR BID IMPLEMENTATION
+    override suspend fun getProductsForBid(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.getProductsForBidApi()
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.productId
+
+
+                        )
+                    )
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
+
 }
