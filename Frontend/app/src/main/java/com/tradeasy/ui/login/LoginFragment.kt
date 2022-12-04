@@ -93,7 +93,7 @@ findNavController().popBackStack()
             val username = binding.usernameField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, null, "", password, "None", false,"")
+                val user = User(username, 1, "", password, "None", true, sharedPrefs.getNotificationToken(), null,  "")
                 viewModel.login(user)
             }
 

@@ -122,17 +122,7 @@ class NotificationsFragment : Fragment() {
         println("time $time")
         notificationList = mutableListOf<Notification>(
 
-            Notification("You have a new bid on your product", "$time", "Bid"),
-            Notification("Your item has been sold", "$time", "Bid"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
-            Notification("Your item has been sold", "$time", "Sold"),
+            Notification("You have a new bid on your product", "$time", 11),
 
 
             )

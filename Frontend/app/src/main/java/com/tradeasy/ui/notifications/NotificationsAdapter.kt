@@ -1,45 +1,48 @@
 package com.tradeasy.ui.notifications
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.tradeasy.databinding.NotificationItemBinding
 import com.tradeasy.domain.model.Notification
 
 
 class NotificationsAdapter(var notifications: List<Notification>) :
     RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder>() {
-    class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class NotificationViewHolder(val binding: NotificationItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        val notificationContent : TextView = itemView.findViewById(com.tradeasy.R.id.notificationContent)
-        val oneNotificationDate: TextView = itemView.findViewById(com.tradeasy.R.id.oneNotificationDate)
-        val notificationIcon: ImageView = itemView.findViewById(com.tradeasy.R.id.notificationIcon)
-
+        //        val notificationContent : TextView = itemView.findViewById(com.tradeasy.R.id.notificationContent)
+//        val oneNotificationDate: TextView = itemView.findViewById(com.tradeasy.R.id.notificationDate)
+//        val notificationIcon: ImageView = itemView.findViewById(com.tradeasy.R.id.notificationIcon)
+        fun bind(notification: Notification) {
+            binding.notificationTitle.text = notification.title
+            binding.notificationDesc.text = notification.description
+            binding.notificationDate.text = notification.date.toString()
+        }
 
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(com.tradeasy.R.layout.notification_item, parent, false)
-        return NotificationViewHolder(view)
+        val itemView =
+            NotificationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return NotificationViewHolder(itemView)
 
     }
+
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
 
         val notification = notifications[position]
-        holder.notificationContent.text = notification.content
-        holder.oneNotificationDate.text = notification.date
+        holder.bind(notification)
 
-        if(notification.type=="Sold") {
-            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.ic_baseline_sell_24)
-        }
-        if(notification.type=="Bid") {
-            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.notifications_gavel)
-        }
+//        if(notification.type=="Sold") {
+//            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.ic_baseline_sell_24)
+//        }
+//        if(notification.type=="Bid") {
+//            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.notifications_gavel)
+//        }
 
 
     }

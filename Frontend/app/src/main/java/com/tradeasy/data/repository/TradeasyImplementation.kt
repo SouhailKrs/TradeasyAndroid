@@ -30,6 +30,10 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.password!!,
                     body.data?.profilePicture!!,
                     body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notification!!,
+
+
                     body.token
 
                 )
@@ -57,6 +61,10 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.password!!,
                     body.data?.profilePicture!!,
                     body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notification!!,
+
+
                     body.token
                 )
                 emit(BaseResult.Success(loginEntity))
@@ -84,6 +92,10 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.password!!,
                     body.data?.profilePicture!!,
                     body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notification!!,
+
+
                     body.token
                 )
                 emit(BaseResult.Success(user))

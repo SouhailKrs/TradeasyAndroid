@@ -15,12 +15,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
-import com.tradeasy.domain.model.Product
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -31,7 +29,7 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
     private lateinit var newRecycler: RecyclerView
     private lateinit var bestRecycler2: RecyclerView
-    private lateinit var newArrayList: ArrayList<Products>
+   // private lateinit var newArrayList: ArrayList<Products>
     private lateinit var binding: FragmentHomeBinding
     lateinit var imageId: Array<Int>
     lateinit var title: Array<String>
@@ -47,20 +45,16 @@ class HomeFragment : Fragment() {
 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-
         println("token " + sharedPrefs.getToken())
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
         toolbar.text = "Tradeasy"
         val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
         toolbarTxt.visibility = View.GONE
-
-
         //vertical layout manager
 
 
-        newArrayList = arrayListOf<Products>()
+        //newArrayList = arrayListOf<Products>()
         setupRecyclerView()
 
 
@@ -76,14 +70,14 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun getUserData() {
-        for (i in imageId.indices) {
-            val products = Products(title[i],description[i],price[i],imageId[i])
-            newArrayList.add(products)
-        }
-        newRecycler.adapter = ProductsAdapter(newArrayList)
-
-    }
+//    private fun getUserData() {
+//        for (i in imageId.indices) {
+//            val products = Products(title[i],description[i],price[i],imageId[i])
+//            newArrayList.add(products)
+//        }
+//        newRecycler.adapter = ProductsAdapter(newArrayList)
+//
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,7 +87,7 @@ class HomeFragment : Fragment() {
     }
     private fun observe(){
         observeState()
-        observeProducts()
+        //observeProducts()
     }
     private fun observeState(){
         viewModel.mState
@@ -103,14 +97,14 @@ class HomeFragment : Fragment() {
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
-    private fun observeProducts(){
-        viewModel.mProducts
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { products ->
-                handleProducts(products)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-    }
+//    private fun observeProducts(){
+//        viewModel.mProducts
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach { products ->
+//                handleProducts(products)
+//            }
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
+//    }
 
 
     private fun handleState(state: HomeFragmentState){
@@ -137,23 +131,23 @@ class HomeFragment : Fragment() {
         })
 
 
-        binding.homepageRVHH.apply {
-            adapter = mAdapter
-            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+//        binding.homepageRVHH.apply {
+//            adapter = mAdapter
+//            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
-    private fun handleLoading(isLoading: Boolean){
+    private fun handleLoading(isLoading: Boolean) {
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{
 //            binding.loadingProgressBar.gone()
 //        }
-    }
-    private fun handleProducts(products: List<Product>){
-        binding.homepageRVHH.adapter?.let {
-            if(it is ProductsForBid){
-                it.updateList(products)
-            }
-        }
-    }
-}
+         }
+//    private fun handleProducts(products: List<Product>){
+//        binding.homepageRVHH.adapter?.let {
+//            if(it is ProductsForBid){
+//                it.updateList(products)
+//            }
+//        }
+//    }
+

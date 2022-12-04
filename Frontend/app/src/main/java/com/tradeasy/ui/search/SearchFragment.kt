@@ -37,6 +37,7 @@ class SearchFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
+
         observe()
         setupRecyclerView()
         setupSearchView()
@@ -135,12 +136,6 @@ val searchView = binding.searchView
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             binding.searchRV.isVisible = hasFocus
         }
-
- //  binding.searchRV.isVisible=checkFocusRec(searchView)
-
-
-
-
 
     }
 

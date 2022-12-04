@@ -3,9 +3,9 @@ package com.tradeasy.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import com.tradeasy.R
 import com.tradeasy.domain.model.Product
 
@@ -13,7 +13,7 @@ class ProductsForBid(private val products: MutableList<Product>, val onItemClick
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsForBid.MyViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.row_happyhour, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.bidding_item, parent, false)
         return ProductsForBid.MyViewHolder(itemView)
     }
 
@@ -39,10 +39,10 @@ class ProductsForBid(private val products: MutableList<Product>, val onItemClick
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val productImage: ImageView = itemView.findViewById(R.id.product_img)
-        val productTitle: TextView = itemView.findViewById(R.id.product_title)
-        val productDescription: TextView = itemView.findViewById(R.id.product_description)
-        val productPrice: TextView = itemView.findViewById(R.id.product_price)
+        val productImage : ShapeableImageView = itemView.findViewById(R.id.productImageView)
+        val productTitle: TextView = itemView.findViewById(R.id.productName)
+        val productDescription: TextView = itemView.findViewById(R.id.productDescription)
+        val productPrice: TextView = itemView.findViewById(R.id.productPrice)
 
     }
 }

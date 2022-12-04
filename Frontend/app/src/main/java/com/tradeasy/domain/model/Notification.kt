@@ -1,8 +1,8 @@
 package com.tradeasy.domain.model
 
 data class Notification(
-    val content: String,
-    val date: String?,
-    val type: String
+    val title: String,
+    val description: String?,
+    val date: Number
 
 )

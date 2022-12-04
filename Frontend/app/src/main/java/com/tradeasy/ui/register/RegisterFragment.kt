@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
+import com.tradeasy.domain.model.Notification
 import com.tradeasy.domain.model.User
 import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.navigation.registerToHome
@@ -75,8 +76,13 @@ class RegisterFragment : Fragment() {
             val phoneNumber = binding.phoneNumberField.text.toString().trim()
             val email = binding.emailField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
+            val notificationList = mutableListOf<Notification>()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password, "None", false,"")
+                val user = User(username, phoneNumber.toInt(), email, password, "None", true, sharedPrefs.getNotificationToken(), null,"" )
+
+                // pass a value to notification list
+
+
                 viewModel.userRegister(user)
 
             }

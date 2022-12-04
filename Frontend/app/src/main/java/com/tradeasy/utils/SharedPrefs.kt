@@ -12,6 +12,8 @@ class SharedPrefs(private val context: Context) {
         private const val PREF = "TRADEASY_PREFS"
         private const val PREF_USER = "TRADEASY_USER"
         private const val PREF_TOKEN = "USER_TOKEN"
+        private const val PREF_NOTIFICATION_TOKEN = "NOTIFICATION_TOKEN"
+
     }
 
     private val sharedPref: SharedPreferences =
@@ -32,6 +34,12 @@ class SharedPrefs(private val context: Context) {
 
     fun setToken(token: String) {
         sharedPref.edit().putString(PREF_TOKEN, token).apply()
+    }
+    fun getNotificationToken(): String? {
+        return sharedPref.getString(PREF_NOTIFICATION_TOKEN, null)
+    }
+    fun setNotificationToken(token: String) {
+        sharedPref.edit().putString(PREF_NOTIFICATION_TOKEN, token).apply()
     }
 
     private fun <T> get(key: String, clazz: Class<T>): T = when (clazz) {

@@ -10,23 +10,24 @@ interface TradeasyRepository {
 
 
     // USER REGISTER
-    suspend fun userRegister(user: User): Flow<BaseResult<User,WrappedResponse<User>>>
+    suspend fun userRegister(user: User): Flow<BaseResult<User, WrappedResponse<User>>>
 
     // USER LOGIN
-    suspend fun userLogin(user: User): Flow<BaseResult<User,WrappedResponse<User>>>
+    suspend fun userLogin(user: User): Flow<BaseResult<User, WrappedResponse<User>>>
 
     // UPDATE USER PASSWORD
-    suspend fun updateUserPassword(req:UpdatePasswordRequest): Flow<BaseResult<User,WrappedResponse<User>>>
+    suspend fun updateUserPassword(req: UpdatePasswordRequest): Flow<BaseResult<User, WrappedResponse<User>>>
 
     // GET PRODUCTS FOR BID
-    suspend fun getProductsForBid():    Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+    suspend fun getProductsForBid(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 
     //ADD PRODUCT
-    suspend fun addProduct(product: Product): Flow<BaseResult<Product,WrappedResponse<Product>>>
-  // PLACE BID
-    suspend fun placeBid(bid: Bid): Flow<BaseResult<Bid,WrappedResponse<Bid>>>
+    suspend fun addProduct(product: Product): Flow<BaseResult<Product, WrappedResponse<Product>>>
+
+    // PLACE BID
+    suspend fun placeBid(bid: Bid): Flow<BaseResult<Bid, WrappedResponse<Bid>>>
 
     // SEARCH PRODUCTS BY NAME
-    suspend fun searchProductByName(name: SearchReq):    Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+    suspend fun searchProductByName(name: SearchReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 
 }
