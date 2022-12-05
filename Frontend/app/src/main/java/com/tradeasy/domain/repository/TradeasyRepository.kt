@@ -29,5 +29,9 @@ interface TradeasyRepository {
 
     // SEARCH PRODUCTS BY NAME
     suspend fun searchProductByName(name: SearchReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+// GET FIREBASE FCM TOKEN
+    //suspend fun getFirebaseToken(): Flow<>
+
+
 
 }

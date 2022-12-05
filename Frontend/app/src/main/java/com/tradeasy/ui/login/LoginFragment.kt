@@ -29,7 +29,6 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel: LoginViewModel by viewModels()
-
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
@@ -38,7 +37,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-
+        println("sdfsdgfdg "+sharedPrefs.getNotificationToken())
 //        view?.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         return binding.root
@@ -89,13 +88,17 @@ findNavController().popBackStack()
 
     //LOGIN
     private fun login() {
+
         binding.registerButton.setOnClickListener {
+
+            println(sharedPrefs.getNotificationToken())
             val username = binding.usernameField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, 1, "", password, "None", true, sharedPrefs.getNotificationToken(), null,  "")
+                val user = User(username, 1, "", password, "None", true,   sharedPrefs.getNotificationToken() , null,  "")
                 viewModel.login(user)
             }
+
 
         }
 

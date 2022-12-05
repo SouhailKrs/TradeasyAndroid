@@ -15,10 +15,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
+import com.tradeasy.domain.model.Product
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -87,7 +89,7 @@ class HomeFragment : Fragment() {
     }
     private fun observe(){
         observeState()
-        //observeProducts()
+        observeProducts()
     }
     private fun observeState(){
         viewModel.mState
@@ -97,14 +99,14 @@ class HomeFragment : Fragment() {
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
-//    private fun observeProducts(){
-//        viewModel.mProducts
-//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-//            .onEach { products ->
-//                handleProducts(products)
-//            }
-//            .launchIn(viewLifecycleOwner.lifecycleScope)
-//    }
+    private fun observeProducts(){
+        viewModel.mProducts
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { products ->
+                handleProducts(products)
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
 
 
     private fun handleState(state: HomeFragmentState){
@@ -120,9 +122,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         val mAdapter = ProductsForBid(mutableListOf(), onItemClick = {
-            val action = HomeFragmentDirections.actionHomeFragmentToBidFragment(it.productId!!,
+            val action = HomeFragmentDirections.actionHomeFragmentToBidFragment(
+                it.productId!!,
                 it.bidEndDate!!.toString(), it.price!!, it.forBid!!
             )
 
@@ -131,23 +134,29 @@ class HomeFragment : Fragment() {
         })
 
 
-//        binding.homepageRVHH.apply {
-//            adapter = mAdapter
-//            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.itemsForBidRV.apply {
+            adapter = mAdapter
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
+
+    private fun handleProducts(products: List<Product>){
+        binding.itemsForBidRV.adapter?.let {
+            if(it is ProductsForBid){
+                it.updateList(products)
+            }
+        }
+    }
+
     private fun handleLoading(isLoading: Boolean) {
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{
 //            binding.loadingProgressBar.gone()
 //        }
-         }
-//    private fun handleProducts(products: List<Product>){
-//        binding.homepageRVHH.adapter?.let {
-//            if(it is ProductsForBid){
-//                it.updateList(products)
-//            }
-//        }
-//    }
+    }
+
+
+}
 

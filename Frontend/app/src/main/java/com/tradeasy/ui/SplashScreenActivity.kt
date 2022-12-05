@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tradeasy.R
 
 class SplashScreenActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // supportActionBar?.hide()
@@ -20,6 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
