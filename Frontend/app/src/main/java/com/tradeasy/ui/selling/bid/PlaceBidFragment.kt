@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentBidBinding
+import com.tradeasy.databinding.FragmentPlaceBidBinding
 import com.tradeasy.domain.model.Bid
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,9 +26,9 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BidFragment : Fragment(R.layout.fragment_bid) {
-    private lateinit var binding: FragmentBidBinding
-    private val args: com.tradeasy.ui.selling.bid.BidFragmentArgs by navArgs()
+class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
+    private lateinit var binding: FragmentPlaceBidBinding
+    private val args: com.tradeasy.ui.selling.bid.PlaceBidFragmentArgs by navArgs()
     private val viewModel: PlaceBidViewModel by viewModels()
 
     @Inject
@@ -38,7 +38,7 @@ class BidFragment : Fragment(R.layout.fragment_bid) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBidBinding.inflate(inflater, container, false)
+        binding = FragmentPlaceBidBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -85,30 +85,30 @@ class BidFragment : Fragment(R.layout.fragment_bid) {
         val userId = sharedPrefs.getUser()?.username
         val timer = args.bidTime
         val countdown = getTimeLeft(timer.toLong())
-println("testt" + timer)
-        println(countdown)
         binding.bidTimer.isCountDown = true
-binding.bidTimer.base =SystemClock.elapsedRealtime() + countdown
-binding.lastBid.text = ("Last bid " + args.productPrice.toString())
+        binding.bidTimer.base = SystemClock.elapsedRealtime() + countdown
+        binding.lastBid.text = ("Last bid " + args.productPrice.toString())
         binding.bidTimer.start()
 
-    if(!args.forBid){
-       Toast.makeText(requireContext(), "Bid is closed", Toast.LENGTH_SHORT).show()
+        if (!args.forBid) {
+            Toast.makeText(requireContext(), "Bid is closed", Toast.LENGTH_SHORT).show()
 
 
-    }
+        }
 
         binding.placeBidBtn.setOnClickListener {
 
             val bidInput = binding.bidInput.text.toString().trim()
-            if(bidInput.isEmpty()) {
+            if (bidInput.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter bid amount", Toast.LENGTH_SHORT)
                     .show()
-            }
-           else  if(bidInput< args.productPrice.toString()){
-                Toast.makeText(requireContext(), "Bid should be greater than current price", Toast.LENGTH_SHORT).show()
-            }
-else {
+            } else if (bidInput < args.productPrice.toString()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Bid should be greater than current price",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 viewModel.placeBid(Bid(userId, args.productId, bidInput.toInt()))
             }
         }
@@ -118,10 +118,10 @@ else {
     private fun handleLoading(isLoading: Boolean) {
         //   binding.saveButton.isEnabled = !isLoading
     }
-private  fun getTimeLeft(time: Long): Long {
-    val diff = time - System.currentTimeMillis()
-    return diff
-}
+
+    private fun getTimeLeft(time: Long): Long {
+        return time - System.currentTimeMillis()
+    }
 
 
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/searchFragment">
+    app:startDestination="@id/bidsFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -57,6 +57,15 @@
             android:id="@+id/action_profileFragment_to_loginFragment"
 
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_bidsFragment"
+            app:destination="@id/bidsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_purchasesFragment"
+            app:destination="@id/purchasesFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_pushNotificationsFragment"
+            app:destination="@id/pushNotificationsFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -65,7 +74,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_bidFragment"
-            app:destination="@id/bidFragment" />
+            app:destination="@id/placeBidFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -141,10 +150,10 @@
         android:label="fragment_add_product"
         tools:layout="@layout/fragment_add_product" />
     <fragment
-        android:id="@+id/bidFragment"
-        android:name="com.tradeasy.ui.selling.bid.BidFragment"
+        android:id="@+id/placeBidFragment"
+        android:name="com.tradeasy.ui.selling.bid.PlaceBidFragment"
         android:label="fragment_bid"
-        tools:layout="@layout/fragment_bid" >
+        tools:layout="@layout/fragment_place_bid" >
         <argument
             android:name="productId"
             app:argType="string" />
@@ -158,4 +167,19 @@
             android:name="forBid"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/purchasesFragment"
+        android:name="com.tradeasy.ui.profile.purchases.PurchasesFragment"
+        android:label="fragment_purchases"
+        tools:layout="@layout/fragment_purchases" />
+    <fragment
+        android:id="@+id/pushNotificationsFragment"
+        android:name="com.tradeasy.ui.profile.pushNotifications.PushNotificationsFragment"
+        android:label="fragment_push_notifications"
+        tools:layout="@layout/fragment_push_notifications" />
+    <fragment
+        android:id="@+id/bidsFragment"
+        android:name="com.tradeasy.ui.profile.bids.BidsFragment"
+        android:label="fragment_bids"
+        tools:layout="@layout/fragment_bids" />
 </navigation>
