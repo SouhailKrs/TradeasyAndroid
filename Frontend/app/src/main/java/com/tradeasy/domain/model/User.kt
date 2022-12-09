@@ -13,14 +13,25 @@ data class User(
     @SerializedName("isVerified") val isVerified: Boolean?,
     @SerializedName("notificationToken") val notificationToken: String?,
     @SerializedName("notification") val notification: MutableList<Notification>?,
+    @SerializedName("savedProducts") val savedProducts: MutableList<Product>?,
     @SerializedName("token") val token: String?,
 
 
-
-)
-    // data class constructor
+    )
+// data class constructor
 {
-    constructor() : this("", 0, "", "", "", false, "", mutableListOf<Notification>(),"")
+    constructor() : this(
+        "",
+        0,
+        "",
+        "",
+        "",
+        false,
+        "",
+        mutableListOf<Notification>(),
+        mutableListOf<Product>(),
+        ""
+    )
 
 
 }

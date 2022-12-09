@@ -52,12 +52,12 @@
             android:textColor="@color/buttonColor"
             android:textSize="15dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/favImageButton"
+            app:layout_constraintBottom_toBottomOf="@+id/addToFavBtn"
             app:layout_constraintStart_toStartOf="@+id/productNameTextView"
             app:layout_constraintTop_toBottomOf="@+id/productNameTextView" />
 
         <ImageButton
-            android:id="@+id/favImageButton"
+            android:id="@+id/addToFavBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"

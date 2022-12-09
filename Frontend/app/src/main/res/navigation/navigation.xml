@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/bidsFragment">
+    app:startDestination="@id/additionalInfoFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_profileFragment_to_pushNotificationsFragment"
             app:destination="@id/pushNotificationsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_savedProductsFragment"
+            app:destination="@id/savedProductsFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -73,8 +76,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_bidFragment"
-            app:destination="@id/placeBidFragment" />
+            android:id="@+id/action_homeFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -148,7 +151,11 @@
         android:id="@+id/addProductFragment"
         android:name="com.tradeasy.ui.selling.product.AddProductFragment"
         android:label="fragment_add_product"
-        tools:layout="@layout/fragment_add_product" />
+        tools:layout="@layout/fragment_add_product" >
+        <action
+            android:id="@+id/action_addProductFragment_to_additionalInfoFragment"
+            app:destination="@id/additionalInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/placeBidFragment"
         android:name="com.tradeasy.ui.selling.bid.PlaceBidFragment"
@@ -182,4 +189,68 @@
         android:name="com.tradeasy.ui.profile.bids.BidsFragment"
         android:label="fragment_bids"
         tools:layout="@layout/fragment_bids" />
+    <fragment
+        android:id="@+id/additionalInfoFragment"
+        android:name="com.tradeasy.ui.selling.product.AdditionalInfoFragment"
+        android:label="fragment_additional_info"
+        tools:layout="@layout/fragment_additional_info" >
+        <argument
+            android:name="prodName"
+            app:argType="string" />
+        <argument android:name="prodDesc"
+            app:argType="string" />
+        <argument android:name="prodCategory"
+            app:argType="string" />
+        <argument
+            android:name="prodPrice"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/productItemFragment"
+        android:name="com.tradeasy.ui.selling.product.item.ProductItemFragment"
+        android:label="fragment_product_item"
+        tools:layout="@layout/fragment_product_item" >
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productDesc"
+            app:argType="string" />
+        <argument
+            android:name="productCategory"
+            app:argType="string" />
+        <argument
+            android:name="productPrice"
+            app:argType="float" />
+        <argument
+            android:name="bidTime"
+            app:argType="string" />
+        <argument
+            android:name="productQuantity"
+            app:argType="integer" />
+        <argument
+            android:name="addedDate"
+            app:argType="string" />
+        <argument
+            android:name="forBid"
+            app:argType="boolean" />
+        <argument
+            android:name="bidEndDate"
+            app:argType="string" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_productItemFragment_to_placeBidFragment"
+            app:destination="@id/placeBidFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedProductsFragment"
+        android:name="com.tradeasy.ui.profile.saved.SavedProductsFragment"
+        android:label="fragment_saved_products"
+        tools:layout="@layout/fragment_saved_products" >
+        <action
+            android:id="@+id/action_savedProductsFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
+    </fragment>
 </navigation>

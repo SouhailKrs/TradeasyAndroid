@@ -92,7 +92,7 @@ class ProfileFragment : Fragment() {
 
     private fun constraintsOnClickOnline() {
         binding.savedConstraint.setOnClickListener {
-            profileToLogin(requireView())
+            findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_savedProductsFragment)
         }
         binding.bidsConstraint.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.bidsFragment)
@@ -122,7 +122,6 @@ class ProfileFragment : Fragment() {
 
     }
 
-
     private fun fragmentSetupOffline() {
         binding.editProfileBtn.text = "Login"
         binding.username.visibility = View.GONE
@@ -136,6 +135,7 @@ class ProfileFragment : Fragment() {
 
 
     }
+
     private fun setupToolbar() {
         val toolbarTitle: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
         toolbarTitle.text = "Profile"

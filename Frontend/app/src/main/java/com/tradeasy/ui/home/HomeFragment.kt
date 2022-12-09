@@ -16,7 +16,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
@@ -29,17 +28,16 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private lateinit var newRecycler: RecyclerView
-    private lateinit var bestRecycler2: RecyclerView
-   // private lateinit var newArrayList: ArrayList<Products>
+
+    // private lateinit var newArrayList: ArrayList<Products>
     private lateinit var binding: FragmentHomeBinding
-    lateinit var imageId: Array<Int>
     lateinit var title: Array<String>
     lateinit var description: Array<String>
     lateinit var price: Array<Int>
     lateinit var categoryLayout1: LinearLayout
     lateinit var categoryLayout2: LinearLayout
     private val viewModel: HomeViewModel by viewModels()
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -51,20 +49,18 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
         toolbar.text = "Tradeasy"
-        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        val toolbarTxt: TextView =
+            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
         toolbarTxt.visibility = View.GONE
-        //vertical layout manager
 
-
-        //newArrayList = arrayListOf<Products>()
         setupRecyclerView()
 
 
 
         observe()
 
-        setFragmentResultListener("success_create"){ requestKey, bundle ->
-            if(bundle.getBoolean("success_create")){
+        setFragmentResultListener("success_create") { _, bundle ->
+            if (bundle.getBoolean("success_create")) {
                 viewModel.fetchProductsForBid()
             }
         }
@@ -84,33 +80,32 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-        view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility  =
+        view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
             View.VISIBLE
     }
-    private fun observe(){
+
+    private fun observe() {
         observeState()
         observeProducts()
     }
-    private fun observeState(){
-        viewModel.mState
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle,  Lifecycle.State.STARTED)
+
+    private fun observeState() {
+        viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 handleState(state)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
-    private fun observeProducts(){
-        viewModel.mProducts
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+
+    private fun observeProducts() {
+        viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { products ->
                 handleProducts(products)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 
-    private fun handleState(state: HomeFragmentState){
-        when(state){
+    private fun handleState(state: HomeFragmentState) {
+        when (state) {
             is HomeFragmentState.IsLoading -> handleLoading(state.isLoading)
             is HomeFragmentState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
@@ -124,10 +119,20 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val mAdapter = ProductsForBid(mutableListOf(), onItemClick = {
-            val action = HomeFragmentDirections.actionHomeFragmentToBidFragment(
+            val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
+
+                it.name!!,
+                it.description!!,
+                it.category!!,
+                it.price!!,
+                it.bidEndDate.toString(),
+                it.quantity!!,
+                it.addedDate.toString(),
+                it.forBid!!,
+                it.bidEndDate.toString(),
                 it.productId!!,
-                it.bidEndDate!!.toString(), it.price!!, it.forBid!!
-            )
+
+                )
 
             findNavController().navigate(action)
 
@@ -141,9 +146,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun handleProducts(products: List<Product>){
+    private fun handleProducts(products: List<Product>) {
         binding.itemsForBidRV.adapter?.let {
-            if(it is ProductsForBid){
+            if (it is ProductsForBid) {
                 it.updateList(products)
             }
         }

@@ -32,6 +32,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.isVerified!!,
                     body.data?.notificationToken!!,
                     body.data?.notification!!,
+                    body.data?.savedProducts!!,
 
 
                     body.token
@@ -63,6 +64,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.isVerified!!,
                     body.data?.notificationToken!!,
                     body.data?.notification!!,
+                    body.data?.savedProducts!!,
 
 
                     body.token
@@ -94,6 +96,7 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
                     body.data?.isVerified!!,
                     body.data?.notificationToken!!,
                     body.data?.notification!!,
+                    body.data?.savedProducts!!,
 
 
                     body.token
@@ -246,5 +249,74 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
         }
     }
 
+    // ADD PRODUCT TO SAVED  IMPLEMENTATION
+    override suspend fun addProductToSaved(req: AddToSavedReq): Flow<BaseResult<User, WrappedResponse<User>>> {
+        return flow {
+            val response = api.addProductToSavedApi(req)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val newUser = User(
+                    body.data?.username!!,
+                    body.data?.phoneNumber!!,
+                    body.data?.email!!,
+                    body.data?.password!!,
+                    body.data?.profilePicture!!,
+                    body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notification!!,
+                    body.data?.savedProducts!!,
+                    body.token
 
+                )
+                emit(BaseResult.Success(newUser))
+            } else {
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err: WrappedResponse<User> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
+    // GET SAVED PRODUCTS IMPLEMENTATION
+    override suspend fun getSavedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.getSavedProductsApi()
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.productId
+                        )
+                    )
+                    println("products  $products")
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+
+    }
 }

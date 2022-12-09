@@ -78,7 +78,7 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString().trim()
             val notificationList = mutableListOf<Notification>()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password, "None", true, sharedPrefs.getNotificationToken(), null,"" )
+                val user = User(username, phoneNumber.toInt(), email, password, "None", true, sharedPrefs.getNotificationToken(), null,null,"" )
 
                 // pass a value to notification list
 

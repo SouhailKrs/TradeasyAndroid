@@ -29,8 +29,10 @@ interface TradeasyRepository {
 
     // SEARCH PRODUCTS BY NAME
     suspend fun searchProductByName(name: SearchReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
-// GET FIREBASE FCM TOKEN
-    //suspend fun getFirebaseToken(): Flow<>
+    // ADD PROD TO SAVED
+    suspend fun addProductToSaved(req: AddToSavedReq): Flow<BaseResult<User, WrappedResponse<User>>>
+    // GET SAVED PRODUCTS
+    suspend fun getSavedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 
 
 

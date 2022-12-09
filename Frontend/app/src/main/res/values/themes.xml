@@ -24,7 +24,14 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="Theme.Tradeasy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
+    <style name="Theme.Tradeasy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Tradeasy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <!-- Splash Screen. -->

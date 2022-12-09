@@ -78,6 +78,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.N)
     private fun placeBid() {
 

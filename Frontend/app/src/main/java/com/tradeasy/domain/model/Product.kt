@@ -11,7 +11,7 @@ data class Product(
     @SerializedName("description") val description: String?,
     @SerializedName("price") val price: Float?,
     @SerializedName("image") val image: String?,
-    @SerializedName("quantity") val quantity: Number?,
+    @SerializedName("quantity") val quantity: Int?,
     @SerializedName("added_date") val addedDate: Number?,
     @SerializedName("for_bid") val forBid: Boolean?,
     @SerializedName("bid_end_date") val bidEndDate: Number?,
