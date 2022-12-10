@@ -9,10 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="buttonColor">#DB3120</color>
     <color name="appBackground">#F4F4F4</color>
+    <color name="greyy">#323033</color>
     <color name="grey">#ACABAD</color>
     <color name="blacksh">#353232</color>
     <color name="orange">#E05E07</color>
     <color name="colorPrimaryDark">#FFA000</color>
+    <color name="blue">#4B78A8</color>
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="strongreen">#3D8E41</color>
     <color name="lightgray">#ededed</color>

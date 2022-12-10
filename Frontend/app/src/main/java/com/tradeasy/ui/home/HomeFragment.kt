@@ -21,21 +21,20 @@ class HomeFragment : Fragment() {
     private lateinit var newArrayList: ArrayList<Products>
     private lateinit var binding: FragmentHomeBinding
 
-    lateinit var imageId: Array<Int>
-    lateinit var title: Array<String>
-    lateinit var description: Array<String>
-    lateinit var price: Array<Int>
-    lateinit var btndown : ImageView
-    lateinit var btnup : ImageView
-    lateinit var categoryLayout1: LinearLayout
-    lateinit var categoryLayout2: LinearLayout
+    private lateinit var imageId: Array<Int>
+    private lateinit var title: Array<String>
+    private lateinit var description: Array<String>
+    private lateinit var price: Array<Int>
+    private lateinit var btndown : ImageView
+    private lateinit var btnup : ImageView
+    private lateinit var categoryLayout1: LinearLayout
+    private lateinit var categoryLayout2: LinearLayout
     override fun onCreateView(
 
 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        imageId = arrayOf(R.drawable.iphone,R.drawable.iphone,R.drawable.iphone,R.drawable.iphone)
         title = arrayOf("Iphone 11","Iphone 12","Iphone 13","Iphone 14")
         description = arrayOf(
             "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.",
@@ -59,18 +58,7 @@ class HomeFragment : Fragment() {
         categoryLayout2 = binding.linearLayout5
         btnup = binding.dropupicon
 
-        btndown.setOnClickListener {
-            categoryLayout1.visibility = View.VISIBLE
-            categoryLayout2.visibility = View.VISIBLE
-            btndown.visibility = View.GONE
-            btnup.visibility = View.VISIBLE
-        }
-        btnup.setOnClickListener {
-            categoryLayout1.visibility = View.GONE
-            categoryLayout2.visibility = View.GONE
-            btndown.visibility = View.VISIBLE
-            btnup.visibility = View.GONE
-        }
+
 
         getUserData()
 
@@ -92,6 +80,19 @@ class HomeFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility  =
             View.VISIBLE
+
+        btndown.setOnClickListener {
+            categoryLayout1.visibility = View.VISIBLE
+            categoryLayout2.visibility = View.VISIBLE
+            btndown.visibility = View.GONE
+            btnup.visibility = View.VISIBLE
+        }
+        btnup.setOnClickListener {
+            categoryLayout1.visibility = View.GONE
+            categoryLayout2.visibility = View.GONE
+            btndown.visibility = View.VISIBLE
+            btnup.visibility = View.GONE
+        }
     }
 
 }

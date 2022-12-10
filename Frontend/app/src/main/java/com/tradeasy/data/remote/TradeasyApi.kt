@@ -1,6 +1,7 @@
 package com.tradeasy.data.remote
 
 
+import com.tradeasy.domain.model.ForgotPasswordReq
 import com.tradeasy.domain.model.UpdatePasswordRequest
 import com.tradeasy.domain.model.User
 import com.tradeasy.utils.WrappedResponse
@@ -22,4 +23,7 @@ interface TradeasyApi {
     suspend fun getUserDetailsApi(): Response<WrappedResponse<User>>
     @POST("/user/updatePassword")
     suspend fun updateUserPasswordAPI(@Body req:UpdatePasswordRequest): Response<WrappedResponse<User>>
+    //forgot password
+    @POST("/user/forgotPassword")
+    suspend fun forgotPasswordAPI(@Body req:ForgotPasswordReq): Response<WrappedResponse<User>>
 }

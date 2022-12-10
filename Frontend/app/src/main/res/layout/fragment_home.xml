@@ -445,12 +445,12 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
             <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            android:elevation="20dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                android:elevation="20dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp">
 
                 <ImageView
                     android:id="@+id/dropdownicon"
@@ -462,14 +462,14 @@
                     android:visibility="visible" />
 
                 <ImageView
-                android:id="@+id/dropupicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:src="@drawable/ic_baseline_keyboard_arrow_up_24" />
-        </androidx.cardview.widget.CardView>
+                    android:id="@+id/dropupicon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_24" />
+            </androidx.cardview.widget.CardView>
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

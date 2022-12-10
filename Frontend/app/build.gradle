@@ -90,6 +90,11 @@ dependencies {
     //splash screen
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
+    //denzel
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+    
+    //OTP PIN View
+    implementation 'io.github.chaosleung:pinview:1.4.4'
 
 
 }

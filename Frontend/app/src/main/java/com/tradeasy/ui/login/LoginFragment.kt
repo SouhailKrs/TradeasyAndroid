@@ -51,6 +51,9 @@ class LoginFragment : Fragment() {
         binding.newMember.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+        binding.forgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
+        }
         login()
         observe()
     }
