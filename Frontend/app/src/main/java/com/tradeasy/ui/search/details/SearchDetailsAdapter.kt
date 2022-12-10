@@ -1,19 +1,19 @@
-package com.tradeasy.ui.search
+package com.tradeasy.ui.search.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tradeasy.databinding.SearchItemBinding
+import com.tradeasy.databinding.SearchDetailsItemBinding
 import com.tradeasy.domain.model.Product
 
-class SearchAdapter(
+class SearchDetailsAdapter(
     private val products: MutableList<Product>,
     val onItemClick: (Product) -> Unit
-) : RecyclerView.Adapter<SearchAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<SearchDetailsAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
-            SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            SearchDetailsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(itemView)
     }
 
@@ -38,10 +38,11 @@ class SearchAdapter(
     }
 
 
-    class MyViewHolder(val binding: SearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(val binding: SearchDetailsItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
-            binding.searchItemName.text = product.name
-            binding.searchItemCategory.text = product.category
+            binding.prodName.text = product.name
+            binding.prodCategory.text = product.category
+            binding.prodPrice.text = product.price.toString()
         }
 
 

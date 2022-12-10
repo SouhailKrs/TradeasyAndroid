@@ -1,4 +1,4 @@
-package com.tradeasy.data.repository
+package com.tradeasy.domain.model.repository
 
 
 import com.google.gson.Gson
@@ -11,6 +11,7 @@ import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -115,9 +116,16 @@ class TradeasyImplementation @Inject constructor(private val api: TradeasyApi) :
     }
 
 
-    override suspend fun addProduct(product: Product): Flow<BaseResult<Product, WrappedResponse<Product>>> {
+    override suspend fun addProduct(category: MultipartBody.Part,
+                                    name: MultipartBody.Part,
+                                    description: MultipartBody.Part,
+                                    price: MultipartBody.Part,
+                                    image: MultipartBody.Part,
+                                    quantity: MultipartBody.Part,
+                                    for_bid: MultipartBody.Part,
+                                    bid_end_date: MultipartBody.Part,): Flow<BaseResult<Product, WrappedResponse<Product>>> {
         return flow {
-            val response = api.addProductApi(product)
+            val response = api.addProductApi(category,name,description,price, image, quantity, for_bid, bid_end_date)
             if (response.isSuccessful) {
                 val body = response.body()!!
                 val product = Product(

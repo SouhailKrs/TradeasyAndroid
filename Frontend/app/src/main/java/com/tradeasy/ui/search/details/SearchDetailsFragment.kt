@@ -1,15 +1,10 @@
-package com.tradeasy.ui.search
+package com.tradeasy.ui.search.details
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -17,65 +12,73 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tradeasy.databinding.FragmentSearchBinding
+import com.tradeasy.databinding.FragmentSearchDetailsBinding
 import com.tradeasy.domain.model.Product
 import com.tradeasy.domain.model.SearchReq
+import com.tradeasy.ui.search.SearchFragmentSate
+import com.tradeasy.ui.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
-    private lateinit var binding: FragmentSearchBinding
+class SearchDetailsFragment : Fragment() {
+
+    private lateinit var binding: FragmentSearchDetailsBinding
+    private val args: com.tradeasy.ui.search.details.SearchDetailsFragmentArgs by navArgs()
     private val viewModel: SearchViewModel by viewModels()
 
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
-
+        binding = FragmentSearchDetailsBinding.inflate(inflater, container, false)
+        println("zzzzzz")
         observe()
         setupRecyclerView()
-        setupSearchView()
-
-
-
-        // search view text change listener
-
+        setupSearchDetails()
         setFragmentResultListener("success_create") { _, bundle ->
             if (bundle.getBoolean("success_create")) {
-
-                val searchReq = SearchReq(binding.searchView.query.toString())
+                val searchReq = SearchReq(args.searchInput)
                 viewModel.fetchSearchedProducts(searchReq)
+
             }
         }
 
         return binding.root
-
     }
+private fun setupSearchDetails(){
+    val searchReq = SearchReq(args.searchInput)
+    viewModel.fetchSearchedProducts(searchReq)
 
+
+
+}
     private fun setupRecyclerView() {
-        val mAdapter = SearchAdapter(mutableListOf(), onItemClick = {
-val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragment(
+        val mAdapter = SearchDetailsAdapter(mutableListOf(), onItemClick = {
+val action = SearchDetailsFragmentDirections.actionSearchDetailsFragmentToProductItemFragment(
 
-    it.name!!
+    it.name!!,
+    it.description!!,
+    it.category!!,
+    it.price!!,
+    it.bidEndDate.toString(),
+    it.quantity!!,
+    it.addedDate.toString(),
+    it.forBid!!,
+    it.bidEndDate.toString(),
+    it.productId!!,
 
 )
-            findNavController().navigate(action)
-
-
+findNavController().navigate(action)
         })
 
 
 
-        binding.searchRV.apply {
+        binding.searchDetailsRV.apply {
             adapter = mAdapter
             layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -83,18 +86,21 @@ val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragmen
     }
 
     private fun observe() {
+        println("loadingggggggg7")
         observeState()
-        observeSearch()
+        observeSearchDetails()
     }
 
     private fun observeState() {
+        println("loadingggggggg6")
         viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 handleState(state)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun observeSearch() {
+    private fun observeSearchDetails() {
+        println("loadingggggggg5")
         viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { products ->
                 handleSearch(products)
@@ -102,9 +108,11 @@ val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragmen
     }
 
     private fun handleState(state: SearchFragmentSate) {
+        println("loadingggggggg4")
         when (state) {
             is SearchFragmentSate.IsLoading -> handleLoading(state.isLoading)
             is SearchFragmentSate.ShowToast -> {
+                println("loadingggggggg3")
                 Toast.makeText(
                     requireActivity(), state.message, Toast.LENGTH_SHORT
                 ).show()
@@ -119,39 +127,20 @@ val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragmen
     }
 
     private fun handleSearch(products: List<Product>) {
-        binding.searchRV.adapter?.let {
-            if (it is SearchAdapter) {
+        println("loadingggggggg2")
+        binding.searchDetailsRV.adapter?.let {
+            if (it is SearchDetailsAdapter) {
                 it.updateList(products)
             }
         }
     }
 
     private fun handleLoading(isLoading: Boolean) {
-
+        println("loadingggggggg1")
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{
 //            binding.loadingProgressBar.gone()
 //        }
     }
-    private fun setupSearchView() {
-val searchView = binding.searchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val searchReq = SearchReq(newText)
-                viewModel.fetchSearchedProducts(searchReq)
-                return true
-            }
-        })
-// check if search view is focused
-        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            binding.searchRV.isVisible = hasFocus
-        }
-
-    }
-
 }

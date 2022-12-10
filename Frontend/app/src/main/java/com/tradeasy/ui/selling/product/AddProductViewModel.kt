@@ -2,7 +2,6 @@ package com.tradeasy.ui.selling.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.Product
 import com.tradeasy.domain.usecase.CreateProductUseCase
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +35,16 @@ class AddProductViewModel @Inject constructor(
         state.value = AddProductFragmentSate.SuccessCreate
     }
 
-    fun addProduct(product: Product){
+    fun addProduct(category: MultipartBody.Part,
+                   name: MultipartBody.Part,
+                   description: MultipartBody.Part,
+                   price: MultipartBody.Part,
+                   image: MultipartBody.Part,
+                   quantity: MultipartBody.Part,
+                   for_bid: MultipartBody.Part,
+                   bid_end_date: MultipartBody.Part,){
         viewModelScope.launch {
-            addProductsUseCase.invoke(product)
+            addProductsUseCase.invoke(category,name,description,price, image, quantity, for_bid, bid_end_date)
                 .onStart {
                     setLoading()
                 }

@@ -4,10 +4,9 @@ package com.tradeasy.data.remote
 import com.tradeasy.domain.model.*
 import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface TradeasyApi {
 
@@ -26,19 +25,34 @@ interface TradeasyApi {
     // GET PRODUCTS FOR API
     @GET("/product/productsforbid")
     suspend fun getProductsForBidApi(): Response<WrappedListResponse<Product>>
-// ADD PRODUCT API
+
+    // ADD PRODUCT API
+    @Multipart
     @POST("/product/user/add")
-    suspend fun addProductApi(@Body product: Product): Response<WrappedResponse<Product>>
-// PLACE BID API
+    suspend fun addProductApi(
+        @Part category: MultipartBody.Part,
+        @Part name: MultipartBody.Part,
+        @Part description: MultipartBody.Part,
+        @Part price: MultipartBody.Part,
+        @Part image: MultipartBody.Part,
+        @Part quantity: MultipartBody.Part,
+        @Part for_bid: MultipartBody.Part,
+        @Part bid_end_date: MultipartBody.Part,
+    ): Response<WrappedResponse<Product>>
+
+    // PLACE BID API
     @POST("/bid/place")
     suspend fun placeBidApi(@Body bid: Bid): Response<WrappedResponse<Bid>>
-// SEARCH PRODUCT BY NAME API
+
+    // SEARCH PRODUCT BY NAME API
     @POST("/product/searchbyname")
     suspend fun searchProductByNameApi(@Body name: SearchReq): Response<WrappedListResponse<Product>>
-// ADD PRODUCT TO SAVED API
+
+    // ADD PRODUCT TO SAVED API
     @POST("/product/addprodtosaved")
     suspend fun addProductToSavedApi(@Body addToSavedReq: AddToSavedReq): Response<WrappedResponse<User>>
-// GET SAVED PRODUCTS API
+
+    // GET SAVED PRODUCTS API
     @GET("/product/getsavedprods")
     suspend fun getSavedProductsApi(): Response<WrappedListResponse<Product>>
 }

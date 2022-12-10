@@ -1,4 +1,4 @@
-package com.tradeasy.data.repository
+package com.tradeasy.domain.model.repository
 
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tradeasy.domain.repository.GetDeviceToken

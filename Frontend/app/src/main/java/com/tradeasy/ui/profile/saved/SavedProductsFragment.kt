@@ -23,12 +23,11 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class SavedProductsFragment : Fragment() {
 
-private lateinit var binding: FragmentSavedProductsBinding
+    private lateinit var binding: FragmentSavedProductsBinding
 
     private val viewModel: SavedProductsViewModel by viewModels()
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentSavedProductsBinding.inflate(inflater, container, false)
@@ -46,16 +45,19 @@ private lateinit var binding: FragmentSavedProductsBinding
             }
         }
     }
+
     private fun observe() {
         observeState()
         observeSavedProducts()
     }
+
     private fun observeState() {
         viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 handleState(state)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
+
     private fun observeSavedProducts() {
         viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { products ->
@@ -76,21 +78,22 @@ private lateinit var binding: FragmentSavedProductsBinding
             }
         }
     }
+
     private fun setupRecyclerView() {
         val mAdapter = SavedProductsAdapter(mutableListOf(), onItemClick = {
-            val action = SavedProductsFragmentDirections.actionSavedProductsFragmentToProductItemFragment(
-                it.name!!,
-                it.description!!,
-                it.category!!,
-                it.price!!,
-                it.bidEndDate.toString(),
-                it.quantity!!,
-                it.addedDate.toString(),
-                it.forBid!!,
-                it.bidEndDate.toString(),
-                it.productId!!,
-
-                )
+            val action =
+                SavedProductsFragmentDirections.actionSavedProductsFragmentToProductItemFragment(
+                    it.name!!,
+                    it.description!!,
+                    it.category!!,
+                    it.price!!,
+                    it.bidEndDate.toString(),
+                    it.quantity!!,
+                    it.addedDate.toString(),
+                    it.forBid!!,
+                    it.bidEndDate.toString(),
+                    it.productId!!,
+                    )
 
             findNavController().navigate(action)
 
@@ -103,6 +106,7 @@ private lateinit var binding: FragmentSavedProductsBinding
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         }
     }
+
     private fun handleSavedProducts(products: List<Product>) {
         binding.savedProdsRV.adapter?.let {
             if (it is SavedProductsAdapter) {

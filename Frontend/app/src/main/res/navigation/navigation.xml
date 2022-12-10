@@ -119,7 +119,11 @@
         android:id="@+id/searchFragment"
         android:name="com.tradeasy.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchDetailsFragment"
+            app:destination="@id/searchDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sellingFragment"
         android:name="com.tradeasy.ui.selling.SellingFragment"
@@ -251,6 +255,18 @@
         tools:layout="@layout/fragment_saved_products" >
         <action
             android:id="@+id/action_savedProductsFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchDetailsFragment"
+        android:name="com.tradeasy.ui.search.details.SearchDetailsFragment"
+        android:label="fragment_search_details"
+        tools:layout="@layout/fragment_search_details" >
+        <argument
+            android:name="searchInput"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchDetailsFragment_to_productItemFragment"
             app:destination="@id/productItemFragment" />
     </fragment>
 </navigation>
