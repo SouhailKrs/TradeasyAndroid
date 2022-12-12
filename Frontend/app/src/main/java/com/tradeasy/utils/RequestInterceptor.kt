@@ -10,6 +10,7 @@ class RequestInterceptor constructor(private val pref: SharedPrefs) : Intercepto
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token.toString())
             .build()
+        println("1212 $newRequest")
         return chain.proceed(newRequest)
     }
 }

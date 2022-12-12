@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.databinding.FragmentForgotPasswordBinding
 import com.tradeasy.domain.model.ForgotPasswordReq
@@ -52,11 +53,15 @@ private val viewModel: ForgotPasswordViewModel by viewModels()
 
             val email = binding.currentEmail.text.toString()
             val req = ForgotPasswordReq(email)
+
+            findNavController().navigate(R.id.action_forgotPasswordFragment_to_newPasswordFragment)
             if (email.isEmpty()) {
                 binding.currentEmail.error = "Email is required"
                 binding.currentEmail.requestFocus()
+
                 return@setOnClickListener
             }
+
             viewModel.sendResetCode(req)
         }
 
@@ -98,9 +103,6 @@ private val viewModel: ForgotPasswordViewModel by viewModels()
 
         //sncakbar
         Snackbar.make(requireView(), "Reset Code Sent", Snackbar.LENGTH_SHORT).show()
-
-
-
     }
 
     }
