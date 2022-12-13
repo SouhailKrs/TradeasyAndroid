@@ -16,7 +16,6 @@ class RequestInterceptor constructor(private val pref: SharedPrefs) : Intercepto
         } else {
             val newRequest = chain.request().newBuilder()
                 .build()
-            println("no token $newRequest")
             chain.proceed(newRequest)
         }
     }

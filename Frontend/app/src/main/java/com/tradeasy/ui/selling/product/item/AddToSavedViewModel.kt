@@ -18,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddToSavedViewModel @Inject constructor(
     private val addProductToSavedUseCase: AddProductToSavedUseCase)  : ViewModel() {
-    private val state = MutableStateFlow<AddProductToSavedFragmentSate>(AddProductToSavedFragmentSate.Init)
+    private val state = MutableStateFlow<AddProductToSavedFragmentSate>(
+        AddProductToSavedFragmentSate.Init)
     val mState: StateFlow<AddProductToSavedFragmentSate> get() = state
 
     private fun setLoading(){

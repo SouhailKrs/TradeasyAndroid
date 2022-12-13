@@ -46,6 +46,16 @@ interface TradeasyRepository {
 
     // GET SAVED PRODUCTS
     suspend fun getSavedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
-
-
+    // GET PRODUCTS THAT THE CONNECTED USER IS SELLING
+    suspend fun userSelling(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+    // UPDATE USER USERNAME
+    suspend fun updateUsername(req: UpdateUsernameReq): Flow<BaseResult<User, WrappedResponse<User>>>
+    //forgot password
+    suspend fun forgotPassword(req:ForgotPasswordReq): Flow<BaseResult<String,WrappedResponse<String>>>
+    //verify otp
+    suspend fun verifyOtp(req:VerifyOtpReq): Flow<BaseResult<String,WrappedResponse<String>>>
+    // Reset password
+    suspend fun resetPassword(req: ResetPasswordReq): Flow<BaseResult<User, WrappedResponse<User>>>
+    //buy now
+    suspend fun buyNow(req: BuyNowReq): Flow<BaseResult<Product,WrappedResponse<Product>>>
 }

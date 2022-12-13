@@ -126,7 +126,7 @@
             app:cornerRadius="7dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navToForgetPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/navToForgotPassword" />
 
         <TextView
             android:id="@+id/textView4"
@@ -204,15 +204,15 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
-            android:id="@+id/navToForgetPassword"
+            android:id="@+id/navToForgotPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:fontFamily="@font/neue"
             android:padding="10dp"
             android:text="Forgot password?"
-            android:textColor="#000000"
+            android:textColor="#0768D8"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
@@ -247,6 +247,7 @@
                 android:layout_gravity="center|start"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/avenir_regular"
                 android:gravity="start"
                 android:text="Sign Up"
                 android:textAllCaps="false"

@@ -7,7 +7,6 @@
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_outline_home_24"
-
         android:title="Home"/>
     <item
         android:id="@+id/sellingFragment"
@@ -24,7 +23,8 @@
         android:id="@+id/notificationsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_notifications_none_24"
-        android:title="Notifications"/>
+        android:title="Notifications"
+        />
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"

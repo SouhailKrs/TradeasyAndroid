@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.SavedProductItemBinding
 import com.tradeasy.domain.model.Product
+import com.tradeasy.utils.ImageLoader
 
 class SavedProductsAdapter(
     private val products: MutableList<Product>,
@@ -47,6 +48,10 @@ class SavedProductsAdapter(
         fun bind(product: Product) {
             binding.savedProdName.text = product.name
             binding.savedProdPrice.text = product.price.toString()
+            binding.SavedProdCategory.text = product.category
+            val productImage= binding.SavedProductImageView
+
+            ImageLoader(product.image!!,productImage)
 
         }
 

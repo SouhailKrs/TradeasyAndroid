@@ -12,32 +12,31 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameLayout"
-
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="20dp"
         app:boxBackgroundColor="@android:color/white"
         app:hintEnabled="false"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/currentUsername"
+            android:id="@+id/newUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/text_field_round_corners"
             android:fontFamily="@font/avenir_regular"
-
             android:hint="Current username"
-            android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/grey"
+
             android:textColorHint="@color/grey"
             android:textCursorDrawable="@null"
+
+
             android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>

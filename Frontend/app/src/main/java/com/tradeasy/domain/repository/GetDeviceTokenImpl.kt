@@ -1,7 +1,6 @@
-package com.tradeasy.domain.model.repository
+package com.tradeasy.domain.repository
 
 import com.google.firebase.messaging.FirebaseMessaging
-import com.tradeasy.domain.repository.GetDeviceToken
 import com.tradeasy.utils.UiState
 
 class GetDeviceTokenImpl:GetDeviceToken {

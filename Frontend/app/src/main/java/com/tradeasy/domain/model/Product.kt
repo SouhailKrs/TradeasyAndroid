@@ -17,12 +17,26 @@ data class Product(
     @SerializedName("bid_end_date") val bidEndDate: Number?,
     @SerializedName("bade") val bade: Boolean?,
     @SerializedName("sold") val sold: Boolean?,
-    @SerializedName("_id") val productId: String?
+    @SerializedName("_id") val productId: String?,
 
-)
-    // data class constructor
+    )
+// data class constructor
 {
-constructor():this("","","","",0.0f,"",0,0,true ,System.currentTimeMillis()+860000,false,false,"")
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        0.0f,
+        "",
+        0,
+        0,
+        true,
+        System.currentTimeMillis() + 860000,
+        false,
+        false,
+        ""
+    )
 }
 
 

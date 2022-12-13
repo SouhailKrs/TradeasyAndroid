@@ -7,8 +7,17 @@ data class UpdatePasswordRequest(
 
     @SerializedName("currentPassword") val currentPassword : String?,
     @SerializedName("newPassword") val newPassword: String?,
+    @SerializedName("email") val email: String?,
 
-)
+    )
+{
+    constructor() : this(
+        "",
+        "",""
+    )
+
+}
+
 
 
 

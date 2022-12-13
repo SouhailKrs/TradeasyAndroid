@@ -53,13 +53,12 @@ class RegisterFragment : Fragment() {
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToLogin.setOnClickListener {
-          registerToLogin(requireView())
+            registerToLogin(requireView())
 
         }
         binding.closeRegisterFragment.setOnClickListener {
 
-           registerToHome(requireView())
-
+            registerToHome(requireView())
 
 
         }
@@ -78,7 +77,19 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString().trim()
             val notificationList = mutableListOf<Notification>()
             if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(username, phoneNumber.toInt(), email, password, "None", true, sharedPrefs.getNotificationToken(), null,null,"" )
+                val user = User(
+                    username,
+                    phoneNumber.toInt(),
+                    email,
+                    password,
+                    "None",
+                    true,
+                    sharedPrefs.getNotificationToken(),
+                    null,
+                    null,
+                    0,
+                    ""
+                )
 
                 // pass a value to notification list
 
@@ -140,8 +151,6 @@ class RegisterFragment : Fragment() {
 
         registerToProfile(requireView())
     }
-
-
 
 
 }

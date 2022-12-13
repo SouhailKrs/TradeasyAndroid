@@ -21,7 +21,6 @@
         android:minWidth="82dp"
         android:minHeight="100dp"
         app:cardBackgroundColor="@color/appBackground"
-
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
         app:cardPreventCornerOverlap="false"

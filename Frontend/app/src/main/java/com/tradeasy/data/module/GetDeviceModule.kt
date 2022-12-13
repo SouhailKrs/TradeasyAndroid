@@ -1,6 +1,6 @@
 package com.tradeasy.data.module
 
-import com.tradeasy.domain.model.repository.GetDeviceTokenImpl
+import com.tradeasy.domain.repository.GetDeviceTokenImpl
 import com.tradeasy.domain.repository.GetDeviceToken
 import dagger.Module
 import dagger.Provides

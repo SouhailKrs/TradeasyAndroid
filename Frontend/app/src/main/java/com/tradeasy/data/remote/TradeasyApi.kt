@@ -20,7 +20,7 @@ interface TradeasyApi {
 
     // USER DETAILS API
     @POST("/user/updatePassword")
-    suspend fun updateUserPasswordAPI(@Body req: UpdatePasswordRequest): Response<WrappedResponse<User>>
+    suspend fun updateUserPasswordApi(@Body req: UpdatePasswordRequest): Response<WrappedResponse<User>>
 
     // GET PRODUCTS FOR API
     @GET("/product/productsforbid")
@@ -55,4 +55,25 @@ interface TradeasyApi {
     // GET SAVED PRODUCTS API
     @GET("/product/getsavedprods")
     suspend fun getSavedProductsApi(): Response<WrappedListResponse<Product>>
+
+    // GET PRODUCTS THAT THE CONNECTED USER IS SELLING
+    @GET("/product/userSelling")
+    suspend fun userSellingApi(): Response<WrappedListResponse<Product>>
+
+    // UPDATE USERNAME API
+    @POST("/user/updateUsername")
+    suspend fun updateUsernameApi(@Body req: UpdateUsernameReq): Response<WrappedResponse<User>>
+    //forgot password
+    @POST("/user/forgotPassword")
+    suspend fun forgotPasswordAPI(@Body req:ForgotPasswordReq): Response<WrappedResponse<String>>
+    //verify otp
+    @POST("/user/verifyOtp")
+    suspend fun verifyOtpApi(@Body req: VerifyOtpReq): Response<WrappedResponse<String>>
+    @POST("/user/resetpassword")
+    suspend fun resetPasswordApi(@Body req: ResetPasswordReq): Response<WrappedResponse<User>>
+    //buy now
+    @POST("/product/buynow")
+    suspend fun buyNowApi(@Body req: BuyNowReq): Response<WrappedResponse<Product>>
+
+
 }

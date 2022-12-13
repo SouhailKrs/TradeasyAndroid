@@ -57,8 +57,6 @@ class LoginFragment : Fragment() {
         }
 // CLOSE THE LOGIN FRAGMENT AND GO TO HOME FRAGMENT
         binding.closeLoginFragment.setOnClickListener {
-
-
             findNavController().navigate(R.id.homeFragment)
             findNavController().popBackStack(R.id.loginFragment, true)
 
@@ -82,7 +80,10 @@ class LoginFragment : Fragment() {
             }
 
         }
+binding.navToForgotPassword.setOnClickListener{
+    findNavController().navigate(R.id.forgotPasswordFragment)
 
+}
         login()
         observe()
     }
@@ -91,27 +92,29 @@ class LoginFragment : Fragment() {
     private fun login() {
 
         binding.registerButton.setOnClickListener {
+            if (validate()) {
+                println(sharedPrefs.getNotificationToken())
+                val username = binding.usernameField.text.toString().trim()
+                val password = binding.passwordField.text.toString().trim()
+                if (username.isNotEmpty() || password.isNotEmpty()) {
+                    val user = User(
+                        username,
+                        1,
+                        "",
+                        password,
+                        "None",
+                        true,
+                        sharedPrefs.getNotificationToken(),
+                        null,
+                        null,
+                        0,
+                        ""
+                    )
+                    viewModel.login(user)
+                }
 
-            println(sharedPrefs.getNotificationToken())
-            val username = binding.usernameField.text.toString().trim()
-            val password = binding.passwordField.text.toString().trim()
-            if (username.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(
-                    username,
-                    1,
-                    "",
-                    password,
-                    "None",
-                    true,
-                    sharedPrefs.getNotificationToken(),
-                    null,
-                    null,
-                    ""
-                )
-                viewModel.login(user)
+
             }
-
-
         }
 
     }
@@ -166,6 +169,28 @@ class LoginFragment : Fragment() {
         println(loginEntity.token)
 
 
+    }
+    private fun validate(): Boolean {
+        var valid = true
+
+        val username = binding.usernameField.text.toString()
+        val password = binding.passwordField.text.toString()
+
+        if (username.isEmpty()) {
+            binding.usernameField.error = "Enter Username"
+            valid = false
+        } else {
+            binding.usernameField.error = null
+        }
+
+        if (password.isEmpty()) {
+            binding.passwordField.error = "Enter Password"
+            valid = false
+        } else {
+            binding.passwordField.error = null
+        }
+
+        return valid
     }
 
 

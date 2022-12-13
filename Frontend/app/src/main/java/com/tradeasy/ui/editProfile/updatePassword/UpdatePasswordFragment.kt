@@ -81,7 +81,7 @@ class UpdatePasswordFragment : Fragment() {
                 return@setOnClickListener
             }
             else{
-                val req = UpdatePasswordRequest(currentPassword,newPassword)
+                val req = UpdatePasswordRequest(currentPassword,newPassword,"")
                 viewModel.updatePassword(req)
             }
 

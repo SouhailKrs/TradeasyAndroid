@@ -15,7 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tradeasy.databinding.FragmentProductItemBinding
 import com.tradeasy.domain.model.AddToSavedReq
+import com.tradeasy.domain.model.BuyNowReq
+import com.tradeasy.domain.model.Product
 import com.tradeasy.domain.model.User
+import com.tradeasy.ui.home.buyNow.BuyNowActivityState
+import com.tradeasy.ui.home.buyNow.BuyNowViewModel
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -26,6 +30,7 @@ class ProductItemFragment : Fragment() {
 
     private lateinit var binding: FragmentProductItemBinding
     private val viewModel: AddToSavedViewModel by viewModels()
+    private val buyNowViewModel: BuyNowViewModel by viewModels()
     private val args: com.tradeasy.ui.selling.product.item.ProductItemFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -40,6 +45,8 @@ class ProductItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         addProductToSaved()
         observe()
+        buyProduct()
+        buyingObserve()
     }
 
     private fun setupView() {
@@ -64,12 +71,25 @@ class ProductItemFragment : Fragment() {
         viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
     }
+    private fun buyingObserve() {
+        buyNowViewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleBuyingStateChange(state) }.launchIn(lifecycleScope)
+    }
 
     private fun addProductToSaved() {
         binding.addToSavedBtn.setOnClickListener {
             println(args.productId)
             val req = AddToSavedReq(args.productId)
             viewModel.addProductToSaved(req)
+        }
+
+
+    }
+    private fun buyProduct() {
+        binding.buyNowBtn.setOnClickListener {
+
+            val req = BuyNowReq(args.productId)
+            buyNowViewModel.buyNow(req)
         }
 
 
@@ -110,6 +130,31 @@ class ProductItemFragment : Fragment() {
     }
 
     private fun handleSuccessSaving() {
+
+
+    }
+
+    private fun handleErrorBuying(response: WrappedResponse<Product>) {
+        AlertDialog.Builder(requireActivity()).apply {
+            setMessage(response.message)
+            setPositiveButton("ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.show()
+    }
+
+    private fun handleBuyingStateChange(state: BuyNowActivityState) {
+        when (state) {
+            is BuyNowActivityState.Init -> Unit
+            is BuyNowActivityState.ErrorBuying -> handleErrorBuying(state.rawResponse)
+            is BuyNowActivityState.SuccessBuying -> handleSuccessBuying()
+            is BuyNowActivityState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is BuyNowActivityState.IsLoading -> handleLoading( state.isLoading)
+        }
+    }
+    private fun handleSuccessBuying() {
 
 
     }
