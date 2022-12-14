@@ -2,9 +2,9 @@ package com.tradeasy.ui.editProfile.updatePassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.UpdatePasswordRequest
-import com.tradeasy.domain.model.User
-import com.tradeasy.domain.usecase.UpdatePasswordDetailsUseCase
+import com.tradeasy.data.user.remote.dto.UpdatePasswordRequest
+import com.tradeasy.domain.user.entity.User
+import com.tradeasy.domain.user.usecase.UpdatePasswordDetailsUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +36,7 @@ class UpdatePasswordViewModel @Inject constructor(
     }
 
 
-    fun updatePassword(req:UpdatePasswordRequest) {
+    fun updatePassword(req: UpdatePasswordRequest) {
 
         viewModelScope.launch {
             getUpdatePasswordDetailsUseCase.execute(req ).onStart {

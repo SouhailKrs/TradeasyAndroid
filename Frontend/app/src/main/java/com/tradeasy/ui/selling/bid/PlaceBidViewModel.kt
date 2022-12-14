@@ -2,8 +2,8 @@ package com.tradeasy.ui.selling.bid
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.Bid
-import com.tradeasy.domain.usecase.PlaceBidUseCase
+import com.tradeasy.domain.product.entity.Bid
+import com.tradeasy.domain.product.usecase.PlaceBidUseCase
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlaceBidViewModel @Inject constructor(
-    private val placeBidUseCase: PlaceBidUseCase)  : ViewModel() {
+    private val placeBidUseCase: PlaceBidUseCase
+)  : ViewModel() {
     private val state = MutableStateFlow<PlaceBidFragmentState>(PlaceBidFragmentState.Init)
     val mState: StateFlow<PlaceBidFragmentState> get() = state
 

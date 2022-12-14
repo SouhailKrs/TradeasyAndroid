@@ -2,8 +2,8 @@ package com.tradeasy.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.usecase.GetProductsForBid
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.domain.product.usecase.GetProductsForBid
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -15,8 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.databinding.FragmentSearchDetailsBinding
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.SearchReq
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.ui.search.SearchFragmentSate
 import com.tradeasy.ui.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint

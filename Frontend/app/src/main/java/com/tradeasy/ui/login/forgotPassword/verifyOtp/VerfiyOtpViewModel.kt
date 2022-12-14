@@ -2,8 +2,8 @@ package com.tradeasy.ui.login.forgotPassword.verifyOtp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.VerifyOtpReq
-import com.tradeasy.domain.usecase.VerifyOtpUseCase
+import com.tradeasy.data.user.remote.dto.VerifyOtpReq
+import com.tradeasy.domain.user.usecase.VerifyOtpUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +35,7 @@ class VerfiyOtpViewModel @Inject constructor(
     }
 
 
-    fun verifyOtp(req:VerifyOtpReq) {
+    fun verifyOtp(req: VerifyOtpReq) {
 
         viewModelScope.launch {
             verifyOtpUseCase.execute(req ).onStart {

@@ -2,9 +2,9 @@ package com.tradeasy.ui.selling.product.item
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.AddToSavedReq
-import com.tradeasy.domain.model.User
-import com.tradeasy.domain.usecase.AddProductToSavedUseCase
+import com.tradeasy.data.product.remote.dto.AddToSavedReq
+import com.tradeasy.domain.user.entity.User
+import com.tradeasy.domain.product.usecase.AddProductToSavedUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddToSavedViewModel @Inject constructor(
-    private val addProductToSavedUseCase: AddProductToSavedUseCase)  : ViewModel() {
+    private val addProductToSavedUseCase: AddProductToSavedUseCase
+)  : ViewModel() {
     private val state = MutableStateFlow<AddProductToSavedFragmentSate>(
         AddProductToSavedFragmentSate.Init)
     val mState: StateFlow<AddProductToSavedFragmentSate> get() = state

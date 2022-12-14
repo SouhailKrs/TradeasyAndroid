@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.SavedProductItemBinding
-import com.tradeasy.domain.model.Product
+import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.utils.ImageLoader
 
 class SavedProductsAdapter(

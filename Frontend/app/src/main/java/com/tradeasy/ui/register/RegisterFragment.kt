@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentRegisterBinding
-import com.tradeasy.domain.model.Notification
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.user.entity.Notification
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.navigation.registerToHome
 import com.tradeasy.ui.navigation.registerToLogin

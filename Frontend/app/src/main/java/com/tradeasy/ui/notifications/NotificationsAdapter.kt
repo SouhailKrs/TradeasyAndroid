@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.NotificationItemBinding
-import com.tradeasy.domain.model.Notification
+import com.tradeasy.domain.user.entity.Notification
 
 
 class NotificationsAdapter(var notifications: List<Notification>) :

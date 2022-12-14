@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.SearchItemBinding
-import com.tradeasy.domain.model.Product
+import com.tradeasy.domain.product.entity.Product
 
 class SearchAdapter(
     private val products: MutableList<Product>,

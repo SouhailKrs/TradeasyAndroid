@@ -14,10 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tradeasy.databinding.FragmentProductItemBinding
-import com.tradeasy.domain.model.AddToSavedReq
-import com.tradeasy.domain.model.BuyNowReq
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.User
+import com.tradeasy.data.product.remote.dto.AddToSavedReq
+import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.home.buyNow.BuyNowActivityState
 import com.tradeasy.ui.home.buyNow.BuyNowViewModel
 import com.tradeasy.utils.WrappedResponse

@@ -18,8 +18,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentResetPassBinding
-import com.tradeasy.domain.model.ResetPasswordReq
-import com.tradeasy.domain.model.User
+import com.tradeasy.data.user.remote.dto.ResetPasswordReq
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

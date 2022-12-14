@@ -2,9 +2,9 @@ package com.tradeasy.ui.home.buyNow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.BuyNowReq
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.usecase.BuyNowUseCase
+import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.domain.product.usecase.BuyNowUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel

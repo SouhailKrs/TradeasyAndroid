@@ -3,7 +3,7 @@ package com.tradeasy.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.user.entity.User
 
 @Suppress("UNCHECKED_CAST")
 class SharedPrefs(private val context: Context) {

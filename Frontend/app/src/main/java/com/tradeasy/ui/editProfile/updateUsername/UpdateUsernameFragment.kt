@@ -14,8 +14,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.databinding.FragmentUpdateUsernameBinding
-import com.tradeasy.domain.model.UpdateUsernameReq
-import com.tradeasy.domain.model.User
+import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint

@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.databinding.FragmentForgotPasswordBinding
-import com.tradeasy.domain.model.ForgotPasswordReq
+import com.tradeasy.data.user.remote.dto.ForgotPasswordReq
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

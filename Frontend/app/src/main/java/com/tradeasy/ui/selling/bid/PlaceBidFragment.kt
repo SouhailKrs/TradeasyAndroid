@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentPlaceBidBinding
-import com.tradeasy.domain.model.Bid
+import com.tradeasy.domain.product.entity.Bid
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

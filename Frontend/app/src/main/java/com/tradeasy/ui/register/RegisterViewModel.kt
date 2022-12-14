@@ -2,8 +2,8 @@ package com.tradeasy.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.User
-import com.tradeasy.domain.usecase.RegisterUseCase
+import com.tradeasy.domain.user.entity.User
+import com.tradeasy.domain.user.usecase.RegisterUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel

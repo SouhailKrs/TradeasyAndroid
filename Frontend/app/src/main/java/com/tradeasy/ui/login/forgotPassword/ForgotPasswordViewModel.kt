@@ -2,8 +2,8 @@ package com.tradeasy.ui.login.forgotPassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.ForgotPasswordReq
-import com.tradeasy.domain.usecase.ForgotPasswordUseCase
+import com.tradeasy.data.user.remote.dto.ForgotPasswordReq
+import com.tradeasy.domain.user.usecase.ForgotPasswordUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +35,7 @@ class ForgotPasswordViewModel @Inject constructor(
     }
 
 
-    fun sendResetCode(req:ForgotPasswordReq) {
+    fun sendResetCode(req: ForgotPasswordReq) {
 
         viewModelScope.launch {
             forgotPasswordUseCase.execute(req ).onStart {

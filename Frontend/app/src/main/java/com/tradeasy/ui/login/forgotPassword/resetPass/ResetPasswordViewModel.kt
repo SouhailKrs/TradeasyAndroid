@@ -2,9 +2,9 @@ package com.tradeasy.ui.login.forgotPassword.resetPass
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.ResetPasswordReq
-import com.tradeasy.domain.model.User
-import com.tradeasy.domain.usecase.ResetPasswordUseCase
+import com.tradeasy.data.user.remote.dto.ResetPasswordReq
+import com.tradeasy.domain.user.entity.User
+import com.tradeasy.domain.user.usecase.ResetPasswordUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +36,7 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
 
-    fun updatePassword(req:ResetPasswordReq) {
+    fun updatePassword(req: ResetPasswordReq) {
 
         viewModelScope.launch {
             getResetPasswordUseCase.execute(req ).onStart {

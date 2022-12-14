@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
-import com.tradeasy.domain.model.Product
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.ui.home.forBid.ProductsForBid
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

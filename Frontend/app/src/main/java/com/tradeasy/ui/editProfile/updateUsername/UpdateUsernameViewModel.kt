@@ -2,9 +2,9 @@ package com.tradeasy.ui.editProfile.updateUsername
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.model.UpdateUsernameReq
-import com.tradeasy.domain.model.User
-import com.tradeasy.domain.usecase.UpdateUsernameUseCase
+import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
+import com.tradeasy.domain.user.entity.User
+import com.tradeasy.domain.user.usecase.UpdateUsernameUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +36,7 @@ class UpdateUsernameViewModel @Inject constructor(
     }
 
 
-    fun updateUsername(req:UpdateUsernameReq) {
+    fun updateUsername(req: UpdateUsernameReq) {
 
         viewModelScope.launch {
             getUpdateUsernameUseCase.execute(req ).onStart {

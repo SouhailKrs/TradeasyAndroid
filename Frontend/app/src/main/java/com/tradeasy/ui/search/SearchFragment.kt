@@ -19,8 +19,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.databinding.FragmentSearchBinding
-import com.tradeasy.domain.model.Product
-import com.tradeasy.domain.model.SearchReq
+import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.data.product.remote.dto.SearchReq
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentSellingBinding
-import com.tradeasy.domain.model.Product
+import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.home.HomeFragmentDirections
 import com.tradeasy.ui.home.SellingFragmentState
 import com.tradeasy.ui.home.UserSellingAdapter

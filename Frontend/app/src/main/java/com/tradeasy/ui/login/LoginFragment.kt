@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
-import com.tradeasy.domain.model.User
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.navigation.loginToRegister
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
