@@ -20,13 +20,12 @@
             android:id="@+id/closeRegisterFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
+            android:adjustViewBounds="true"
+
             android:background="@color/appBackground"
 
             android:foregroundGravity="center"
-
-            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,23 +37,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/roboto_medium"
 
             android:text="Create an account"
             android:textColor="#000000"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeRegisterFragment" />
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+            android:id="@+id/usernameLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
             android:hint="Username"
@@ -73,9 +72,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Username"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="11sp" />
+
 
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -83,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="13dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
 
@@ -95,7 +97,7 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+            app:layout_constraintTop_toBottomOf="@+id/usernameLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneNumberField"
@@ -103,7 +105,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Phone Number"
-                android:singleLine="true" />
+                android:inputType="number"
+                android:singleLine="true"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,9 +117,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="13dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
+
             android:hint="Email"
             app:boxBackgroundColor="@color/appBackground"
             app:boxStrokeColor="@color/black"
@@ -132,7 +137,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Email"
-                android:singleLine="true" />
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,7 +149,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="13dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
             android:hint="Password"
@@ -151,6 +158,8 @@
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="1.3dp"
             app:hintEnabled="false"
+
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
 
@@ -162,7 +171,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Password"
-                android:singleLine="true" />
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -186,11 +197,12 @@
             android:layout_marginEnd="15dp"
             android:fontFamily="@font/roboto_medium"
 
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Sign Up"
             android:textAllCaps="false"
-
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:backgroundTint="@color/buttonColor"
             app:cornerRadius="7dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -202,7 +214,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/neue"
             android:text="Or"
             android:textColor="#000000"
@@ -275,10 +287,9 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider6">

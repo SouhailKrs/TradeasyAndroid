@@ -35,5 +35,7 @@ interface UserApi {
     @POST("/user/resetpassword")
     suspend fun resetPasswordApi(@Body req: ResetPasswordReq): Response<WrappedResponse<User>>
 
-
+ // Verify Username API
+ @POST("/user/verifyusername")
+ suspend fun verifyUsernameApi(@Body req: UpdateUsernameReq): Response<WrappedResponse<String>>
 }

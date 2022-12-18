@@ -17,17 +17,17 @@
         android:layout_height="wrap_content"
 
         tools:context=".ui.login.LoginFragment">
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/closeLoginFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
+            android:adjustViewBounds="true"
+
             android:background="@color/appBackground"
 
             android:foregroundGravity="center"
-
-            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,11 +39,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/avenir_regular"
             android:text="Login"
+
             android:textColor="#000000"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeLoginFragment" />
@@ -55,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
             android:hint="Username"
@@ -73,8 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
-
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="13dp"
             android:layout_marginEnd="15dp"
             android:elevation="0dp"
             android:hint="Password"
@@ -104,24 +105,28 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/loginButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
 
 
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="7dp"
             android:layout_marginEnd="15dp"
             android:fontFamily="@font/roboto_medium"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Login"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:backgroundTint="@color/buttonColor"
             app:cornerRadius="7dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +144,9 @@
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -207,22 +214,21 @@
             android:id="@+id/navToForgotPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:fontFamily="@font/neue"
             android:padding="10dp"
             android:text="Forgot password?"
             android:textColor="#0768D8"
-            android:textSize="17sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider6">

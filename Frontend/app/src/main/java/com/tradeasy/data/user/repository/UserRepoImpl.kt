@@ -227,5 +227,23 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
             }
         }
     }
+    override suspend fun verifyUsername(req: UpdateUsernameReq): Flow<BaseResult<String, WrappedResponse<String>>> {
+        return flow {
+            val response = api.verifyUsernameApi(req)
+            if (response.isSuccessful) {
+                println("response successfully")
+                emit(BaseResult.Success("otp verified"))
+            } else {
+                val type = object : TypeToken<WrappedResponse<String>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<String>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
 
+
+            }
+        }
+    }
 }

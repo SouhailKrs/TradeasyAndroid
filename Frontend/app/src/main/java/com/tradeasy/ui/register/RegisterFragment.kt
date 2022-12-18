@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,6 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
+import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
@@ -32,6 +35,7 @@ import javax.inject.Inject
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
+    private val verifyUsernameViewModel: VerifyUsernameViewModel by viewModels()
     val loginFragment = LoginFragment()
 
     @Inject
@@ -43,6 +47,8 @@ class RegisterFragment : Fragment() {
     ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
+// make the drawable spin
+
         return binding.root
     }
 
@@ -50,7 +56,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
+        view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToLogin.setOnClickListener {
             registerToLogin(requireView())
@@ -59,11 +65,11 @@ class RegisterFragment : Fragment() {
         binding.closeRegisterFragment.setOnClickListener {
 
             registerToHome(requireView())
-
-
         }
 
-
+        registerBtnHandler()
+        verifyUsername()
+        usernameObserve()
         register()
         observe()
     }
@@ -151,6 +157,93 @@ class RegisterFragment : Fragment() {
 
         registerToProfile(requireView())
     }
+
+    private fun registerBtnHandler() {
+
+        val username = binding.usernameField
+        val phoneNumber = binding.phoneNumberField
+        val email = binding.emailField
+        val password = binding.passwordField
+        val registerBtn = binding.registerButton
+        registerBtn.isEnabled = false
+        registerBtn.alpha = 0.5f
+        username.addTextChangedListener {
+
+            registerBtn.isEnabled =
+                username.text!!.isNotBlank() && phoneNumber.text!!.isNotBlank() && email.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            registerBtn.alpha = if (registerBtn.isEnabled) 1f else 0.5f
+
+
+        }
+        phoneNumber.addTextChangedListener {
+
+            registerBtn.isEnabled =
+                username.text!!.isNotBlank() && phoneNumber.text!!.isNotBlank() && email.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            registerBtn.alpha = if (registerBtn.isEnabled) 1f else 0.5f
+
+        }
+        email.addTextChangedListener {
+
+            registerBtn.isEnabled =
+                username.text!!.isNotBlank() && phoneNumber.text!!.isNotBlank() && email.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            registerBtn.alpha = if (registerBtn.isEnabled) 1f else 0.5f
+
+        }
+        password.addTextChangedListener {
+
+            registerBtn.isEnabled =
+                username.text!!.isNotBlank() && phoneNumber.text!!.isNotBlank() && email.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            registerBtn.alpha = if (registerBtn.isEnabled) 1f else 0.5f
+
+        }
+
+
+    }
+    private fun usernameObserve() {
+        verifyUsernameViewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleVerifyStateChange(state) }.launchIn(lifecycleScope)
+    }
+    private fun handleVerifyStateChange(state: VerifyUsernameFragmentState) {
+        when (state) {
+            is VerifyUsernameFragmentState.Init -> Unit
+            is VerifyUsernameFragmentState.UsernameAvailable -> handleUsernameAvailable(state.rawResponse)
+            is VerifyUsernameFragmentState.UsernameExists -> handleUsernameExists(state.message)
+            is VerifyUsernameFragmentState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is VerifyUsernameFragmentState.IsLoading -> handleVerificationLoading(state.isLoading)
+        }
+    }
+    private fun handleUsernameAvailable(response: WrappedResponse<String>) {
+    //.usernameLayout.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(context,R.drawable.drawableRight), null)
+
+        binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_check_24), null)
+    }
+    private fun handleVerificationLoading(isLoading: Boolean) {
+        /*binding.loginButton.isEnabled = !isLoading
+        binding.registerButton.isEnabled = !isLoading
+        binding.loadingProgressBar.isIndeterminate = isLoading
+        if(!isLoading){
+            binding.loadingProgressBar.progress = 0
+        }*/
+       // Toast.makeText(requireActivity(), "Loeeading", Toast.LENGTH_SHORT).show()
+    }
+    private fun handleUsernameExists(response: String) {
+        binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_close_24_red), null)
+        binding.registerButton.isEnabled = false
+        binding.registerButton.alpha = 0.5f
+    }
+    private fun verifyUsername() {
+       binding.usernameField.addTextChangedListener {
+           val username = binding.usernameField.text.toString().trim()
+           if (username.isNotBlank()) {
+               val req = UpdateUsernameReq(username)
+               verifyUsernameViewModel.verifyUsername(req)
+           }
+       }
+    }
+    // add progress bar to username field
+
 
 
 }

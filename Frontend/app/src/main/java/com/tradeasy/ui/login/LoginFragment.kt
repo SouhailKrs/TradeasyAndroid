@@ -1,17 +1,21 @@
 package com.tradeasy.ui.login
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
@@ -55,35 +59,14 @@ class LoginFragment : Fragment() {
 
 
         }
+        closeLoginHandler()
 // CLOSE THE LOGIN FRAGMENT AND GO TO HOME FRAGMENT
-        binding.closeLoginFragment.setOnClickListener {
-            findNavController().navigate(R.id.homeFragment)
-            findNavController().popBackStack(R.id.loginFragment, true)
 
-            val currentFragment = findNavController().currentDestination?.label
-
-
-            println(findNavController().currentDestination?.displayName)
-            if (currentFragment == "fragment_selling" || currentFragment == "fragment_notifications") {
-
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.homeFragment)
-
-
-            }
-            if (currentFragment == "fragment_profile") {
-
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.profileFragment)
-
-
-            }
+        binding.navToForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.forgotPasswordFragment)
 
         }
-binding.navToForgotPassword.setOnClickListener{
-    findNavController().navigate(R.id.forgotPasswordFragment)
-
-}
+        loginButtonHandler()
         login()
         observe()
     }
@@ -91,30 +74,29 @@ binding.navToForgotPassword.setOnClickListener{
     //LOGIN
     private fun login() {
 
-        binding.registerButton.setOnClickListener {
-            if (validate()) {
-                println(sharedPrefs.getNotificationToken())
-                val username = binding.usernameField.text.toString().trim()
-                val password = binding.passwordField.text.toString().trim()
-                if (username.isNotEmpty() || password.isNotEmpty()) {
-                    val user = User(
-                        username,
-                        1,
-                        "",
-                        password,
-                        "None",
-                        true,
-                        sharedPrefs.getNotificationToken(),
-                        null,
-                        null,
-                        0,
-                        ""
-                    )
-                    viewModel.login(user)
-                }
+        binding.loginButton.setOnClickListener {
 
-
+            println(sharedPrefs.getNotificationToken())
+            val username = binding.usernameField.text.toString().trim()
+            val password = binding.passwordField.text.toString().trim()
+            if (username.isNotEmpty() || password.isNotEmpty()) {
+                val user = User(
+                    username,
+                    1,
+                    "",
+                    password,
+                    "None",
+                    true,
+                    sharedPrefs.getNotificationToken(),
+                    null,
+                    null,
+                    0,
+                    ""
+                )
+                viewModel.login(user)
             }
+
+
         }
 
     }
@@ -131,9 +113,11 @@ binding.navToForgotPassword.setOnClickListener{
             is LoginActivityState.Init -> Unit
             is LoginActivityState.ErrorLogin -> handleErrorLogin(state.rawResponse)
             is LoginActivityState.SuccessLogin -> handleSuccessLogin(state.user)
-            is LoginActivityState.ShowToast -> Toast.makeText(
+            is LoginActivityState.ShowToast -> { Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
+                binding.loginButton.hideProgress("Login")
+            }
             is LoginActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
@@ -144,18 +128,22 @@ binding.navToForgotPassword.setOnClickListener{
             setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
+                binding.loginButton.hideProgress("Login")
             }
         }.show()
     }
 
     // IF LOGGING IN IS LOADING
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
+        binding.loginButton.isEnabled = !isLoading
+        binding.loginButton.showProgress {
+
+// set progress indicator color to black
+            progressColor = Color.WHITE
+
+
+        }
+
         Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
     }
 
@@ -170,28 +158,43 @@ binding.navToForgotPassword.setOnClickListener{
 
 
     }
-    private fun validate(): Boolean {
-        var valid = true
 
-        val username = binding.usernameField.text.toString()
-        val password = binding.passwordField.text.toString()
 
-        if (username.isEmpty()) {
-            binding.usernameField.error = "Enter Username"
-            valid = false
-        } else {
-            binding.usernameField.error = null
+    private fun loginButtonHandler() {
+
+        val username = binding.usernameField
+        val password = binding.passwordField
+        val loginBtn = binding.loginButton
+        loginBtn.isEnabled = false
+        loginBtn.alpha = 0.5f
+        username.addTextChangedListener {
+            loginBtn.isEnabled = username.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            loginBtn.alpha = if (loginBtn.isEnabled) 1f else 0.5f
+
         }
-
-        if (password.isEmpty()) {
-            binding.passwordField.error = "Enter Password"
-            valid = false
-        } else {
-            binding.passwordField.error = null
+        password.addTextChangedListener {
+            loginBtn.isEnabled = username.text!!.isNotBlank() && password.text!!.isNotEmpty()
+            loginBtn.alpha = if (loginBtn.isEnabled) 1f else 0.5f
         }
-
-        return valid
     }
 
+    private fun closeLoginHandler() {
+        binding.closeLoginFragment.setOnClickListener {
+            findNavController().navigate(R.id.homeFragment)
+            findNavController().popBackStack(R.id.loginFragment, true)
+            val currentFragment = findNavController().currentDestination?.label
+            println(findNavController().currentDestination?.displayName)
+            if (currentFragment == "fragment_selling" || currentFragment == "fragment_notifications") {
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.homeFragment)
+            }
+            if (currentFragment == "fragment_profile") {
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.profileFragment)
 
+
+            }
+
+        }
+    }
 }

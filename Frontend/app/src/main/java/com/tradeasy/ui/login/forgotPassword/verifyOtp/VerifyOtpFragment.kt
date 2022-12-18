@@ -18,8 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.chaos.view.PinView
-import com.tradeasy.databinding.FragmentVerifyOtpBinding
 import com.tradeasy.data.user.remote.dto.VerifyOtpReq
+import com.tradeasy.databinding.FragmentVerifyOtpBinding
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

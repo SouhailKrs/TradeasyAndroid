@@ -26,5 +26,6 @@ interface UserRepo {
     suspend fun verifyOtp(req: VerifyOtpReq): Flow<BaseResult<String,WrappedResponse<String>>>
     // Reset password
     suspend fun resetPassword(req: ResetPasswordReq): Flow<BaseResult<User, WrappedResponse<User>>>
-
+    // Verify username
+    suspend fun verifyUsername(req: UpdateUsernameReq): Flow<BaseResult<String, WrappedResponse<String>>>
 }
