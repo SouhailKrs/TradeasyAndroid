@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.utils.SharedPrefs
@@ -28,6 +31,7 @@ class ProfileFragment : Fragment() {
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val user = sharedPrefs.getUser()
+      
         setupToolbar()
         if (user == null) {
             fragmentSetupOffline()
@@ -118,6 +122,8 @@ class ProfileFragment : Fragment() {
         binding.profileSpacer.layoutParams.height = 200
         binding.editProfileBtn.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_editProfileFragment)
+            val item = requireActivity().findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).menu.findItem(R.id.profileFragment)
+            NavigationUI.onNavDestinationSelected(item, findNavController())
         }
 
     }

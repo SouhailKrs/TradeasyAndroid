@@ -16,6 +16,7 @@ data class User(
     @SerializedName("notification") val notification: MutableList<Notification>?,
     @SerializedName("savedProducts") val savedProducts: MutableList<Product>?,
     @SerializedName("otp") val otp: Number?,
+    @SerializedName("countryCode") val countryCode: String?,
     @SerializedName("token") val token: String?,
 
 
@@ -33,6 +34,7 @@ data class User(
         mutableListOf<Notification>(),
         mutableListOf<Product>(),
         0,
+        "",
         ""
     )
 

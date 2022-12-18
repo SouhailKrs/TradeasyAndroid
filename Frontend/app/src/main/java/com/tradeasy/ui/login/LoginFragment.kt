@@ -91,6 +91,7 @@ class LoginFragment : Fragment() {
                     null,
                     null,
                     0,
+                    "",
                     ""
                 )
                 viewModel.login(user)
@@ -189,9 +190,11 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(R.id.homeFragment)
             }
             if (currentFragment == "fragment_profile") {
-                findNavController().popBackStack()
+              //  findNavController().popBackStack()
                 findNavController().navigate(R.id.profileFragment)
-
+// bottom nav bar visibility
+                view?.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
+                    View.VISIBLE
 
             }
 

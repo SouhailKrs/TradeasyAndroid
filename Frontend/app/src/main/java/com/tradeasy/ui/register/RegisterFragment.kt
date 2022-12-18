@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
@@ -22,7 +23,6 @@ import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.navigation.registerToHome
 import com.tradeasy.ui.navigation.registerToLogin
-import com.tradeasy.ui.navigation.registerToProfile
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +48,7 @@ class RegisterFragment : Fragment() {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
 // make the drawable spin
-
+println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
         return binding.root
     }
 
@@ -94,6 +94,7 @@ class RegisterFragment : Fragment() {
                     null,
                     null,
                     0,
+                    binding.countrycodePicker.selectedCountryCodeWithPlus,
                     ""
                 )
 
@@ -155,7 +156,7 @@ class RegisterFragment : Fragment() {
         userRegisterEntity.token?.let { sharedPrefs.setToken(it) }
 
 
-        registerToProfile(requireView())
+    findNavController().navigate(R.id.homeFragment)
     }
 
     private fun registerBtnHandler() {
@@ -218,6 +219,12 @@ class RegisterFragment : Fragment() {
     //.usernameLayout.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(context,R.drawable.drawableRight), null)
 
         binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_check_24), null)
+       binding.usernameField.addTextChangedListener {
+           if(binding.usernameField.text!!.isBlank()){
+               binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+           }
+
+       }
     }
     private fun handleVerificationLoading(isLoading: Boolean) {
         /*binding.loginButton.isEnabled = !isLoading
@@ -232,6 +239,9 @@ class RegisterFragment : Fragment() {
         binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_close_24_red), null)
         binding.registerButton.isEnabled = false
         binding.registerButton.alpha = 0.5f
+        if(binding.usernameField.text.isNullOrBlank()){
+            binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        }
     }
     private fun verifyUsername() {
        binding.usernameField.addTextChangedListener {

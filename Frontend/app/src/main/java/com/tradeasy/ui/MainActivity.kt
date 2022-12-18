@@ -108,4 +108,6 @@ class MainActivity : AppCompatActivity() {
         }
         deviceViewModel.getToken()
     }
+    // bottom nav view items on click listener
+
 }

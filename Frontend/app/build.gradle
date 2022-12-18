@@ -117,4 +117,6 @@ dependencies {
     implementation 'io.github.chaosleung:pinview:1.4.4'
     // Button progress indicator
     implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
+    // country code picker
+       implementation 'com.hbb20:ccp:2.5.0'
 }

@@ -26,6 +26,8 @@ class EditProfileFragment : Fragment() {
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
+// make this fragment a child of ProfileFragment
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +35,9 @@ class EditProfileFragment : Fragment() {
     ): View {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
+
+
+
 
         toolbar.text = "Edit profile"
         constraintsNavigation()
