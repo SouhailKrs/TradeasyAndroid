@@ -17,7 +17,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val getProductsForBid: GetProductsForBid) : ViewModel(){
     private val state = MutableStateFlow<HomeFragmentState>(HomeFragmentState.Init)
     val mState: StateFlow<HomeFragmentState> get() = state
-
+ val _isLoading = MutableStateFlow(true)
     private val products = MutableStateFlow<List<Product>>(mutableListOf())
     val mProducts: StateFlow<List<Product>> get() = products
 
@@ -40,6 +40,7 @@ class HomeViewModel @Inject constructor(private val getProductsForBid: GetProduc
 
      fun fetchProductsForBid(){
         viewModelScope.launch {
+            _isLoading.value = false
             getProductsForBid.invoke()
                 .onStart {
                     setLoading()
@@ -61,6 +62,7 @@ class HomeViewModel @Inject constructor(private val getProductsForBid: GetProduc
                 }
         }
     }
+
 
 }
 

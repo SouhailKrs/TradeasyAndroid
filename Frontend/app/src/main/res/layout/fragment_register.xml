@@ -12,8 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <!-- TODO: Update blank fragment layout -->
         <com.google.android.material.imageview.ShapeableImageView
@@ -37,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="70dp"
             android:fontFamily="@font/roboto_medium"
 
             android:text="Create an account"
@@ -70,11 +69,13 @@
                 android:id="@+id/usernameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_.QWERTZUIOPASDFGHJKLYXCVBNM
+"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Username"
+                android:maxLength="30"
                 android:singleLine="true"
                 android:textSize="11sp" />
-
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -102,7 +103,6 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="15dp"
-
             android:elevation="0dp"
             android:hint="Phone Number"
             app:boxBackgroundColor="@color/appBackground"
@@ -121,6 +121,7 @@
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Phone Number"
                 android:inputType="number"
+                android:maxLength="15"
                 android:singleLine="true"
                 android:textSize="11sp" />
 
@@ -150,6 +151,8 @@
                 android:id="@+id/emailField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_.@_QWERTZUIOPASDFGHJKLYXCVBNM
+"
                 android:fontFamily="@font/avenir_regular"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -327,10 +330,6 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 
 
 </ScrollView>

@@ -10,13 +10,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUiSaveStateControl
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.DeviceViewModel
 import com.tradeasy.databinding.ActivityMainBinding
-import com.tradeasy.ui.login.LoginFragment
-import com.tradeasy.ui.profile.ProfileFragment
+import com.tradeasy.ui.home.HomeViewModel
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,23 +27,26 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val deviceViewModel: DeviceViewModel by viewModels()
+private val viewModel: HomeViewModel by viewModels()
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-    private val profileFragment = ProfileFragment()
-    private val loginFragment = LoginFragment()
     private lateinit var binding: ActivityMainBinding
 
+    @OptIn(NavigationUiSaveStateControl::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+setKeepOnScreenCondition(viewModel._isLoading::value)
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         //  println("here   " + FirebaseMessageReceiver().getToken())
         //FirebaseMessageReceiver().getToken()
-
+        //requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val channel = NotificationChannel(
             "notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT
         )
@@ -67,9 +71,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val bottomNavView =
             findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView)
-        NavigationUI.setupWithNavController(bottomNavView, navController)
+        NavigationUI.setupWithNavController(bottomNavView, navController,false)
+// set selected item in bottom navigation bar to profile fragment
 
-
+        bottomNavView.setOnItemReselectedListener { item ->
+            // Pop everything up to the reselected item
+            val reselectedDestinationId = item.itemId
+            navController.popBackStack(reselectedDestinationId, inclusive = false)
+        }
         // START APP IN FULLSCREEN
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN

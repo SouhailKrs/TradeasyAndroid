@@ -1,6 +1,8 @@
 package com.tradeasy.ui.register
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
@@ -47,6 +51,7 @@ class RegisterFragment : Fragment() {
     ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
+        println(binding.countrycodePicker.detectLocaleCountry(false))
 // make the drawable spin
 println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
         return binding.root
@@ -69,6 +74,7 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
 
         registerBtnHandler()
         verifyUsername()
+
         usernameObserve()
         register()
         observe()
@@ -77,35 +83,36 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
     // REGISTER
     private fun register() {
         binding.registerButton.setOnClickListener {
-            val username = binding.usernameField.text.toString().trim()
-            val phoneNumber = binding.phoneNumberField.text.toString().trim()
-            val email = binding.emailField.text.toString().trim()
-            val password = binding.passwordField.text.toString().trim()
-            val notificationList = mutableListOf<Notification>()
-            if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
-                val user = User(
-                    username,
-                    phoneNumber.toInt(),
-                    email,
-                    password,
-                    "None",
-                    true,
-                    sharedPrefs.getNotificationToken(),
-                    null,
-                    null,
-                    0,
-                    binding.countrycodePicker.selectedCountryCodeWithPlus,
-                    ""
-                )
+            if (validate()) {
+                val username = binding.usernameField.text.toString().trim().lowercase()
+                val phoneNumber = binding.phoneNumberField.text.toString().trim()
+                val email = binding.emailField.text.toString().trim().lowercase()
+                val password = binding.passwordField.text.toString().trim()
+                val notificationList = mutableListOf<Notification>()
+                if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
+                    val user = User(
+                        username,
+                        phoneNumber.toInt(),
+                        email,
+                        password,
+                        "None",
+                        true,
+                        sharedPrefs.getNotificationToken(),
+                        null,
+                        null,
+                        0,
+                        binding.countrycodePicker.selectedCountryCodeWithPlus,
+                        ""
+                    )
 
-                // pass a value to notification list
+                    // pass a value to notification list
 
 
-                viewModel.userRegister(user)
+                    viewModel.userRegister(user)
+
+                }
 
             }
-
-
         }
     }
 
@@ -122,9 +129,12 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
             is UserRegisterActivityState.RegisterError -> handleRegisterError(state.rawResponse)
 
             is UserRegisterActivityState.RegisterSuccess -> handleRegisterSuccess(state.user)
-            is UserRegisterActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is UserRegisterActivityState.ShowToast -> {
+                Toast.makeText(
+                    requireActivity(), state.message, Toast.LENGTH_SHORT
+                ).show()
+                binding.registerButton.hideProgress("Login")
+            }
             is UserRegisterActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
@@ -135,18 +145,21 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
             setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
+                binding.registerButton.hideProgress("Login")
             }
         }.show()
     }
 
     // LOADING HANDLER
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
         binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
+        binding.registerButton.showProgress {
+
+// set progress indicator color to black
+            progressColor = Color.WHITE
+
+
+        }
     }
 
     // SUCCESS HANDLER
@@ -255,5 +268,34 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
     // add progress bar to username field
 
 
+private fun validate ():Boolean{
+var isValid = true
+    val username = binding.usernameField
+    val phoneNumber = binding.phoneNumberField
+    val email = binding.emailField
+    val password = binding.passwordField
+   // validate email
+    if(!Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches()){
+        email.error = "Invalid Email"
+        isValid = false
+    }
+    // validate phone number
+    if(!Patterns.PHONE.matcher(phoneNumber.text.toString()).matches()){
+        phoneNumber.error = "Invalid Phone Number"
+        isValid = false
+    }
+    // validate password
+    if(password.text.toString().length < 8){
+        password.error = "Password must be at least 8 characters"
+        isValid = false
+    }
+    // validate username
 
+    return isValid
+
+
+
+
+
+}
 }

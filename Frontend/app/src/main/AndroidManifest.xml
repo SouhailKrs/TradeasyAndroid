@@ -15,18 +15,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Tradeasy"
+        android:theme="@style/Theme.App.Starting"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.Tradeasy.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more.
@@ -46,20 +38,19 @@
             android:name=".ui.MainActivity"
             android:exported="true"
             android:resizeableActivity="true"
-            />
-        <activity
-            android:name=".ui.SplashScreenActivity"
-            android:exported="true">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.Starting"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
+        <meta-data
+            android:name="android.app.lib_name"
+            android:value="" />
+
 
         <service
             android:name=".services.FirebaseMessageReceiver"

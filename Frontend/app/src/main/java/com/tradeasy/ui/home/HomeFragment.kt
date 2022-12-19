@@ -155,7 +155,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun handleLoading(isLoading: Boolean) {
+     fun handleLoading(isLoading: Boolean) {
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{

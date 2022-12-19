@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tradeasy.R
 import com.tradeasy.databinding.FragmentEditProfileBinding
 import com.tradeasy.ui.navigation.editProfileToUpdateEmail
 import com.tradeasy.ui.navigation.editProfileToUpdatePassword
@@ -17,6 +16,7 @@ import com.tradeasy.ui.navigation.editProfileToUpdateUsername
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 
@@ -36,9 +36,7 @@ class EditProfileFragment : Fragment() {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
 
-
-
-
+// change selected item in bottom navigation bar to profile fragment
         toolbar.text = "Edit profile"
         constraintsNavigation()
 
@@ -56,11 +54,13 @@ class EditProfileFragment : Fragment() {
     override fun onResume() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         super.onResume()
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
+        view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.VISIBLE
 
 
@@ -90,6 +90,11 @@ class EditProfileFragment : Fragment() {
 
 
     }
+
+// pop this fragment from backstack when back button is pressed
+
+
+
 
 
 }

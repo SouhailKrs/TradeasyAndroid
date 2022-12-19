@@ -104,7 +104,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.0'
     // Image resize
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
-//denzel
+    //denzel
 
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
     // image picker dhaval
@@ -118,5 +118,6 @@ dependencies {
     // Button progress indicator
     implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
     // country code picker
-       implementation 'com.hbb20:ccp:2.5.0'
+    implementation 'com.hbb20:ccp:2.5.0'
+
 }

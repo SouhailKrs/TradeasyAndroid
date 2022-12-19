@@ -31,7 +31,9 @@ class ProfileFragment : Fragment() {
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val user = sharedPrefs.getUser()
-      
+      // always open profile fragment from bottom navigation bar
+
+
         setupToolbar()
         if (user == null) {
             fragmentSetupOffline()
