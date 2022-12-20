@@ -48,15 +48,9 @@ class HomeFragment : Fragment() {
     ): View {
         println("token " + sharedPrefs.getToken())
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-        toolbar.text = "Tradeasy"
-        val toolbarTxt: TextView =
-            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-        toolbarTxt.visibility = View.GONE
+        setupToolBar("Home")
 
         setupRecyclerView()
-
-
 
         observe()
 
@@ -155,7 +149,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-     fun handleLoading(isLoading: Boolean) {
+    fun handleLoading(isLoading: Boolean) {
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{
@@ -163,6 +157,19 @@ class HomeFragment : Fragment() {
 //        }
     }
 
+    fun setupToolBar(title: String, btnVisibility: Boolean = false) {
+        val toolbarBtn: TextView =
+            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        if (btnVisibility) {
+            toolbarBtn.visibility = View.GONE
+        } else {
+            toolbarBtn.visibility = View.VISIBLE
+        }
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
 
+        toolbar.text = title
+
+
+    }
 }
 

@@ -11,6 +11,7 @@ import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -248,6 +249,41 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
                 emit(BaseResult.Error(err))
 
 
+            }
+        }
+    }
+    override suspend fun uploadProfilePicture(
+
+        image: MultipartBody.Part,
+
+    ): Flow<BaseResult<User, WrappedResponse<User>>> {
+        return flow {
+            val response = api.uploadProfilePicApi(image)
+
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val user = User(
+                    body.data?.username!!,
+                    body.data?.phoneNumber!!,
+                    body.data?.email!!,
+                    body.data?.password!!,
+                    body.data?.profilePicture!!,
+                    body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notification!!,
+                    body.data?.savedProducts!!,
+                    body.data?.otp!!,
+                    body.data?.countryCode!!,
+                    body.token
+                )
+                emit(BaseResult.Success(user))
+            } else {
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<User>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
             }
         }
     }

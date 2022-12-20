@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.navigation.profileToLogin
+import com.tradeasy.utils.ImageLoader
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class ProfileFragment : Fragment() {
         val user = sharedPrefs.getUser()
       // always open profile fragment from bottom navigation bar
 
-
+println("here " + sharedPrefs.getUser()!!.profilePicture)
         setupToolbar()
         if (user == null) {
             fragmentSetupOffline()
@@ -122,6 +123,8 @@ class ProfileFragment : Fragment() {
         binding.username.visibility = View.VISIBLE
         binding.logoutConstraint.visibility = View.VISIBLE
         binding.profileSpacer.layoutParams.height = 200
+
+       ImageLoader(sharedPrefs.getUser()!!.profilePicture!!,binding.profilePicture)
         binding.editProfileBtn.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_editProfileFragment)
             val item = requireActivity().findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).menu.findItem(R.id.profileFragment)

@@ -119,5 +119,7 @@ dependencies {
     implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
     // country code picker
     implementation 'com.hbb20:ccp:2.5.0'
+// crop me
+    implementation 'com.github.takusemba:cropme:2.0.7'
 
 }

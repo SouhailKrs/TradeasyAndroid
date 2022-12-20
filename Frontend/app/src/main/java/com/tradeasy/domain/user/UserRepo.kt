@@ -5,6 +5,7 @@ import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 
 interface UserRepo {
 
@@ -20,12 +21,21 @@ interface UserRepo {
 
     // UPDATE USER USERNAME
     suspend fun updateUsername(req: UpdateUsernameReq): Flow<BaseResult<User, WrappedResponse<User>>>
+
     //forgot password
-    suspend fun forgotPassword(req: ForgotPasswordReq): Flow<BaseResult<String,WrappedResponse<String>>>
+    suspend fun forgotPassword(req: ForgotPasswordReq): Flow<BaseResult<String, WrappedResponse<String>>>
+
     //verify otp
-    suspend fun verifyOtp(req: VerifyOtpReq): Flow<BaseResult<String,WrappedResponse<String>>>
+    suspend fun verifyOtp(req: VerifyOtpReq): Flow<BaseResult<String, WrappedResponse<String>>>
+
     // Reset password
     suspend fun resetPassword(req: ResetPasswordReq): Flow<BaseResult<User, WrappedResponse<User>>>
+
     // Verify username
     suspend fun verifyUsername(req: UpdateUsernameReq): Flow<BaseResult<String, WrappedResponse<String>>>
+
+    // upload profile picture
+    suspend fun uploadProfilePicture(
+        image: MultipartBody.Part,
+        ): Flow<BaseResult<User, WrappedResponse<User>>>
 }

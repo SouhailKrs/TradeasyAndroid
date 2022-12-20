@@ -92,7 +92,9 @@ class AdditionalInfoFragment : Fragment() {
                 requireContext().contentResolver.getType(link!!)?.toMediaTypeOrNull()
             )
 
-
+println("hey 1 $imageFile")
+            println("hey 2 $link")
+            println("hey 3 $file")
             when (binding.bidDuration.text.toString().trim()) {
                 "1m" -> {
                     endTime = (currentTime + 60000)
@@ -114,7 +116,7 @@ class AdditionalInfoFragment : Fragment() {
             val forBid = MultipartBody.Part.createFormData("for_bid", bidState.toString())
             val bidEndDate = MultipartBody.Part.createFormData("bid_end_date", endTime.toString())
             println(currentTime)
-            println("BBB $endTime")
+            println("BBB $image")
             viewModel.addProduct(
                 category, name, description, price, image, quantity, forBid, bidEndDate
             )

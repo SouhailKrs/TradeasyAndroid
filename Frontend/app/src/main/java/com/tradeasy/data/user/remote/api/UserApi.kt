@@ -3,6 +3,7 @@ package com.tradeasy.data.user.remote.api
 import com.tradeasy.data.user.remote.dto.*
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.WrappedResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -38,4 +39,10 @@ interface UserApi {
  // Verify Username API
  @POST("/user/verifyusername")
  suspend fun verifyUsernameApi(@Body req: UpdateUsernameReq): Response<WrappedResponse<String>>
+ // upload profile pic
+    @Multipart
+    @POST("/user/uploadprofilepicture")
+    suspend fun uploadProfilePicApi(
+        @Part image: MultipartBody.Part
+    ): Response<WrappedResponse<User>>
 }

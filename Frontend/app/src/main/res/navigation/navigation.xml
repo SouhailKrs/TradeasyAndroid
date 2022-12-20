@@ -96,6 +96,9 @@
         <action
             android:id="@+id/action_editProfileFragment_to_updateEmailFragment"
             app:destination="@id/updateEmailFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_cropProfilePicFragment"
+            app:destination="@id/cropProfilePicFragment" />
     </fragment>
     <fragment
         android:id="@+id/updatePasswordFragment"
@@ -301,6 +304,14 @@
         <argument
             android:name="otp"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cropProfilePicFragment"
+        android:name="com.tradeasy.ui.editProfile.updateProfilePic.CropProfilePicFragment"
+        android:label="fragment_crop_profile_pic"
+        tools:layout="@layout/fragment_crop_profile_pic" >
+        <argument android:name="profilePic" />
+        <argument android:name="file" />
     </fragment>
 
 </navigation>
