@@ -15,15 +15,19 @@ buildscript {
     // activity ktx
     ext.activity_ktx_version = "1.2.3"
     ext.lifecycle_version = "2.4.0-alpha02"
-//jitpack
-    
+
     repositories {
         google()
         mavenCentral()
 
-
+    }
+    dependencies {
+        //safe args
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
+        classpath 'com.google.gms:google-services:4.3.14'
     }
 }
+
 
 
 plugins {

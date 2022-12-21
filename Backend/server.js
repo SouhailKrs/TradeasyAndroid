@@ -4,14 +4,11 @@ import morgan from "morgan";
 import cors from "cors";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-
-import { notFoundError, errorHandler } from "./middlewares/error-handler.js";
-
+import {errorHandler, notFoundError} from "./middlewares/error-handler.js";
 import userRoutes from "./routes/user.js";
 import categoryRoutes from "./routes/category.js";
 import productRoutes from "./routes/product.js";
 import bidRoutes from "./routes/bid.js";
-
 
 
 
@@ -21,32 +18,36 @@ const databaseName = "tradeasy";
 
 mongoose.set("debug", true);
 mongoose.Promise = global.Promise;
+
 const dbOnline = `mongodb+srv://funest:s63a95s96i99@bidcluster.fams2fx.mongodb.net/${databaseName}`;
 const dbOffline = `mongodb://0.0.0.0:27017/${databaseName}`;
 
 
-mongoose
-  .connect(dbOnline)
-  .then(() => {
-    console.log(`Connected to ${databaseName}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
+mongoose
+    .connect(dbOffline)
+    .then(() => {
+        console.log(`Connected to ${databaseName}`);
+    })
+    .catch((err) => {
+        console.log("erroe " + err);
+    });
+
+    // get image
+app.use('/img',express.static("public/images"));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 // user session
 app.use(cookieParser());
 app.use(
-  session({
-    secret: "secret",
-    saveUninitialized: true,
-    resave: true,
-  })
+    session({
+        secret: "secret",
+        saveUninitialized: true,
+        resave: true,
+    })
 );
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
@@ -58,5 +59,7 @@ app.use(notFoundError);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+    console.log(`Server running at http://localhost:${port}/`);
 });
+
+

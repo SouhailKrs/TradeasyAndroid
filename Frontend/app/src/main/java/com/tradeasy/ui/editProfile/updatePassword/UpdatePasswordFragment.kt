@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,8 +17,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentUpdatePasswordBinding
-import com.tradeasy.domain.model.UpdatePasswordRequest
-import com.tradeasy.domain.model.User
+import com.tradeasy.data.user.remote.dto.UpdatePasswordRequest
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -34,14 +34,19 @@ class UpdatePasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUpdatePasswordBinding.inflate(inflater, container, false)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
+        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
+        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        toolbarTxt.visibility = View.GONE
+        toolbar.text = "Update Password"
+
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
         view.rootView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
             View.VISIBLE
 
@@ -76,7 +81,7 @@ class UpdatePasswordFragment : Fragment() {
                 return@setOnClickListener
             }
             else{
-                val req = UpdatePasswordRequest(currentPassword,newPassword)
+                val req = UpdatePasswordRequest(currentPassword,newPassword,"")
                 viewModel.updatePassword(req)
             }
 

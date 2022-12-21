@@ -5,11 +5,11 @@ export function notFoundError(req, res, next) {
 };
 
 export function errorHandler(err, req, res, next) {
-    const token = req.cookies.accessToken;
+    const token = req.cookies.jwt;
     if(token){
         res.status(err.status || 500).json({
             message: err.message,
-            token: req.cookies.accessToken,
+            token: req.cookies.jwt,
         });
     }
     else{

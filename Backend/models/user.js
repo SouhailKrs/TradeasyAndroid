@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import notification from "./notification.js";
+
 const { Schema, model } = mongoose;
-
-
 
 const userSchema = new Schema(
   {
@@ -28,15 +28,29 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
-
     isVerified: {
       type: Boolean,
       default: false,
     },
-  
+    notificationToken: {
+      type: String,
+      required: false,
+    },
+    notifications: [notification.schema],
 
-
-
+    savedProducts: {
+      type: Array,
+      required: false,
+    },
+    otp: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    countryCode : {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

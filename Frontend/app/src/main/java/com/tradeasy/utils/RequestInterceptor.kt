@@ -6,11 +6,17 @@ import okhttp3.Response
 
 class RequestInterceptor constructor(private val pref: SharedPrefs) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = pref.getUser()
-        val newRequest = chain.request().newBuilder()
-            .addHeader("Authorization", token.toString())
-            .build()
-        println("1212 $newRequest")
-        return chain.proceed(newRequest)
+        val token = pref.getToken()
+        return if (token != null) {
+            val newRequest = chain.request().newBuilder()
+                .addHeader("jwt", token)
+                .build()
+            println("token: $newRequest")
+            chain.proceed(newRequest)
+        } else {
+            val newRequest = chain.request().newBuilder()
+                .build()
+            chain.proceed(newRequest)
+        }
     }
 }

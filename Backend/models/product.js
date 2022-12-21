@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
-import Category from "../models/category.js";
 const { Schema, model } = mongoose;
 
 const product = new Schema(
   {
-
     //poduct id
     product_id: {
-      type: mongoose.Schema.Types.ObjectId
+      type: mongoose.Schema.Types.ObjectId,
     },
 
     user_id: String,
@@ -29,21 +27,20 @@ const product = new Schema(
       type: Number,
       required: true,
     },
-    image: String,
+    image: {
+      type: String,
+      required: false,
+    },
 
     quantity: {
       type: Number,
       default: 1,
     },
-     added_date: { type: Number, default: new Date().getTime() },
-     bid_event: { type: Boolean, default:false},
-     start_bid: { type: Number, default: 0},
-     for_bid: { type: Boolean, default: false },
-    bid_end_date: { type: Number, default: new Date().getTime() },
-     bade: { type: Boolean, default: false },
+    added_date: { type: Number, default: new Date().getTime() },
+    for_bid: { type: Boolean, default: false },
+    bid_end_date: { type: Number },
+    bade: { type: Boolean, default: false },
     sold: { type: Boolean, default: false },
-   
-
   },
   {
     timestamps: true,
@@ -51,4 +48,3 @@ const product = new Schema(
 );
 
 export default model("Product", product);
-

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/forgotPasswordFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -25,13 +28,22 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
 
+            app:destination="@id/homeFragment"
+
+            />
+        <action
+            android:id="@+id/action_loginFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -43,7 +55,20 @@
             app:destination="@id/editProfileFragment" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
+
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_bidsFragment"
+            app:destination="@id/bidsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_purchasesFragment"
+            app:destination="@id/purchasesFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_pushNotificationsFragment"
+            app:destination="@id/pushNotificationsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_savedProductsFragment"
+            app:destination="@id/savedProductsFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -51,8 +76,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_homeFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -62,6 +87,15 @@
         <action
             android:id="@+id/action_editProfileFragment_to_updatePasswordFragment"
             app:destination="@id/updatePasswordFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_updateUsernameFragment"
+            app:destination="@id/updateUsernameFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_updatePnFragment"
+            app:destination="@id/updatePnFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_updateEmailFragment"
+            app:destination="@id/updateEmailFragment" />
     </fragment>
     <fragment
         android:id="@+id/updatePasswordFragment"
@@ -73,21 +107,200 @@
             app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.tradeasy.ui.notifications.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_notificationsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.tradeasy.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchDetailsFragment"
+            app:destination="@id/searchDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sellingFragment"
+        android:name="com.tradeasy.ui.selling.SellingFragment"
+        android:label="fragment_selling"
+        tools:layout="@layout/fragment_selling" >
+        <action
+            android:id="@+id/action_sellingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateUsernameFragment"
+        android:name="com.tradeasy.ui.editProfile.updateUsername.UpdateUsernameFragment"
+        android:label="fragment_update_username"
+        tools:layout="@layout/fragment_update_username" />
+    <fragment
+        android:id="@+id/updatePnFragment"
+        android:name="com.tradeasy.ui.editProfile.updatePn.UpdatePnFragment"
+        android:label="fragment_update_pn"
+        tools:layout="@layout/fragment_update_pn" />
+    <fragment
+        android:id="@+id/updateEmailFragment"
+        android:name="com.tradeasy.ui.editProfile.updateEmail.UpdateEmailFragment"
+        android:label="fragment_update_email"
+        tools:layout="@layout/fragment_update_email" />
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.tradeasy.ui.selling.product.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" >
+        <action
+            android:id="@+id/action_addProductFragment_to_additionalInfoFragment"
+            app:destination="@id/additionalInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeBidFragment"
+        android:name="com.tradeasy.ui.selling.bid.PlaceBidFragment"
+        android:label="fragment_bid"
+        tools:layout="@layout/fragment_place_bid" >
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <argument
+            android:name="bidTime"
+            app:argType="string" />
+        <argument
+            android:name="productPrice"
+            app:argType="float" />
+        <argument
+            android:name="forBid"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/purchasesFragment"
+        android:name="com.tradeasy.ui.profile.purchases.PurchasesFragment"
+        android:label="fragment_purchases"
+        tools:layout="@layout/fragment_purchases" />
+    <fragment
+        android:id="@+id/pushNotificationsFragment"
+        android:name="com.tradeasy.ui.profile.pushNotifications.PushNotificationsFragment"
+        android:label="fragment_push_notifications"
+        tools:layout="@layout/fragment_push_notifications" />
+    <fragment
+        android:id="@+id/bidsFragment"
+        android:name="com.tradeasy.ui.profile.bids.BidsFragment"
+        android:label="fragment_bids"
+        tools:layout="@layout/fragment_bids" />
+    <fragment
+        android:id="@+id/additionalInfoFragment"
+        android:name="com.tradeasy.ui.selling.product.AdditionalInfoFragment"
+        android:label="fragment_additional_info"
+        tools:layout="@layout/fragment_additional_info" >
+        <argument
+            android:name="prodName"
+            app:argType="string" />
+        <argument android:name="prodDesc"
+            app:argType="string" />
+        <argument android:name="prodCategory"
+            app:argType="string" />
+        <argument
+            android:name="prodPrice"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/productItemFragment"
+        android:name="com.tradeasy.ui.selling.product.item.ProductItemFragment"
+        android:label="fragment_product_item"
+        tools:layout="@layout/fragment_product_item" >
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productDesc"
+            app:argType="string" />
+        <argument
+            android:name="productCategory"
+            app:argType="string" />
+        <argument
+            android:name="productPrice"
+            app:argType="float" />
+        <argument
+            android:name="bidTime"
+            app:argType="string" />
+        <argument
+            android:name="productQuantity"
+            app:argType="integer" />
+        <argument
+            android:name="addedDate"
+            app:argType="string" />
+        <argument
+            android:name="forBid"
+            app:argType="boolean" />
+        <argument
+            android:name="bidEndDate"
+            app:argType="string" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_productItemFragment_to_placeBidFragment"
+            app:destination="@id/placeBidFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedProductsFragment"
+        android:name="com.tradeasy.ui.profile.saved.SavedProductsFragment"
+        android:label="fragment_saved_products"
+        tools:layout="@layout/fragment_saved_products" >
+        <action
+            android:id="@+id/action_savedProductsFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchDetailsFragment"
+        android:name="com.tradeasy.ui.search.details.SearchDetailsFragment"
+        android:label="fragment_search_details"
+        tools:layout="@layout/fragment_search_details" >
+        <argument
+            android:name="searchInput"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchDetailsFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.tradeasy.ForgotPasswordFragment"
+        android:name="com.tradeasy.ui.login.forgotPassword.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" >
         <action
-            android:id="@+id/action_forgotPasswordFragment_to_newPasswordFragment"
-            app:destination="@id/newPasswordFragment" />
+            android:id="@+id/action_forgotPasswordFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
     </fragment>
     <fragment
-        android:id="@+id/newPasswordFragment"
-        android:name="com.tradeasy.NewPasswordFragment"
-        android:label="fragment_new_password"
-        tools:layout="@layout/fragment_new_password" >
+        android:id="@+id/verifyOtpFragment"
+        android:name="com.tradeasy.ui.login.forgotPassword.verifyOtp.VerifyOtpFragment"
+        android:label="fragment_verify_otp"
+        tools:layout="@layout/fragment_verify_otp" >
         <action
-            android:id="@+id/action_newPasswordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_verifyOtpFragment_to_resetPassFragment"
+            app:destination="@id/resetPassFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/resetPassFragment"
+        android:name="com.tradeasy.ui.login.forgotPassword.resetPass.ResetPassFragment"
+        android:label="fragment_reset_pass"
+        tools:layout="@layout/fragment_reset_pass" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="otp"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
