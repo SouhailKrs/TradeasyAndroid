@@ -93,7 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Category"
-
+       android:focusable="false"
+            android:cursorVisible="false"
+            android:clickable="true"
+            android:drawableEnd="@drawable/edit_profile_btn_arrow_smaller"
             android:singleLine="false"
             android:textColor="@color/grey" />
 

@@ -29,8 +29,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
-    // private lateinit var newArrayList: ArrayList<Products>
     private lateinit var binding: FragmentHomeBinding
     lateinit var title: Array<String>
     lateinit var description: Array<String>
@@ -38,7 +36,6 @@ class HomeFragment : Fragment() {
     lateinit var categoryLayout1: LinearLayout
     lateinit var categoryLayout2: LinearLayout
     private val viewModel: HomeViewModel by viewModels()
-
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -113,7 +110,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+
+
+
         val mAdapter = ProductsForBid(mutableListOf(), onItemClick = {
+           // declare a mutable list of string
+          // array of string
+
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
+
+
+
             val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
 
                 it.name!!,
@@ -126,6 +133,12 @@ class HomeFragment : Fragment() {
                 it.forBid!!,
                 it.bidEndDate.toString(),
                 it.productId!!,
+                it.username!!,
+                it.userPhoneNumber!!,
+                it.userProfilePicture!!,
+                imagesArray
+
+
 
                 )
 
@@ -160,16 +173,10 @@ class HomeFragment : Fragment() {
     fun setupToolBar(title: String, btnVisibility: Boolean = false) {
         val toolbarBtn: TextView =
             requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-        if (btnVisibility) {
-            toolbarBtn.visibility = View.GONE
-        } else {
-            toolbarBtn.visibility = View.VISIBLE
-        }
+
+        toolbarBtn.visibility= if (btnVisibility) View.VISIBLE else View.GONE
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-
         toolbar.text = title
-
-
     }
 }
 

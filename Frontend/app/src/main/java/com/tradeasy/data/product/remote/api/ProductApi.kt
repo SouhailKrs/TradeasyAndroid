@@ -27,7 +27,7 @@ interface ProductApi {
         @Part name: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part price: MultipartBody.Part,
-        @Part image: MultipartBody.Part,
+        @Part image: List<MultipartBody.Part>,
         @Part quantity: MultipartBody.Part,
         @Part for_bid: MultipartBody.Part,
         @Part bid_end_date: MultipartBody.Part,

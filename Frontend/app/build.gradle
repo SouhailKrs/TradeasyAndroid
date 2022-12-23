@@ -88,6 +88,7 @@ dependencies {
 
     // Circular  progress bar
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+    implementation 'com.mikhaellopez:circularimageview:4.3.1'
 
     // Card view
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -105,7 +106,6 @@ dependencies {
     // Image resize
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
     //denzel
-
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
     // image picker dhaval
     implementation 'com.github.dhaval2404:imagepicker:1.8'
@@ -121,5 +121,8 @@ dependencies {
     implementation 'com.hbb20:ccp:2.5.0'
 // crop me
     implementation 'com.github.takusemba:cropme:2.0.7'
+// circle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 }

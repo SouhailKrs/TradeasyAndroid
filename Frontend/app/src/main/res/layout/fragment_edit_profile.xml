@@ -14,12 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:elevation="0dp"
-     app:cardElevation="0dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,17 +29,19 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/editProfilePicture"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="110dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="110dp"
                 android:adjustViewBounds="true"
                 android:background="#f8f4f4"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/no_profile_pic"
-                app:shapeAppearanceOverlay="@style/CornerCut"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/CornerCut"
+                app:srcCompat="@drawable/no_profile_pic" />
 
             <TextView
                 android:id="@+id/uploadPorfilePic"

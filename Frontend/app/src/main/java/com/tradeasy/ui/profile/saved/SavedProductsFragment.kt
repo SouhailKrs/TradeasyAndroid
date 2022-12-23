@@ -81,6 +81,7 @@ class SavedProductsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val mAdapter = SavedProductsAdapter(mutableListOf(), onItemClick = {
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
             val action =
                 SavedProductsFragmentDirections.actionSavedProductsFragmentToProductItemFragment(
                     it.name!!,
@@ -93,6 +94,10 @@ class SavedProductsFragment : Fragment() {
                     it.forBid!!,
                     it.bidEndDate.toString(),
                     it.productId!!,
+                    it.username!!,
+                    it.userPhoneNumber!!,
+                    it.userProfilePicture!!,
+                    imagesArray
                     )
 
             findNavController().navigate(action)

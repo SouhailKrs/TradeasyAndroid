@@ -94,6 +94,7 @@ class SellingFragment : Fragment() {
     }
     private fun setupRecyclerView() {
         val mAdapter = UserSellingAdapter(mutableListOf(), onItemClick = {
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
             val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
 
                 it.name!!,
@@ -106,6 +107,10 @@ class SellingFragment : Fragment() {
                 it.forBid!!,
                 it.bidEndDate.toString(),
                 it.productId!!,
+                it.username!!,
+                it.userPhoneNumber!!,
+                it.userProfilePicture!!,
+                imagesArray
 
                 )
 

@@ -51,7 +51,7 @@ class SavedProductsAdapter(
             binding.SavedProdCategory.text = product.category
             val productImage= binding.SavedProductImageView
 
-            ImageLoader(product.image!!,productImage)
+            ImageLoader(product.image!![0],productImage)
 
         }
 

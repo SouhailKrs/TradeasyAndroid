@@ -29,7 +29,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
         name: MultipartBody.Part,
         description: MultipartBody.Part,
         price: MultipartBody.Part,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         quantity: MultipartBody.Part,
         for_bid: MultipartBody.Part,
         bid_end_date: MultipartBody.Part,
@@ -60,6 +60,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                     body.data?.bidEndDate!!,
                     body.data?.bade!!,
                     body.data?.sold!!,
+                    body.data?.username!!,
+                    body.data?.userPhoneNumber!!,
+                    body.data?.userProfilePicture!!,
                     body.data?.productId!!
                 )
                 emit(BaseResult.Success(product))
@@ -118,6 +121,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.bidEndDate,
                             productResponse.bade,
                             productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
                             productResponse.productId
                         )
                     )
@@ -161,6 +167,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.bidEndDate,
                             productResponse.bade,
                             productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
                             productResponse.productId
                         )
                     )
@@ -234,6 +243,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.bidEndDate,
                             productResponse.bade,
                             productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
                             productResponse.productId
                         )
                     )
@@ -275,6 +287,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.bidEndDate,
                             productResponse.bade,
                             productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
                             productResponse.productId
                         )
                     )
@@ -313,6 +328,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                     body.data?.bidEndDate!!,
                     body.data?.bade!!,
                     body.data?.sold!!,
+                    body.data?.username!!,
+                    body.data?.userPhoneNumber!!,
+                    body.data?.userProfilePicture!!,
                     body.data?.productId!!
                 )
                 emit(BaseResult.Success(product))

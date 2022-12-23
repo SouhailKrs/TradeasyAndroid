@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentAddProductBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddProductFragment : Fragment(R.layout.fragment_add_product) {
     private lateinit var binding: FragmentAddProductBinding
+    private val args: AddProductFragmentArgs? by navArgs()
+
 
 
     override fun onCreateView(
@@ -27,8 +30,18 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+binding.productCategory.setOnClickListener {
+findNavController().navigate(R.id.categoriesFragment)
+}
+
+binding.productCategory.setText(args?.category)
+    
+
+
+
 
 binding.goToAdditionalInfo.setOnClickListener {
+
     goToAdditionalDetails()
         }
     }
@@ -51,7 +64,6 @@ private fun goToAdditionalDetails() {
 
 
     }
-
 
 
 

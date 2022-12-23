@@ -44,6 +44,7 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
         //  println("here   " + FirebaseMessageReceiver().getToken())
         //FirebaseMessageReceiver().getToken()
         //requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

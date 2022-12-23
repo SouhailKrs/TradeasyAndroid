@@ -42,7 +42,10 @@ class ProductsForBid(private val products: MutableList<Product>, val onItemClick
             binding.productNameTextView.text = product.name
             binding.productPriceTextView.text = product.price.toString()
             val productImage= binding.productImageView
-ImageLoader(product.image!!,productImage)
+            val imageList = product.image
+            // load all images in imageList
+
+ImageLoader(product.image!![0],productImage)
 
         }
 

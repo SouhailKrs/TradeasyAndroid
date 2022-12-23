@@ -24,7 +24,7 @@ interface ProductRepo {
         name: MultipartBody.Part,
         description: MultipartBody.Part,
         price: MultipartBody.Part,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         quantity: MultipartBody.Part,
         for_bid: MultipartBody.Part,
         bid_end_date: MultipartBody.Part,

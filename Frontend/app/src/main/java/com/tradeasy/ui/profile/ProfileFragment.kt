@@ -34,7 +34,6 @@ class ProfileFragment : Fragment() {
         val user = sharedPrefs.getUser()
       // always open profile fragment from bottom navigation bar
 
-println("here " + sharedPrefs.getUser()!!.profilePicture)
         setupToolbar()
         if (user == null) {
             fragmentSetupOffline()
@@ -124,7 +123,9 @@ println("here " + sharedPrefs.getUser()!!.profilePicture)
         binding.logoutConstraint.visibility = View.VISIBLE
         binding.profileSpacer.layoutParams.height = 200
 
-       ImageLoader(sharedPrefs.getUser()!!.profilePicture!!,binding.profilePicture)
+if(sharedPrefs.getUser()?.profilePicture!!.isNotEmpty()) {
+    ImageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.profilePicture)
+}
         binding.editProfileBtn.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_editProfileFragment)
             val item = requireActivity().findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).menu.findItem(R.id.profileFragment)

@@ -33,8 +33,9 @@ class AdditionalInfoFragment : Fragment() {
     private val viewModel: AddProductViewModel by viewModels()
     private val args: com.tradeasy.ui.selling.product.AdditionalInfoFragmentArgs by navArgs()
     private val requestGallery = 2121
-    private var file: File? = null
-    private var link: Uri? = null
+    private val file = mutableListOf<File>()
+
+    private val imageLink = mutableListOf<String>()
     private val images = mutableListOf<Uri>()
 
     override fun onCreateView(
@@ -45,21 +46,24 @@ class AdditionalInfoFragment : Fragment() {
         binding = FragmentAdditionalInfoBinding.inflate(inflater, container, false)
         addProduct()
         observe()
+
         return binding.root
     }
 
     // create a list of images
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupRecyclerView()
         binding.prodImagesRV.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.prodImagesRV.adapter = ProductImagesAdapter(mutableListOf())
+
         binding.uploadImage.setOnClickListener {
 
-            ImagePicker.with(this).start(requestGallery)
+   ImagePicker.with(this).start(requestGallery)
+
         }
-        // set image from url
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,9 +74,12 @@ class AdditionalInfoFragment : Fragment() {
                 //setImage(fileUri!!)
                 // binding.prodImagesRV.adapter = ProductImagesAdapter(fileUri!!)
                 ImagePicker.getFile(data)?.let {
-                    file = it
-                    link = fileUri
+                    file.add(it)
+                    imageLink.add(fileUri.toString())
                 }
+                images.add(fileUri!!)
+                binding.prodImagesRV.adapter = ProductImagesAdapter(images)
+
             }
         }
     }
@@ -84,17 +91,20 @@ class AdditionalInfoFragment : Fragment() {
         val currentTime = System.currentTimeMillis()
         var endTime: Long = 0
 
-
+//        file.map {
+//            MultipartBody.Part.createFormData(
+//                "image",
+//                it.name,
+//                it.asRequestBody("image/*".toMediaTypeOrNull())
+//            )
+//        }
         binding.addProduct.setOnClickListener {
 
             val bidState: Boolean = binding.forBid.isChecked
-            val imageFile = file?.asRequestBody(
-                requireContext().contentResolver.getType(link!!)?.toMediaTypeOrNull()
-            )
+// send images to server as a list
+            val imageList = mutableListOf<MultipartBody.Part>()
 
-println("hey 1 $imageFile")
-            println("hey 2 $link")
-            println("hey 3 $file")
+
             when (binding.bidDuration.text.toString().trim()) {
                 "1m" -> {
                     endTime = (currentTime + 60000)
@@ -111,7 +121,14 @@ println("hey 1 $imageFile")
             val name = MultipartBody.Part.createFormData("name", args.prodName)
             val description = MultipartBody.Part.createFormData("description", args.prodDesc)
             val price = MultipartBody.Part.createFormData("price", args.prodPrice)
-            val image = MultipartBody.Part.createFormData("image", file?.name, imageFile!!)
+            val image =
+                file.map {
+                    MultipartBody.Part.createFormData(
+                        "image",
+                        it.name,
+                        it.asRequestBody("image/*".toMediaTypeOrNull())
+                    )
+                }
             val quantity = MultipartBody.Part.createFormData("quantity", 0.toString())
             val forBid = MultipartBody.Part.createFormData("for_bid", bidState.toString())
             val bidEndDate = MultipartBody.Part.createFormData("bid_end_date", endTime.toString())
@@ -126,27 +143,6 @@ println("hey 1 $imageFile")
     }
 
 
-//    private val startForResultOpenGallery =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                if (result.resultCode == requestGallery && result.data != null) {
-//                    ImagePicker.getFile(result.data)?.let {
-//                        file = it
-//                        selectedImageUri = result.data?.data
-//                        println("file is $file")
-//                        images.add(selectedImageUri!!)
-//                        binding.prodImagesRV.adapter = ProductImagesAdapter(images)
-//                    }
-//                }
-//            }
-//        }
-//
-//    private fun openGallery() {
-//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-//        intent.type = "image/*"
-//        startForResultOpenGallery.launch(intent)
-//
-//    }
 
     private fun setupRecyclerView() {
         val mAdapter = ProductImagesAdapter(mutableListOf())

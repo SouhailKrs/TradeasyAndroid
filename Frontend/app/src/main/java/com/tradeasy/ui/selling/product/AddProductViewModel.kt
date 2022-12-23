@@ -37,14 +37,15 @@ class AddProductViewModel @Inject constructor(
         state.value = AddProductFragmentSate.SuccessCreate
     }
 
-    fun addProduct(category: MultipartBody.Part,
-                   name: MultipartBody.Part,
-                   description: MultipartBody.Part,
-                   price: MultipartBody.Part,
-                   image: MultipartBody.Part,
-                   quantity: MultipartBody.Part,
-                   for_bid: MultipartBody.Part,
-                   bid_end_date: MultipartBody.Part,){
+    fun addProduct(
+        category: MultipartBody.Part,
+        name: MultipartBody.Part,
+        description: MultipartBody.Part,
+        price: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
+        quantity: MultipartBody.Part,
+        for_bid: MultipartBody.Part,
+        bid_end_date: MultipartBody.Part,){
         viewModelScope.launch {
             addProductsUseCase.invoke(category,name,description,price, image, quantity, for_bid, bid_end_date)
                 .onStart {
