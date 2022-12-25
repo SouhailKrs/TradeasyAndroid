@@ -1,7 +1,9 @@
 package com.tradeasy.ui.selling.product
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +19,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.razir.progressbutton.showProgress
+import com.google.android.material.snackbar.Snackbar
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentAdditionalInfoBinding
+import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment
+import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,23 +33,25 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class AdditionalInfoFragment : Fragment() {
     private lateinit var binding: FragmentAdditionalInfoBinding
     private val viewModel: AddProductViewModel by viewModels()
-    private val args: com.tradeasy.ui.selling.product.AdditionalInfoFragmentArgs by navArgs()
+    private val args: AdditionalInfoFragmentArgs by navArgs()
     private val requestGallery = 2121
     private val file = mutableListOf<File>()
-
+    private val bidChoicesFragment = BidChoicesFragment()
     private val imageLink = mutableListOf<String>()
     private val images = mutableListOf<Uri>()
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         // Inflate the layout for this fragment
         binding = FragmentAdditionalInfoBinding.inflate(inflater, container, false)
         addProduct()
@@ -53,17 +63,22 @@ class AdditionalInfoFragment : Fragment() {
     // create a list of images
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        goToBidChoices()
         setupRecyclerView()
-        binding.prodImagesRV.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.prodImagesRV.adapter = ProductImagesAdapter(mutableListOf())
-
+        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+        bidDurationState()
         binding.uploadImage.setOnClickListener {
 
-   ImagePicker.with(this).start(requestGallery)
+            ImagePicker.with(this).start(requestGallery)
 
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+        binding.bidDuration.setText(sharedPrefs.getBidDuration())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -84,64 +99,72 @@ class AdditionalInfoFragment : Fragment() {
         }
     }
 
-    private fun addProduct() {
+    private fun goToBidChoices() {
+        binding.bidDuration.setOnClickListener {
+            findNavController().navigate(R.id.action_additionalInfoFragment_to_bidChoicesFragment)
 
+        }
+    }
+
+    private fun addProduct() {
 
         // get current time kotlin in mills
         val currentTime = System.currentTimeMillis()
         var endTime: Long = 0
+var test : String = ""
 
-//        file.map {
-//            MultipartBody.Part.createFormData(
-//                "image",
-//                it.name,
-//                it.asRequestBody("image/*".toMediaTypeOrNull())
-//            )
-//        }
         binding.addProduct.setOnClickListener {
+            if (sharedPrefs.getBidDuration() == null) {
 
-            val bidState: Boolean = binding.forBid.isChecked
+                AlertDialog.Builder(requireContext())
+                    .setMessage("Please select bid duration")
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            } else {
+                val bidState: Boolean = binding.forBid.isChecked
 // send images to server as a list
-            val imageList = mutableListOf<MultipartBody.Part>()
+                val imageList = mutableListOf<MultipartBody.Part>()
 
 
-            when (binding.bidDuration.text.toString().trim()) {
-                "1m" -> {
-                    endTime = (currentTime + 60000)
+                when (sharedPrefs.getBidDuration()) {
+                    "1 Hour" -> {
 
+                        endTime = currentTime + 3600000
+
+                    }
+                    "1 Day" -> {
+                        endTime = (currentTime + 86400000)
+                    }
+                    "1 Week" -> {
+                        endTime = (currentTime + 604800000)
+                    }
                 }
-                "1d" -> {
-                    endTime = (currentTime + 86400000)
-                }
-                "1w" -> {
-                    endTime = (currentTime + 604800000)
-                }
-            }
-            val category = MultipartBody.Part.createFormData("category", args.prodCategory)
-            val name = MultipartBody.Part.createFormData("name", args.prodName)
-            val description = MultipartBody.Part.createFormData("description", args.prodDesc)
-            val price = MultipartBody.Part.createFormData("price", args.prodPrice)
-            val image =
-                file.map {
+                val category = MultipartBody.Part.createFormData(
+                    "category", sharedPrefs.getProdCategory()!!
+                )
+                val name = MultipartBody.Part.createFormData("name", args.prodName)
+                val description = MultipartBody.Part.createFormData("description", args.prodDesc)
+                val price = MultipartBody.Part.createFormData("price", args.prodPrice)
+                val image = file.map {
                     MultipartBody.Part.createFormData(
-                        "image",
-                        it.name,
-                        it.asRequestBody("image/*".toMediaTypeOrNull())
+                        "image", it.name, it.asRequestBody("image/*".toMediaTypeOrNull())
                     )
                 }
-            val quantity = MultipartBody.Part.createFormData("quantity", 0.toString())
-            val forBid = MultipartBody.Part.createFormData("for_bid", bidState.toString())
-            val bidEndDate = MultipartBody.Part.createFormData("bid_end_date", endTime.toString())
-            println(currentTime)
-            println("BBB $image")
-            viewModel.addProduct(
-                category, name, description, price, image, quantity, forBid, bidEndDate
-            )
+                val quantity = MultipartBody.Part.createFormData("quantity", 0.toString())
+                val forBid = MultipartBody.Part.createFormData("for_bid", bidState.toString())
+                val bidEndDate =
+                    MultipartBody.Part.createFormData("bid_end_date", endTime.toString())
+                println(currentTime)
+                println("BBB $image")
+                viewModel.addProduct(
+                    category, name, description, price, image, quantity, forBid, bidEndDate
+                )
 
+            }
         }
-
     }
-
 
 
     private fun setupRecyclerView() {
@@ -173,8 +196,13 @@ class AdditionalInfoFragment : Fragment() {
         when (state) {
             is AddProductFragmentSate.IsLoading -> handleLoading(state.isLoading)
             is AddProductFragmentSate.SuccessCreate -> {
+                Snackbar.make(
+                    binding.root,
+                    "Product added successfully",
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 setResultOkToPreviousFragment()
-                findNavController().navigateUp()
+                findNavController().navigate(R.id.sellingFragment)
             }
             is AddProductFragmentSate.ShowToast -> {
                 println(state.message)
@@ -188,7 +216,19 @@ class AdditionalInfoFragment : Fragment() {
 
 
     private fun handleLoading(isLoading: Boolean) {
-        //   binding.saveButton.isEnabled = !isLoading
+        binding.addProduct.isEnabled = !isLoading
+        binding.addProduct.showProgress {
+            progressColor = Color.WHITE
+        }
+    }
+    private fun bidDurationState() {
+binding.bidDurationField.visibility= View.GONE
+binding.forBid.setOnCheckedChangeListener { _, isChecked ->
+    binding.bidDurationField.visibility= if (isChecked) View.VISIBLE else View.GONE
+    if(!isChecked){
+      sharedPrefs.clearBidDuration()
+        binding.bidDuration.setText("Category")
+    }
     }
 
-}
+}}

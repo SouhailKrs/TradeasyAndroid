@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentSellingBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.ui.home.HomeFragmentDirections
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.home.SellingFragmentState
-import com.tradeasy.ui.home.UserSellingAdapter
 import com.tradeasy.ui.home.UserSellingViewModel
+import com.tradeasy.ui.selling.userSelling.UserSellingAdapter
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -38,7 +38,7 @@ class SellingFragment : Fragment() {
     ): View {
 
         binding = FragmentSellingBinding.inflate(inflater, container, false)
-
+        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
         if(sharedPrefs.getUser() == null ){
 
             findNavController().navigate(R.id.loginFragment)
@@ -54,11 +54,15 @@ class SellingFragment : Fragment() {
         return binding.root
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+sharedPrefs.clearBidDuration()
+        sharedPrefs.clearProdCategory()
 
 
     }
@@ -95,7 +99,7 @@ class SellingFragment : Fragment() {
     private fun setupRecyclerView() {
         val mAdapter = UserSellingAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-            val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
+            val action = SellingFragmentDirections.actionSellingFragmentToProductItemFragment(
 
                 it.name!!,
                 it.description!!,

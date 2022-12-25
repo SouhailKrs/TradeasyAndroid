@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.home.forBid.ProductsForBid
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,9 +44,9 @@ class HomeFragment : Fragment() {
 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        println("token " + sharedPrefs.getToken())
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        setupToolBar("Home")
+        (activity as MainActivity?)?.setupToolBar("Home", false, false)
 
         setupRecyclerView()
 
@@ -60,6 +61,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity?)?.setupToolBar("Home", false, false)
+    }
 //    private fun getUserData() {
 //        for (i in imageId.indices) {
 //            val products = Products(title[i],description[i],price[i],imageId[i])
@@ -171,10 +176,7 @@ class HomeFragment : Fragment() {
     }
 
     fun setupToolBar(title: String, btnVisibility: Boolean = false) {
-        val toolbarBtn: TextView =
-            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
 
-        toolbarBtn.visibility= if (btnVisibility) View.VISIBLE else View.GONE
         val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
         toolbar.text = title
     }

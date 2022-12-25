@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -119,5 +120,9 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         deviceViewModel.getToken()
     }
     // bottom nav view items on click listener
-
+fun setupToolBar(title: String, doneVisibility: Boolean,progressVisibility: Boolean) {
+        binding.toolbar.toolbarTitle.text = title
+        binding.toolbar.toolbarRightText.visibility = if (doneVisibility) View.VISIBLE else View.GONE
+        binding.toolbar.progressBar.visibility = if (progressVisibility) View.VISIBLE else View.GONE
+    }
 }

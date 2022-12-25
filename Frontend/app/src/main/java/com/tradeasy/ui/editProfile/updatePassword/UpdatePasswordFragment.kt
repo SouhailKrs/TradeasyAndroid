@@ -1,5 +1,6 @@
 package com.tradeasy.ui.editProfile.updatePassword
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentUpdatePasswordBinding
 import com.tradeasy.data.user.remote.dto.UpdatePasswordRequest
+import com.tradeasy.databinding.FragmentUpdatePasswordBinding
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -119,13 +121,12 @@ class UpdatePasswordFragment : Fragment() {
 
     // IF LOGGING IN IS LOADING
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+binding.updatePasswordBtn.showProgress {
+
+        progressColor = Color.WHITE
+
+
+}
     }
 
     // IF LOGGED IN SUCCESSFULLY
@@ -133,6 +134,6 @@ class UpdatePasswordFragment : Fragment() {
 
         //sncakbar
         Snackbar.make(requireView(), "Password Updated Successfully", Snackbar.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
+        findNavController().navigateUp()
     }
 }

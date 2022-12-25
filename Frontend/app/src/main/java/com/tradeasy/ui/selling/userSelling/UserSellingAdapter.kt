@@ -1,4 +1,4 @@
-package com.tradeasy.ui.home
+package com.tradeasy.ui.selling.userSelling
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -37,10 +37,9 @@ class UserSellingAdapter(private val products: MutableList<Product>, val onItemC
     class MyViewHolder(val binding : UserSellingItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-
-            binding.userSellingName.text = product.name
-            binding.userSellingPrice.text = product.price.toString()
-            val productImage= binding.userSellingImg
+            binding.prodTitle.text = product.name
+            binding.prodPrice.text = product.price.toString()
+            val productImage= binding.prodImg
 
             ImageLoader(product.image!![0],productImage)
 

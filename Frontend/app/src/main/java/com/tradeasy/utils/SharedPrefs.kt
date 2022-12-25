@@ -13,6 +13,8 @@ class SharedPrefs(private val context: Context) {
         private const val PREF_USER = "TRADEASY_USER"
         private const val PREF_TOKEN = "USER_TOKEN"
         private const val PREF_NOTIFICATION_TOKEN = "NOTIFICATION_TOKEN"
+        private const val PREF_BID_DURATION = "BID_DURATION"
+        private const val PREF_PROD_CATEGORY = "PROD_CATEGORY"
 
     }
 
@@ -41,6 +43,18 @@ class SharedPrefs(private val context: Context) {
     fun setNotificationToken(token: String) {
         sharedPref.edit().putString(PREF_NOTIFICATION_TOKEN, token).apply()
     }
+    fun getBidDuration(): String? {
+        return sharedPref.getString(PREF_BID_DURATION, null)
+    }
+    fun setBidDuration(category: String) {
+        sharedPref.edit().putString(PREF_BID_DURATION, category).apply()
+    }
+    fun getProdCategory(): String? {
+        return sharedPref.getString(PREF_PROD_CATEGORY, null)
+    }
+    fun setProdCategory(category: String) {
+        sharedPref.edit().putString(PREF_PROD_CATEGORY, category).apply()
+    }
 
     private fun <T> get(key: String, clazz: Class<T>): T = when (clazz) {
         String::class.java -> sharedPref.getString(key, "")
@@ -64,9 +78,14 @@ class SharedPrefs(private val context: Context) {
         }
         editor.apply()
     }
-
-    fun clear() {
-        sharedPref.edit().clear().apply()
+fun clearBidDuration() {
+        sharedPref.edit().remove(PREF_BID_DURATION).apply()
+    }
+    fun clearProdCategory() {
+        sharedPref.edit().remove(PREF_PROD_CATEGORY).apply()
+    }
+fun clearUser() {
+        sharedPref.edit().remove(PREF_USER).apply()
     }
 
 

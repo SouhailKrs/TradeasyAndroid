@@ -26,7 +26,25 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                android:id="@+id/circularProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="-5dp"
+                android:layout_marginTop="-5dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_marginBottom="-5dp"
 
+                app:cpb_background_progressbar_color="@color/black"
+                app:cpb_background_progressbar_width="5dp"
+                app:cpb_progress_direction="to_right"
+                app:cpb_progressbar_color="@color/black"
+                app:cpb_progressbar_width="13dp"
+                app:cpb_round_border="true"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfilePicture"
+                app:layout_constraintEnd_toEndOf="@+id/editProfilePicture"
+                app:layout_constraintStart_toStartOf="@+id/editProfilePicture"
+                app:layout_constraintTop_toTopOf="@+id/editProfilePicture" />
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/editProfilePicture"
                 android:layout_width="0dp"

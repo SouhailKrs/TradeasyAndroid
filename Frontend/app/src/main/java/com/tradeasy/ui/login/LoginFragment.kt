@@ -86,7 +86,7 @@ class LoginFragment : Fragment() {
                     1,
                     "",
                     password,
-                    "None",
+                    null,
                     true,
                     sharedPrefs.getNotificationToken(),
                     null,

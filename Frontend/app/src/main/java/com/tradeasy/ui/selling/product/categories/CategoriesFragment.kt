@@ -15,15 +15,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.databinding.FragmentCategoriesBinding
 import com.tradeasy.domain.category.entity.Category
+import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CategoriesFragment : Fragment() {
 
 private lateinit var binding:  FragmentCategoriesBinding
     private val viewModel: CategoriesViewModel by viewModels()
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,11 +83,10 @@ private lateinit var binding:  FragmentCategoriesBinding
         val mAdapter = CategoriesAdapter(mutableListOf(), onItemClick = {
 
 
-
-            val action = CategoriesFragmentDirections.actionCategoriesFragmentToAddProductFragment().setCategory(it.name)
-
-            findNavController().navigate(action)
-
+            sharedPrefs.setProdCategory(it.name!!)
+            println("éééé ${it.name}")
+            println("aaaa " + sharedPrefs.getProdCategory())
+            findNavController().navigateUp()
         })
 
 
@@ -109,5 +113,6 @@ private lateinit var binding:  FragmentCategoriesBinding
 //            binding.loadingProgressBar.gone()
 //        }
     }
+// a function that takes a string and returns a string
 
 }

@@ -8,6 +8,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/prodCardView"
         android:layout_width="160dp"
         android:layout_height="180dp"
         android:layout_marginStart="5dp"
@@ -31,14 +32,15 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/userSellingImg"
-                android:layout_width="0dp"
+                android:id="@+id/prodImg"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="40dp"
                 android:maxWidth="40dp"
                 android:maxHeight="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/prodTitle"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +48,7 @@
                 app:srcCompat="@drawable/screenshot_20221206_224435" />
 
             <TextView
-                android:id="@+id/userSellingName"
+                android:id="@+id/prodTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -60,10 +62,10 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userSellingImg" />
+                app:layout_constraintTop_toBottomOf="@+id/prodImg" />
 
             <TextView
-                android:id="@+id/userSellingPrice"
+                android:id="@+id/prodPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -72,8 +74,8 @@
                 android:textSize="15dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/userSellingName"
-                app:layout_constraintTop_toBottomOf="@+id/userSellingName" />
+                app:layout_constraintStart_toStartOf="@+id/prodTitle"
+                app:layout_constraintTop_toBottomOf="@+id/prodTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

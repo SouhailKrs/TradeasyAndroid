@@ -1,8 +1,10 @@
 package com.tradeasy.domain.user
 
 import com.tradeasy.data.user.remote.dto.*
+import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.BaseResult
+import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -38,4 +40,7 @@ interface UserRepo {
     suspend fun uploadProfilePicture(
         image: MultipartBody.Part,
         ): Flow<BaseResult<User, WrappedResponse<User>>>
+suspend fun deleteAccount():Flow<BaseResult<String, WrappedResponse<String>>>
+suspend fun getUserNotifications(): Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>>
 }
+// get user notifications

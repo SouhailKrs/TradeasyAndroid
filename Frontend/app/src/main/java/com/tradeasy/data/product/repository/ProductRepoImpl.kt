@@ -202,7 +202,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                     body.data?.profilePicture!!,
                     body.data?.isVerified!!,
                     body.data?.notificationToken!!,
-                    body.data?.notification!!,
+                    body.data?.notifications!!,
                     body.data?.savedProducts!!,
                     body.data?.otp!!,
                     body.data?.countryCode!!,

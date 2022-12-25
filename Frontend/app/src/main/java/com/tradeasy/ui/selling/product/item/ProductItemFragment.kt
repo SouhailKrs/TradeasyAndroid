@@ -26,26 +26,28 @@ import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.home.buyNow.BuyNowActivityState
 import com.tradeasy.ui.home.buyNow.BuyNowViewModel
 import com.tradeasy.utils.ImageLoader
+import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ProductItemFragment : Fragment() {
-
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     private lateinit var binding: FragmentProductItemBinding
     private val viewModel: AddToSavedViewModel by viewModels()
     private val buyNowViewModel: BuyNowViewModel by viewModels()
     private val args: com.tradeasy.ui.selling.product.item.ProductItemFragmentArgs by navArgs()
-    var PERMISSION_CODE = 100
+    private var PERMISSION_CODE = 100
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductItemBinding.inflate(inflater, container, false)
 
-        println("Zezdzdzdz ${args.image[1]}")
         return binding.root
     }
 
@@ -71,7 +73,11 @@ class ProductItemFragment : Fragment() {
         // get the percentage of the difference between height and width
         binding.sellerProfilePicture.layoutParams.height = height/17
         binding.sellerProfilePicture.layoutParams.width = ((height/17)* difference)
-
+binding.goToPlaceBidBtn.visibility = if(args.forBid) View.VISIBLE else View.GONE
+        binding.goToPlaceBidBtn.setOnClickListener {
+            val action = ProductItemFragmentDirections.actionProductItemFragmentToPlaceBidFragment(args.productId,args.bidTime,args.productPrice,args.forBid)
+            findNavController().navigate(action)
+        }
         binding.apply {
             val imageList = ArrayList<SlideModel>()
             for (i in args.image.indices) {
@@ -82,10 +88,16 @@ class ProductItemFragment : Fragment() {
             productName.text = args.productName
             productPrice.text = args.productPrice.toString() + " TND"
             sellerUsername.text = args.username
-            ImageLoader(args.userProfilePicture, sellerProfilePicture)
+
+            if (!sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
+                ImageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.sellerProfilePicture)
+            } else if (sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
+                binding.sellerProfilePicture.setImageResource(com.tradeasy.R.drawable.default_profile_picture)
+            }
             sellerPhoneNumber.text=args.userPhoneNumber
         }
             makePhoneCall()
+
 
     }
 

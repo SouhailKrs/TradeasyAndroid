@@ -4,57 +4,58 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import com.tradeasy.R
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.tradeasy.databinding.FragmentBidChoicesBinding
+import com.tradeasy.ui.selling.product.AdditionalInfoFragmentArgs
+import com.tradeasy.utils.SharedPrefs
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BidChoicesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class BidChoicesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentBidChoicesBinding
+    private val args: AdditionalInfoFragmentArgs? by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bid_choices, container, false)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBidChoicesBinding.inflate(inflater, container, false)
+        val arrayAdapter: ArrayAdapter<*>
+        val bidChoices = arrayOf(
+            "1 Hour", "1 Day", "1 Week"
+        )
+
+        // access the listView from xml file
+        arrayAdapter = ArrayAdapter(
+            requireContext(), android.R.layout.simple_list_item_1, bidChoices
+        )
+        getSelectedItem()
+        binding.bidList.adapter = arrayAdapter
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BidChoicesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BidChoicesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    // fucntion to get the selected item from the list
+    private fun getSelectedItem()   {
+
+        binding.bidList.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+sharedPrefs.setBidDuration(selectedItem)
+
+findNavController().navigateUp()
+
+        }
+
     }
+
+
+
+
 }

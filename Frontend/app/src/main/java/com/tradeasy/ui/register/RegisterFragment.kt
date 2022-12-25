@@ -95,7 +95,7 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
                         phoneNumber.toInt(),
                         email,
                         password,
-                        "None",
+                        null,
                         true,
                         sharedPrefs.getNotificationToken(),
                         null,

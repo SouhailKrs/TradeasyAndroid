@@ -1,7 +1,9 @@
 package com.tradeasy.data.user.remote.api
 
 import com.tradeasy.data.user.remote.dto.*
+import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
+import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -45,4 +47,11 @@ interface UserApi {
     suspend fun uploadProfilePicApi(
         @Part image: MultipartBody.Part
     ): Response<WrappedResponse<User>>
+    // delete account
+    @POST("/user/deleteaccount")
+    suspend fun deleteAccountApi(): Response<WrappedResponse<String>>
+    // get user notifications
+    @GET("/user/getnotifications")
+    suspend fun getUserNotificationsApi(): Response<WrappedListResponse<Notification>>
+
 }

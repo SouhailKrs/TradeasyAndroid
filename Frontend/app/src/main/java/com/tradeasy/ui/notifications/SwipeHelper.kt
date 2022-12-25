@@ -2,6 +2,7 @@ package com.tradeasy.ui.notifications
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.util.DisplayMetrics
 import android.view.MotionEvent
@@ -144,10 +145,10 @@ abstract class SwipeHelper(
         private var clickableRegion: RectF? = null
 // the delete button zone
 private val displayMetrics = DisplayMetrics()
-        val width = displayMetrics.widthPixels
-        val height = displayMetrics.heightPixels
 
-        private val horizontalPadding = 100.0f
+        var width = Resources.getSystem().displayMetrics.widthPixels
+
+        private val horizontalPadding = width / 10
         val intrinsicWidth: Float
 
         init {
@@ -156,7 +157,7 @@ private val displayMetrics = DisplayMetrics()
             paint.textAlign = Paint.Align.LEFT
             val titleBounds = Rect()
 
-            intrinsicWidth = titleBounds.width() + 2 * horizontalPadding
+            intrinsicWidth = (titleBounds.width() + 2.5 * horizontalPadding).toFloat()
         }
 
         fun draw(canvas: Canvas, rect: RectF) {

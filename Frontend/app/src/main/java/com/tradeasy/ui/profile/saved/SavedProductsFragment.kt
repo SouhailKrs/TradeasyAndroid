@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.databinding.FragmentSavedProductsBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -37,7 +38,7 @@ class SavedProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-
+        (activity as MainActivity?)?.setupToolBar("Saved", false, false)
         observe()
         setFragmentResultListener("success_create") { _, bundle ->
             if (bundle.getBoolean("success_create")) {

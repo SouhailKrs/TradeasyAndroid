@@ -8,8 +8,9 @@
 
 
     <ListView
+        android:id="@+id/bidList"
         android:layout_width="0dp"
-        android:layout_height="849dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"

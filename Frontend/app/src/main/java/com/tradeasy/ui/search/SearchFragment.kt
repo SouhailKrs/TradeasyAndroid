@@ -18,9 +18,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.data.product.remote.dto.SearchReq
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -61,6 +61,11 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // show toolbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
     private fun setupRecyclerView() {
         val mAdapter = SearchAdapter(mutableListOf(), onItemClick = {
 val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragment(

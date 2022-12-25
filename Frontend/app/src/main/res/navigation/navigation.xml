@@ -138,6 +138,9 @@
         <action
             android:id="@+id/action_sellingFragment_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateUsernameFragment"
@@ -165,11 +168,6 @@
         <action
             android:id="@+id/action_addProductFragment_to_categoriesFragment"
             app:destination="@id/categoriesFragment" />
-        <argument
-            android:name="category"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="Category" />
     </fragment>
     <fragment
         android:id="@+id/placeBidFragment"
@@ -214,11 +212,12 @@
             app:argType="string" />
         <argument android:name="prodDesc"
             app:argType="string" />
-        <argument android:name="prodCategory"
-            app:argType="string" />
         <argument
             android:name="prodPrice"
             app:argType="string" />
+        <action
+            android:id="@+id/action_additionalInfoFragment_to_bidChoicesFragment"
+            app:destination="@id/bidChoicesFragment" />
     </fragment>
     <fragment
         android:id="@+id/productItemFragment"
@@ -345,6 +344,26 @@
         android:id="@+id/bidChoicesFragment"
         android:name="com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment"
         android:label="fragment_bid_choices"
-        tools:layout="@layout/fragment_bid_choices" />
+        tools:layout="@layout/fragment_bid_choices" >
+        <action
+            android:id="@+id/action_bidChoicesFragment_to_additionalInfoFragment"
+            app:destination="@id/additionalInfoFragment" >
+            <argument
+                android:name="prodName"
+                />
+            <argument
+                android:name="prodDesc"
+                />
+            <argument
+                android:name="prodCategory"
+                />
+            <argument
+                android:name="prodPrice"
+                />
+            <argument
+                android:name="bidDuration"
+                />
+        </action>
+    </fragment>
 
 </navigation>

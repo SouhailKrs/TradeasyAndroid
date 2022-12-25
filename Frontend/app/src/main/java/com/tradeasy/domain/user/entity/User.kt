@@ -13,7 +13,7 @@ data class User(
     @SerializedName("profilePicture") val profilePicture: String?,
     @SerializedName("isVerified") val isVerified: Boolean?,
     @SerializedName("notificationToken") val notificationToken: String?,
-    @SerializedName("notification") val notification: MutableList<Notification>?,
+    @SerializedName("notifications") val notifications: MutableList<Notification>?,
     @SerializedName("savedProducts") val savedProducts: MutableList<Product>?,
     @SerializedName("otp") val otp: Number?,
     @SerializedName("countryCode") val countryCode: String?,
