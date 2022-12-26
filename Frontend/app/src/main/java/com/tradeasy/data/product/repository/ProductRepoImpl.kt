@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.tradeasy.data.product.remote.api.ProductApi
 import com.tradeasy.data.product.remote.dto.AddToSavedReq
 import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.data.product.remote.dto.GetByCatReq
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.domain.product.ProductRepo
 import com.tradeasy.domain.product.entity.Bid
@@ -127,7 +128,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.productId
                         )
                     )
-                    println("products  $products")
+
                 }
                 emit(BaseResult.Success(products))
             } else {
@@ -148,7 +149,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
             if (response.isSuccessful) {
                 val body = response.body()!!
                 val data = body.data
-                println("data $data")
+
                 val products = mutableListOf<Product>()
 
 
@@ -249,7 +250,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.productId
                         )
                     )
-                    println("products  $products")
+
                 }
                 emit(BaseResult.Success(products))
             } else {
@@ -293,7 +294,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.productId
                         )
                     )
-                    println("products  $products")
+
                 }
                 emit(BaseResult.Success(products))
             } else {
@@ -313,7 +314,6 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
         return flow {
             val response = api.buyNowApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
                 val body = response.body()!!
                 val product = Product(
                     body.data?.userId!!,
@@ -346,4 +346,48 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
             }
         }
     }
+
+    // get product by category implementation
+    override suspend fun getProductByCategory(category : GetByCatReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.getProductByCategoryApi(category)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
+                            productResponse.productId
+                        )
+                    )
+
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
 }

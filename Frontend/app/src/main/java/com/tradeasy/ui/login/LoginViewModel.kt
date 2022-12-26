@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
                 when (baseResult) {
                     is BaseResult.Error -> {
                         state.value = LoginActivityState.ErrorLogin(baseResult.rawResponse)
-                        println(baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         LoginActivityState.SuccessLogin(baseResult.data)

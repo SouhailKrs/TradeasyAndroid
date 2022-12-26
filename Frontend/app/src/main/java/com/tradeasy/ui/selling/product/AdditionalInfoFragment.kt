@@ -77,7 +77,7 @@ class AdditionalInfoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+        (activity as MainActivity?)?.setupToolBar("Sell a product", false, false)
         binding.bidDuration.setText(sharedPrefs.getBidDuration())
     }
 
@@ -156,8 +156,7 @@ var test : String = ""
                 val forBid = MultipartBody.Part.createFormData("for_bid", bidState.toString())
                 val bidEndDate =
                     MultipartBody.Part.createFormData("bid_end_date", endTime.toString())
-                println(currentTime)
-                println("BBB $image")
+
                 viewModel.addProduct(
                     category, name, description, price, image, quantity, forBid, bidEndDate
                 )
@@ -205,7 +204,7 @@ var test : String = ""
                 findNavController().navigate(R.id.sellingFragment)
             }
             is AddProductFragmentSate.ShowToast -> {
-                println(state.message)
+
             }
             is AddProductFragmentSate.Init -> Unit
         }

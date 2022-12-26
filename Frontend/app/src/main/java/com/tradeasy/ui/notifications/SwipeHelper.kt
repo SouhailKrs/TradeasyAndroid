@@ -2,9 +2,7 @@ package com.tradeasy.ui.notifications
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
-import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
@@ -12,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.R
+import com.tradeasy.utils.getScreenSize
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -54,7 +53,6 @@ abstract class SwipeHelper(
     }
 
     private fun drawButtons(
-
 
 
         canvas: Canvas,
@@ -144,9 +142,9 @@ abstract class SwipeHelper(
     ) {
         private var clickableRegion: RectF? = null
 // the delete button zone
-private val displayMetrics = DisplayMetrics()
 
-        var width = Resources.getSystem().displayMetrics.widthPixels
+
+        var width = getScreenSize(context).second
 
         private val horizontalPadding = width / 10
         val intrinsicWidth: Float
@@ -166,7 +164,7 @@ private val displayMetrics = DisplayMetrics()
 
             val bounds = Rect()
             // Draw background
-            paint.color = ContextCompat.getColor(context, R.color.buttonColor )
+            paint.color = ContextCompat.getColor(context, R.color.buttonColor)
 
             canvas.drawRect(rect, paint)
 
@@ -183,7 +181,6 @@ private val displayMetrics = DisplayMetrics()
             paint.textAlign = Paint.Align.LEFT
 
             val titleBounds = Rect()
-
 
 
             val y = rect.height() / 2 + titleBounds.height() / 2 - titleBounds.bottom
@@ -207,6 +204,7 @@ private fun List<SwipeHelper.UnderlayButton>.intrinsicWidth(): Float {
     if (isEmpty()) return 0.0f
     return map { it.intrinsicWidth }.reduce { acc, fl -> acc + fl }
 }
+
 fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap {
     val drawable = context?.let { ContextCompat.getDrawable(it, drawableId) }
     val bitmap = Bitmap.createBitmap(

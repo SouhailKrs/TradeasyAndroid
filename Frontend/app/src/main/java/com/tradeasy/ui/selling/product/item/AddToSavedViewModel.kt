@@ -3,8 +3,8 @@ package com.tradeasy.ui.selling.product.item
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.data.product.remote.dto.AddToSavedReq
-import com.tradeasy.domain.user.entity.User
 import com.tradeasy.domain.product.usecase.AddProductToSavedUseCase
+import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,9 +35,6 @@ class AddToSavedViewModel @Inject constructor(
         state.value = AddProductToSavedFragmentSate.ShowToast(message)
     }
 
-    private fun successCreate(){
-        state.value = AddProductToSavedFragmentSate.SuccessSaving
-    }
 
     fun addProductToSaved(req: AddToSavedReq){
         viewModelScope.launch {
@@ -53,10 +50,11 @@ class AddToSavedViewModel @Inject constructor(
                 }
                 .collect { result ->
                     hideLoading()
-                    println("zzzzzz ${result}")
+
 
                     when(result){
-                        is BaseResult.Success -> successCreate()
+                        is BaseResult.Success -> state.value =
+                            AddProductToSavedFragmentSate.SuccessSaving(result.data)
 
                         is BaseResult.Error -> showToast(result.rawResponse.message)
                     }
@@ -67,7 +65,7 @@ class AddToSavedViewModel @Inject constructor(
 
 sealed class AddProductToSavedFragmentSate {
     object Init: AddProductToSavedFragmentSate()
-    object SuccessSaving : AddProductToSavedFragmentSate()
+    data class SuccessSaving (val user: User) : AddProductToSavedFragmentSate()
     data class IsLoading(val isLoading: Boolean) : AddProductToSavedFragmentSate()
     data class ShowToast(val message: String) : AddProductToSavedFragmentSate()
     data class ErrorSaving(val rawResponse: WrappedResponse<User>) : AddProductToSavedFragmentSate()

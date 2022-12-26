@@ -27,12 +27,12 @@ class UpdateProfilePicViewModel @Inject constructor(
 
     private fun hideLoading(){
         state.value = UploadProfilePicSate.IsLoading(false)
-        println("loading")
+
     }
 
     private fun showToast(message: String){
         state.value = UploadProfilePicSate.ShowToast(message)
-        println("toast")
+
     }
 
 

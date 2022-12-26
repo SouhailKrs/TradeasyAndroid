@@ -16,14 +16,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountState
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountViewModel
-import com.tradeasy.utils.ImageLoader
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
+import com.tradeasy.utils.imageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -81,6 +82,8 @@ class ProfileFragment : Fragment() {
                 .setMessage("Are you sure you want to delete your account?")
                 .setPositiveButton("Yes") { _, _ ->
                     viewModel.deleteAccount()
+                    findNavController().navigate(R.id.homeFragment)
+                    sharedPrefs.clearUser()
                 }.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
@@ -165,10 +168,10 @@ class ProfileFragment : Fragment() {
         binding.accountCardView.visibility = View.VISIBLE
         binding.accountTxtView.visibility = View.VISIBLE
         binding.profileSpacer.layoutParams.height = resources.displayMetrics.heightPixels / 7
-        println("aaaaa " + sharedPrefs.getUser()?.profilePicture)
+
 // get screen height
         if (!sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
-            ImageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.profilePicture)
+            imageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.profilePicture)
         } else if (sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
             binding.profilePicture.setImageResource(com.tradeasy.R.drawable.default_profile_picture)
         }
@@ -197,16 +200,6 @@ class ProfileFragment : Fragment() {
 
 
     }
-
-//    private fun setupToolbar() {
-//        val toolbarTitle: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-//        toolbarTitle.text = "Profile"
-//
-//
-//        val toolbarTxt: TextView =
-//            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-//        toolbarTxt.visibility = View.GONE
-//    }
 
     private fun logout() {
         binding.logoutConstraint.setOnClickListener {

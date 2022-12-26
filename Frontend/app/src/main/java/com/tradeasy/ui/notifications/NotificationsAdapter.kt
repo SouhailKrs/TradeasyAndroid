@@ -25,7 +25,7 @@ class NotificationsAdapter(private val notification: MutableList<Notification>, 
     }
 
     override fun getItemCount(): Int {
-        println("here ${notification.size}")
+
         return notification.size
 
     }

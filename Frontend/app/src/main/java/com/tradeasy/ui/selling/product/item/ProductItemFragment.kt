@@ -20,14 +20,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.models.SlideModel
+import com.tradeasy.R
+import com.tradeasy.data.product.remote.dto.AddToSavedReq
 import com.tradeasy.databinding.FragmentProductItemBinding
-import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.domain.user.entity.User
-import com.tradeasy.ui.home.buyNow.BuyNowActivityState
-import com.tradeasy.ui.home.buyNow.BuyNowViewModel
-import com.tradeasy.utils.ImageLoader
-import com.tradeasy.utils.SharedPrefs
-import com.tradeasy.utils.WrappedResponse
+import com.tradeasy.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,8 +37,7 @@ class ProductItemFragment : Fragment() {
     lateinit var sharedPrefs: SharedPrefs
     private lateinit var binding: FragmentProductItemBinding
     private val viewModel: AddToSavedViewModel by viewModels()
-    private val buyNowViewModel: BuyNowViewModel by viewModels()
-    private val args: com.tradeasy.ui.selling.product.item.ProductItemFragmentArgs by navArgs()
+    private val args: ProductItemFragmentArgs by navArgs()
     private var PERMISSION_CODE = 100
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,59 +52,83 @@ class ProductItemFragment : Fragment() {
         addProductToSaved()
         observe()
         // get screen size
-
-
+        handleSavedButton()
+        goToBidFragment()
         setupView()
-
-        buyingObserve()
     }
 
     private fun setupView() {
-        val displayMetrics = resources.displayMetrics
-        val width = displayMetrics.widthPixels
-        val height = displayMetrics.heightPixels
-        // get the difference between height and width
-        val difference = height / width
 
+        val height = getScreenSize(requireContext()).first.toDouble()
+        val width = getScreenSize(requireContext()).second.toDouble()
+        // get the difference between height and width
+        val difference = height.toDouble() / width.toDouble()
         // get the percentage of the difference between height and width
-        binding.sellerProfilePicture.layoutParams.height = height/17
-        binding.sellerProfilePicture.layoutParams.width = ((height/17)* difference)
-binding.goToPlaceBidBtn.visibility = if(args.forBid) View.VISIBLE else View.GONE
-        binding.goToPlaceBidBtn.setOnClickListener {
-            val action = ProductItemFragmentDirections.actionProductItemFragmentToPlaceBidFragment(args.productId,args.bidTime,args.productPrice,args.forBid)
-            findNavController().navigate(action)
-        }
+        binding.sellerProfilePicture.layoutParams.height = ((height / 17).toInt())
+        binding.sellerProfilePicture.layoutParams.width = (((width / 17) * difference).toInt())
+        binding.goToPlaceBidBtn.visibility = if (args.forBid) View.VISIBLE else View.GONE
+
         binding.apply {
             val imageList = ArrayList<SlideModel>()
             for (i in args.image.indices) {
                 imageList.add(SlideModel(args.image[i].toString()))
             }
-            println("here ${imageList.toString()}")
+
             imageSlider.setImageList(imageList)
             productName.text = args.productName
             productPrice.text = args.productPrice.toString() + " TND"
             sellerUsername.text = args.username
 
-            if (!sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
-                ImageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.sellerProfilePicture)
-            } else if (sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
+            if (args.userProfilePicture.isNotEmpty()) {
+                imageLoader(args.userProfilePicture, binding.sellerProfilePicture)
+
+            } else {
                 binding.sellerProfilePicture.setImageResource(com.tradeasy.R.drawable.default_profile_picture)
             }
-            sellerPhoneNumber.text=args.userPhoneNumber
+            sellerPhoneNumber.text = args.userPhoneNumber
         }
-            makePhoneCall()
+// PLACE BID BTN VISIBILITY
+        binding.goToPlaceBidBtn.visibility = if (args.forBid) View.VISIBLE else View.GONE
 
-
+        makePhoneCall()
     }
 
+    private fun handleSavedButton() {
 
-    fun goToBidFragment() {
-        val action = ProductItemFragmentDirections.actionProductItemFragmentToPlaceBidFragment(
-            args.productId, args.bidEndDate, args.productPrice, args.forBid
+        if(isLoggedIn(sharedPrefs)) {
+            if (sharedPrefs.getUser()!!.savedProducts!!.size != 0) {
+                for (i in sharedPrefs.getUser()!!.savedProducts!!.indices) {
 
+                    if (sharedPrefs.getUser()!!.savedProducts!![i].productId == args.productId) {
+                        binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
+                    } else {
+                        binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_outline_bookmark_border_24)
+                    }
+                }
+            }
+        }
+        else{
+            binding.addToSavedBtn.setOnClickListener {
+                findNavController().navigate(R.id.loginFragment)
+            }
+        }
+    }
 
-        )
-        findNavController().navigate(action)
+    private fun goToBidFragment() {
+
+        binding.goToPlaceBidBtn.setOnClickListener {
+
+            if(isLoggedIn(sharedPrefs)) {
+                val action =
+                    ProductItemFragmentDirections.actionProductItemFragmentToPlaceBidFragment(
+                        args.productId, args.bidTime, args.productPrice, args.forBid
+                    )
+                findNavController().navigate(action)
+            }
+            else{
+                findNavController().navigate(R.id.loginFragment)
+            }
+        }
     }
 
     private fun observe() {
@@ -116,21 +136,14 @@ binding.goToPlaceBidBtn.visibility = if(args.forBid) View.VISIBLE else View.GONE
             .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
     }
 
-    private fun buyingObserve() {
-        buyNowViewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state -> handleBuyingStateChange(state) }.launchIn(lifecycleScope)
-    }
-
     private fun addProductToSaved() {
-//        binding.addToSavedBtn.setOnClickListener {
-//            println(args.productId)
-//            val req = AddToSavedReq(args.productId)
-//            viewModel.addProductToSaved(req)
-//        }
+        binding.addToSavedBtn.setOnClickListener {
+            binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
 
-
+            val req = AddToSavedReq(args.productId)
+            viewModel.addProductToSaved(req)
+        }
     }
-
 
 
     //  STATE HANDLER
@@ -138,7 +151,7 @@ binding.goToPlaceBidBtn.visibility = if(args.forBid) View.VISIBLE else View.GONE
         when (state) {
             is AddProductToSavedFragmentSate.Init -> Unit
             is AddProductToSavedFragmentSate.ErrorSaving -> handleErrorSaving(state.rawResponse)
-            is AddProductToSavedFragmentSate.SuccessSaving -> handleSuccessSaving()
+            is AddProductToSavedFragmentSate.SuccessSaving -> handleSuccessSaving(state.user)
             is AddProductToSavedFragmentSate.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
@@ -164,57 +177,43 @@ binding.goToPlaceBidBtn.visibility = if(args.forBid) View.VISIBLE else View.GONE
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
     }
 
-    private fun handleSuccessSaving() {
+    private fun handleSuccessSaving(user: User) {
 
+        sharedPrefs.setUser(user)
 
     }
 
-    private fun handleErrorBuying(response: WrappedResponse<Product>) {
-        AlertDialog.Builder(requireActivity()).apply {
-            setMessage(response.message)
-            setPositiveButton("ok") { dialog, _ ->
-                dialog.dismiss()
-            }
-        }.show()
-    }
 
-    private fun handleBuyingStateChange(state: BuyNowActivityState) {
-        when (state) {
-            is BuyNowActivityState.Init -> Unit
-            is BuyNowActivityState.ErrorBuying -> handleErrorBuying(state.rawResponse)
-            is BuyNowActivityState.SuccessBuying -> handleSuccessBuying()
-            is BuyNowActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
-            is BuyNowActivityState.IsLoading -> handleLoading(state.isLoading)
+    private fun checkPhonePermission(): Boolean {
+        return if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            true
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_CODE
+            )
+            false
         }
     }
-private  fun makePhoneCall(){
-    if (ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.CALL_PHONE
-        ) != PackageManager.PERMISSION_GRANTED
-    ) {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.CALL_PHONE),
-            PERMISSION_CODE
-        )
+
+    private fun makePhoneCall() {
+
+
+        binding.sellerPhoneNumber.setOnClickListener(View.OnClickListener {
+
+            if (checkPhonePermission()) {
+                val i = Intent(Intent.ACTION_CALL)
+                i.data = Uri.parse("tel:${args.userPhoneNumber}")
+                startActivity(i)
+            }
+        })
     }
 
-    binding.sellerPhoneNumber.setOnClickListener(View.OnClickListener {
-        val i = Intent(Intent.ACTION_CALL)
-        i.data = Uri.parse("tel:${args.userPhoneNumber}")
-        startActivity(i)
-    })
-}
-    private fun handleSuccessBuying() {
-
-
-    }
 
 // function to trigger a phone call
 

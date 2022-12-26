@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.R
 import com.tradeasy.databinding.ForBidItemBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.utils.ImageLoader
+import com.tradeasy.utils.imageLoader
 
 class ProductsForBid(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<ProductsForBid.MyViewHolder>(){
 
@@ -45,7 +45,7 @@ class ProductsForBid(private val products: MutableList<Product>, val onItemClick
             val imageList = product.image
             // load all images in imageList
 
-ImageLoader(product.image!![0],productImage)
+            imageLoader(product.image!![0],productImage)
 
         }
 

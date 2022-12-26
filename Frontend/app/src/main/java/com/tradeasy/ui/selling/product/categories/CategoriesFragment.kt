@@ -70,7 +70,7 @@ private lateinit var binding:  FragmentCategoriesBinding
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
 
-                println(state.message)
+
             }
             is CategoriesFragmentState.Init -> Unit
             else -> {
@@ -84,8 +84,7 @@ private lateinit var binding:  FragmentCategoriesBinding
 
 
             sharedPrefs.setProdCategory(it.name!!)
-            println("éééé ${it.name}")
-            println("aaaa " + sharedPrefs.getProdCategory())
+
             findNavController().navigateUp()
         })
 
@@ -98,7 +97,7 @@ private lateinit var binding:  FragmentCategoriesBinding
     }
 
     private fun handleCategories(categories: List<Category>) {
-        println("list2 $categories" )
+
         binding.categoriesRV.adapter?.let {
             if (it is CategoriesAdapter) {
                 it.updateList(categories)

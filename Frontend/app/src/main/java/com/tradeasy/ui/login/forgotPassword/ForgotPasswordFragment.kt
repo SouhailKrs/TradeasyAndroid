@@ -102,7 +102,7 @@ class ForgotPasswordFragment : Fragment() {
 
        )
         findNavController().navigate(action)
-        println("aaaaaa  " +  binding.currentEmail.text.toString())
+
         Snackbar.make(requireView(), "Reset Code Sent", Snackbar.LENGTH_SHORT).show()
     }
 

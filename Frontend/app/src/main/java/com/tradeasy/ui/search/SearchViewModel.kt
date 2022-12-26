@@ -2,8 +2,8 @@ package com.tradeasy.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.data.product.remote.dto.SearchReq
+import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.domain.product.usecase.SearchProductByNameUseCase
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,10 +21,10 @@ class SearchViewModel @Inject constructor(private val searchProductByNameUseCase
 
     private val products = MutableStateFlow<List<Product>>(mutableListOf())
     val mProducts: StateFlow<List<Product>> get() = products
-
-    init {
-        fetchSearchedProducts(name= SearchReq(""))
-    }
+//
+//    init {
+//        fetchSearchedProducts(name= SearchReq(""))
+//    }
 
 
     private fun setLoading(){

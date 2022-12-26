@@ -53,11 +53,11 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbarRightText"
             app:layout_constraintEnd_toEndOf="@+id/toolbarRightText"
-            app:layout_constraintStart_toStartOf="@+id/toolbarRightText"
             app:layout_constraintTop_toTopOf="@+id/toolbarRightText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

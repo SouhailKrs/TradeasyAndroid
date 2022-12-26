@@ -26,13 +26,13 @@ import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
     private lateinit var binding: FragmentNotificationsBinding
-    private lateinit var notificationCount: String
     private val viewModel: NotificationsViewModel by viewModels()
 
     @Inject
@@ -45,13 +45,11 @@ class NotificationsFragment : Fragment() {
     ): View {
 
 
-//println("aaa121a $horizontalPadding")
-
 // get item count of notification
 
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-
+        setupView ()
 
         observe()
 
@@ -62,11 +60,7 @@ class NotificationsFragment : Fragment() {
             }
         }
         (activity as MainActivity?)?.setupToolBar("Notifications", false, false)
-        if (sharedPrefs.getUser() == null) {
 
-            findNavController().navigate(R.id.loginFragment)
-
-        }
         return binding.root
     }
 
@@ -90,7 +84,6 @@ class NotificationsFragment : Fragment() {
 
         })
 
-
         binding.notificationsRV.apply {
             adapter = mAdapter
             layoutManager =
@@ -98,8 +91,8 @@ class NotificationsFragment : Fragment() {
         }
         val itemTouchHelper = ItemTouchHelper(object : SwipeHelper(binding.notificationsRV) {
             override fun instantiateUnderlayButton(position: Int): List<UnderlayButton> {
-                var buttons = listOf<UnderlayButton>()
-                val deleteButton = deleteButton(position)
+                val buttons: List<UnderlayButton>
+                val deleteButton = deleteButton()
 
 
                 buttons = listOf(deleteButton)
@@ -113,7 +106,7 @@ class NotificationsFragment : Fragment() {
     }
 
     @SuppressLint("ResourceType")
-    private fun deleteButton(position: Int): SwipeHelper.UnderlayButton {
+    private fun deleteButton(): SwipeHelper.UnderlayButton {
 
 
         val greenColorValue: Int = Color.parseColor("#00ff00")
@@ -127,7 +120,7 @@ class NotificationsFragment : Fragment() {
 
             R.color.buttonColor, object : SwipeHelper.UnderlayButtonClickListener {
                 override fun onClick() {
-                    println("aaa")
+
                 }
             })
     }
@@ -151,7 +144,8 @@ class NotificationsFragment : Fragment() {
             Lifecycle.State.STARTED
         ).onEach { notifications ->
                 handleSavedProducts(notifications)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun handleState(state: NotificationsFragmentState) {
@@ -160,6 +154,7 @@ class NotificationsFragment : Fragment() {
             is NotificationsFragmentState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
+
             is NotificationsFragmentState.Init -> Unit
             else -> {
                 Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
@@ -233,10 +228,19 @@ class NotificationsFragment : Fragment() {
     }
 
 
+private fun setupView (){
+    if (sharedPrefs.getUser() == null) {
 
+        findNavController().navigate(R.id.loginFragment)
 
+    }
+    binding.numberOfNotifications.visibility = if(sharedPrefs.getUser()?.notifications?.size != 0) View.VISIBLE else View.GONE
+    binding.noNotificationsIcon.visibility = if(sharedPrefs.getUser()?.notifications?.size == 0) View.VISIBLE else View.GONE
+    binding.noNotificationsTxt.visibility = if(sharedPrefs.getUser()?.notifications?.size == 0) View.VISIBLE else View.GONE
+    binding.notificationsDay.visibility = if(sharedPrefs.getUser()?.notifications?.size != 0) View.VISIBLE else View.GONE
+    binding.notificationsRV.visibility = if(sharedPrefs.getUser()?.notifications?.size != 0) View.VISIBLE else View.GONE
 
-
+}
     private fun handleSavedProducts(notification: List<Notification>) {
         binding.notificationsRV.adapter?.let {
             if (it is NotificationsAdapter) {

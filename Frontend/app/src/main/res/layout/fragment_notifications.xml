@@ -57,6 +57,30 @@
             tools:itemCount="10"
             tools:listitem="@layout/notification_item" />
 
+        <ImageView
+            android:id="@+id/noNotificationsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp"
+            android:src="@drawable/ic_baseline_notifications_off_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/noNotificationsTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/stem_medium"
+            android:text="NO NOTIFICATIONS "
+            android:textColor="#000000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/noNotificationsIcon"
+            app:layout_constraintStart_toStartOf="@+id/noNotificationsIcon"
+            app:layout_constraintTop_toBottomOf="@+id/noNotificationsIcon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

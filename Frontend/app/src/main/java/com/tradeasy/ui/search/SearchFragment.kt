@@ -40,7 +40,7 @@ class SearchFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-
+        setupView()
         observe()
         setupRecyclerView()
         setupSearchView()
@@ -60,7 +60,12 @@ class SearchFragment : Fragment() {
         return binding.root
 
     }
+private fun setupView(){
 
+    binding.searchImg.visibility = View.VISIBLE
+    binding.searchTxt.visibility = View.VISIBLE
+
+}
     override fun onDestroy() {
         super.onDestroy()
         // show toolbar
@@ -113,7 +118,7 @@ val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragmen
                 Toast.makeText(
                     requireActivity(), state.message, Toast.LENGTH_SHORT
                 ).show()
-                println(state.message)
+
             }
 
             is SearchFragmentSate.Init -> Unit
@@ -147,9 +152,21 @@ val searchView = binding.searchView
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val searchReq = SearchReq(newText)
-                viewModel.fetchSearchedProducts(searchReq)
-                return true
+                if(binding.searchView.query.isNullOrBlank()){
+                    binding.searchRV.isVisible = false
+                    binding.searchImg.visibility = View.VISIBLE
+                    binding.searchTxt.visibility = View.VISIBLE
+                    return false
+                }
+                else {
+                    binding.searchImg.visibility = View.GONE
+                    binding.searchTxt.visibility = View.GONE
+                    binding.searchRV.isVisible = true
+                    val searchReq = SearchReq(newText)
+                    viewModel.fetchSearchedProducts(searchReq)
+                    return true
+                }
+
             }
         })
 // check if search view is focused

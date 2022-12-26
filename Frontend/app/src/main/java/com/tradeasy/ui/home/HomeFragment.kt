@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -46,24 +44,26 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        (activity as MainActivity?)?.setupToolBar("Home", false, false)
 
+        fetchProductsForBid()
         setupRecyclerView()
-
+        goToProductByCat ()
         observe()
 
-        setFragmentResultListener("success_create") { _, bundle ->
-            if (bundle.getBoolean("success_create")) {
-                viewModel.fetchProductsForBid()
-            }
-        }
+
 
         return binding.root
     }
-
+private fun fetchProductsForBid() {
+    setFragmentResultListener("success_create") { _, bundle ->
+        if (bundle.getBoolean("success_create")) {
+            viewModel.fetchProductsForBid()
+        }
+    }
+    }
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity?)?.setupToolBar("Home", false, false)
+       // (activity as MainActivity?)?.setupToolBar("Home", false, false)
     }
 //    private fun getUserData() {
 //        for (i in imageId.indices) {
@@ -76,7 +76,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+       // (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as MainActivity?)?.setupToolBar("Home", false, )
         view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
             View.VISIBLE
     }
@@ -175,10 +176,32 @@ class HomeFragment : Fragment() {
 //        }
     }
 
-    fun setupToolBar(title: String, btnVisibility: Boolean = false) {
 
-        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-        toolbar.text = title
+    private fun goToProductByCat (){
+        binding.carsImageButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("cars")
+            findNavController().navigate(action)
+        }
+        binding.electronicsImageBotton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("electronics")
+            findNavController().navigate(action)
+        }
+        binding.clothingImageButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("clothing")
+            findNavController().navigate(action)
+        }
+        binding.realEstateImageButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("real estate")
+            findNavController().navigate(action)
+        }
+        binding.groceriesImageButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("groceries")
+            findNavController().navigate(action)
+        }
+
+
+
+
     }
 }
 

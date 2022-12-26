@@ -41,7 +41,7 @@ class VerifyOtpFragment : Fragment() {
     ): View {
         binding = FragmentVerifyOtpBinding.inflate(inflater, container, false)
 
-        println("email is ${args.email}")
+
         pinView = binding.pinView
         pinView.requestFocus()
         val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -75,8 +75,7 @@ class VerifyOtpFragment : Fragment() {
 
         binding.verifyOtp.setOnClickListener {
 
-            println("email is ${args.email}")
-            println("otp is ${ binding.pinView.text.toString()}")
+
             val otp = binding.pinView.text.toString()
             val req= VerifyOtpReq(otp,"seifeddine.abdelkader@esprit.tn")
             if (otp.isEmpty()) {
@@ -119,8 +118,7 @@ class VerifyOtpFragment : Fragment() {
     }
 
     private fun handleVerified() {
-        println("email is ${args.email}")
-        println("otp is ${ binding.pinView.text.toString()}")
+
     findNavController().navigate(VerifyOtpFragmentDirections.actionVerifyOtpFragmentToResetPassFragment(
 
         args.email,

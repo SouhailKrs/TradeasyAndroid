@@ -1,9 +1,10 @@
-package com.tradeasy.ui.profile.saved
+package com.tradeasy.ui.home.productsByCategory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tradeasy.data.product.remote.dto.GetByCatReq
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.domain.product.usecase.GetSavedProductsUseCase
+import com.tradeasy.domain.product.usecase.GetProductByCategoryUseCase
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,52 +14,51 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-
 @HiltViewModel
-class SavedProductsViewModel @Inject constructor(private val getSavedProductsUseCase: GetSavedProductsUseCase) : ViewModel(){
-    private val state = MutableStateFlow<SavedProductsFragmentState>(SavedProductsFragmentState.Init)
-    val mState: StateFlow<SavedProductsFragmentState> get() = state
+class ProductsByCategoryViewModel @Inject constructor(private val productByCategoryUseCase: GetProductByCategoryUseCase) : ViewModel(){
+    private val state = MutableStateFlow<ProductsByCategoryState>(ProductsByCategoryState.Init)
+    val mState: StateFlow<ProductsByCategoryState> get() = state
 
     private val products = MutableStateFlow<List<Product>>(mutableListOf())
     val mProducts: StateFlow<List<Product>> get() = products
 
-    init {
-        fetchSavedProducts()
-    }
+//    init {
+//       fetchProdByCat( GetByCatReq("cars"))
+//    }
 
 
     private fun setLoading(){
-        state.value = SavedProductsFragmentState.IsLoading(true)
+        state.value = ProductsByCategoryState.IsLoading(true)
     }
 
     private fun hideLoading(){
-        state.value = SavedProductsFragmentState.IsLoading(false)
+        state.value = ProductsByCategoryState.IsLoading(false)
     }
 
     private fun showToast(message: String){
-        state.value = SavedProductsFragmentState.ShowToast(message)
+        state.value = ProductsByCategoryState.ShowToast(message)
     }
 
-    fun fetchSavedProducts(){
+    fun fetchProdByCat(category : GetByCatReq){
+
         viewModelScope.launch {
-            getSavedProductsUseCase.invoke()
+            productByCategoryUseCase.invoke( category)
                 .onStart {
                     setLoading()
                 }
                 .catch { exception ->
-
                     hideLoading()
                     showToast(exception.message.toString())
                 }
                 .collect { result ->
-
                     hideLoading()
                     when(result){
                         is BaseResult.Success -> {
+
                             products.value = result.data
                         }
                         is BaseResult.Error -> {
+
                             showToast(result.rawResponse.message)
                         }
                     }
@@ -68,8 +68,9 @@ class SavedProductsViewModel @Inject constructor(private val getSavedProductsUse
 
 }
 
-sealed class SavedProductsFragmentState {
-    object Init : SavedProductsFragmentState()
-    data class IsLoading(val isLoading: Boolean) : SavedProductsFragmentState()
-    data class ShowToast(val message : String) : SavedProductsFragmentState()
+sealed class ProductsByCategoryState {
+    object Init : ProductsByCategoryState()
+
+    data class IsLoading(val isLoading: Boolean) : ProductsByCategoryState()
+    data class ShowToast(val message : String) : ProductsByCategoryState()
 }

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.UserSellingItemBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.utils.ImageLoader
+import com.tradeasy.utils.imageLoader
 
 class UserSellingAdapter(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<UserSellingAdapter.MyViewHolder>(){
 
@@ -41,7 +41,7 @@ class UserSellingAdapter(private val products: MutableList<Product>, val onItemC
             binding.prodPrice.text = product.price.toString()
             val productImage= binding.prodImg
 
-            ImageLoader(product.image!![0],productImage)
+            imageLoader(product.image!![0],productImage)
 
         }
 

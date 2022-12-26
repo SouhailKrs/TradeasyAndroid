@@ -17,8 +17,8 @@ import com.tradeasy.ui.navigation.editProfileToUpdateEmail
 import com.tradeasy.ui.navigation.editProfileToUpdatePassword
 import com.tradeasy.ui.navigation.editProfileToUpdatePn
 import com.tradeasy.ui.navigation.editProfileToUpdateUsername
-import com.tradeasy.utils.ImageLoader
 import com.tradeasy.utils.SharedPrefs
+import com.tradeasy.utils.imageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import javax.inject.Inject
@@ -53,7 +53,7 @@ private fun fragmentSetup(){
         binding.emailView.text = it.email
         binding.phoneNumberView.text = it.phoneNumber.toString()
         if (!sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
-            ImageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.editProfilePicture)
+            imageLoader(sharedPrefs.getUser()!!.profilePicture!!, binding.editProfilePicture)
         } else if (sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
             binding.editProfilePicture.setImageResource(com.tradeasy.R.drawable.default_profile_picture)
         }

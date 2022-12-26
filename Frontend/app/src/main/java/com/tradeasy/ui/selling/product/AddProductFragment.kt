@@ -34,7 +34,7 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+        (activity as MainActivity?)?.setupToolBar("Sell a product", false, false)
         binding.productCategory.setOnClickListener {
             findNavController().navigate(R.id.categoriesFragment)
         }

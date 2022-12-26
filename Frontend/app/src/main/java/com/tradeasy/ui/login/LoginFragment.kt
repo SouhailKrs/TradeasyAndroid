@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentLoginBinding
 import com.tradeasy.domain.user.entity.User
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.navigation.loginToRegister
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
@@ -43,7 +44,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        println("sdfsdgfdg " + sharedPrefs.getNotificationToken())
+        (activity as MainActivity?)?.setupToolBar("", false, false)
 //        view?.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         return binding.root
@@ -77,7 +78,7 @@ class LoginFragment : Fragment() {
 
         binding.loginButton.setOnClickListener {
 
-            println(sharedPrefs.getNotificationToken())
+
             val username = binding.usernameField.text.toString().trim()
             val password = binding.passwordField.text.toString().trim()
             if (username.isNotEmpty() || password.isNotEmpty()) {
@@ -156,7 +157,7 @@ class LoginFragment : Fragment() {
         //  shoppingCartVisibility()
 
         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        println(loginEntity.token)
+
 
 
     }
@@ -185,7 +186,7 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.homeFragment)
             findNavController().popBackStack(R.id.loginFragment, true)
             val currentFragment = findNavController().currentDestination?.label
-            println(findNavController().currentDestination?.displayName)
+
             if (currentFragment == "fragment_selling" || currentFragment == "fragment_notifications") {
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.homeFragment)

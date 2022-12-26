@@ -3,6 +3,7 @@ package com.tradeasy.data.product.remote.api
 
 import com.tradeasy.data.product.remote.dto.AddToSavedReq
 import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.data.product.remote.dto.GetByCatReq
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.domain.product.entity.Bid
 import com.tradeasy.domain.product.entity.Product
@@ -57,5 +58,8 @@ interface ProductApi {
     @POST("/product/buynow")
     suspend fun buyNowApi(@Body req: BuyNowReq): Response<WrappedResponse<Product>>
 
+    // GET PRODUCTS BY CATEGORY
+    @POST("/product/findbycat")
+    suspend fun getProductByCategoryApi(@Body category: GetByCatReq): Response<WrappedListResponse<Product>>
 
 }

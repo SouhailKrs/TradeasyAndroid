@@ -20,6 +20,7 @@ import com.tradeasy.R
 import com.tradeasy.databinding.FragmentCropProfilePicBinding
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.SharedPrefs
+import com.tradeasy.utils.getScreenSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -70,7 +71,7 @@ class CropProfilePicFragment : Fragment() {
             is UploadProfilePicSate.IsLoading -> handleLoading(state.isLoading)
             is UploadProfilePicSate.SuccessCreate -> handleSuccessUpdate(state.user)
             is UploadProfilePicSate.ShowToast -> {
-                println(state.message)
+
             }
             is UploadProfilePicSate.Init -> Unit
         }
@@ -132,10 +133,10 @@ binding.doneCrop.visibility = View.GONE
         binding.goBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        val screenWidth = resources.displayMetrics.widthPixels
+
         // set crop view height and width
-        binding.cropView.layoutParams.height = screenWidth
-        binding.cropView.layoutParams.width = screenWidth
+        binding.cropView.layoutParams.height = getScreenSize(requireContext()).second.toInt()
+        binding.cropView.layoutParams.width = getScreenSize(requireContext()).second.toInt()
         binding.cropView.setUri(uri)
     }
 }

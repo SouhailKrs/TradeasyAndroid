@@ -47,7 +47,7 @@ class BuyNowViewModel @Inject constructor(
             when (baseResult) {
                 is BaseResult.Error -> {
                     state.value = BuyNowActivityState.ErrorBuying(baseResult.rawResponse)
-                    println("12121" + baseResult.rawResponse)
+
                 }
                 is BaseResult.Success -> state.value =
                     BuyNowActivityState.SuccessBuying

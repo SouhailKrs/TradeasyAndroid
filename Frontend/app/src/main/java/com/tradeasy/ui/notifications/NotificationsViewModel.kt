@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
@@ -47,16 +48,17 @@ class NotificationsViewModel @Inject constructor(private val  getUserNotificatio
                     setLoading()
                 }
                 .catch { exception ->
-                    println("aaaaa ${exception.message}")
+
                     hideLoading()
                     showToast(exception.message.toString())
                 }
                 .collect { result ->
-                    println("bbbb $result")
+
                     hideLoading()
                     when(result){
                         is BaseResult.Success -> {
                             notifications.value = result.data
+
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)
@@ -70,6 +72,7 @@ class NotificationsViewModel @Inject constructor(private val  getUserNotificatio
 
 sealed class NotificationsFragmentState {
     object Init : NotificationsFragmentState()
+    data class SuccessGettingNotification(val notification: Notification) : NotificationsFragmentState()
     data class IsLoading(val isLoading: Boolean) : NotificationsFragmentState()
     data class ShowToast(val message : String) : NotificationsFragmentState()
 }

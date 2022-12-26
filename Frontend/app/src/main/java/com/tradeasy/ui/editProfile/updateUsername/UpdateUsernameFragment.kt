@@ -50,16 +50,8 @@ class UpdateUsernameFragment : Fragment() {
         }
 
         // change the custom toolbar title
-        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-        toolbar.text = "Update username"
 
-        val toolbarTxt: TextView =
-            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-        toolbarTxt.text = "Done"
-        toolbarTxt.visibility = View.VISIBLE
-// reduce toolbar text opacity
-        toolbarTxt.alpha = 0.5f
-
+        (activity as MainActivity?)?.setupToolBar("Update username", true, false,0.5f)
         return binding.root
     }
 
@@ -121,7 +113,7 @@ class UpdateUsernameFragment : Fragment() {
 
         // snackbar
         snackBar(response.message)
-
+        (activity as MainActivity?)?.setupToolBar("Update username", true, false,0.5f)
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -131,7 +123,7 @@ class UpdateUsernameFragment : Fragment() {
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
-        (activity as MainActivity?)?.setupToolBar("Profile", false, true)
+        (activity as MainActivity?)?.setupToolBar("Update username", false, true,1f)
 
     }
 

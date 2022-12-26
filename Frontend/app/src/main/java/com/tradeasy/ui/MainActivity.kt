@@ -2,6 +2,8 @@ package com.tradeasy.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUiSaveStateControl
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.DeviceViewModel
 import com.tradeasy.databinding.ActivityMainBinding
 import com.tradeasy.ui.home.HomeViewModel
@@ -46,9 +49,7 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         val view = binding.root
         setContentView(view)
 
-        //  println("here   " + FirebaseMessageReceiver().getToken())
-        //FirebaseMessageReceiver().getToken()
-        //requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val channel = NotificationChannel(
             "notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT
         )
@@ -85,44 +86,52 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+        if ( isWifiConnected(this)  ) {
 
-        // disable bottom nav view tooltip
 
-        //FirebaseMessageReceiver().getToken()
-        /*var token: String = ""
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@addOnCompleteListener
-            }
-            token = task.result
-            println("token issss " + task.result)
 
-            sharedPrefs.setNotificationToken(task.result)
-            println("AAAAA" + sharedPrefs.getNotificationToken())
+        }
+        else if(!isWifiConnected(this)){
+            // make a snackbar that appears every 5 seconds
 
-        }*/
+
+ Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_LONG).show()
+            // detect a user gesture
+
+        }
         deviceViewModel.resToken.observe(this){
             when (it){
                 is UiState.Success -> {
-                    println("success "+ it.data)
+
                     sharedPrefs.setNotificationToken(it.data)
-                    println(sharedPrefs.getNotificationToken())
+
                 }
                 is UiState.Failure -> {
-                    println("failure: "+it.message)
+
                 }
                 UiState.Loading -> {
-                    println("loading")
+
                 }
 
             }
         }
         deviceViewModel.getToken()
     }
+// function to check if device is connected to wifi
+private fun isWifiConnected(context: Context): Boolean {
+        val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+        return mWifi!!.isConnected
+    }
     // bottom nav view items on click listener
-fun setupToolBar(title: String, doneVisibility: Boolean,progressVisibility: Boolean) {
+fun setupToolBar(title: String, doneVisibility: Boolean=false,progressVisibility: Boolean=false,opacity: Float=1f) {
         binding.toolbar.toolbarTitle.text = title
         binding.toolbar.toolbarRightText.visibility = if (doneVisibility) View.VISIBLE else View.GONE
+        binding.toolbar.toolbarRightText.alpha = opacity
         binding.toolbar.progressBar.visibility = if (progressVisibility) View.VISIBLE else View.GONE
     }
+// a function that prints hello world every 5 seconds
+
+
+    // make firesbase notification service
 }

@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productItemFragment"
             app:destination="@id/productItemFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productsByCategoryFragment"
+            app:destination="@id/productsByCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -364,6 +367,15 @@
                 android:name="bidDuration"
                 />
         </action>
+    </fragment>
+    <fragment
+        android:id="@+id/productsByCategoryFragment"
+        android:name="com.tradeasy.ui.home.productsByCategory.ProductsByCategoryFragment"
+        android:label="fragment_products_by_category"
+        tools:layout="@layout/fragment_products_by_category" >
+        <argument
+            android:name="category"
+            app:argType="string" />
     </fragment>
 
 </navigation>

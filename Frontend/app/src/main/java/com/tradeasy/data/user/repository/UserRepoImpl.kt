@@ -91,7 +91,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.updateUserPasswordApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
                 val body = response.body()!!
                 val user = User(
                     body.data?.username!!,
@@ -128,7 +128,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.updateUsernameApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
                 val body = response.body()!!
                 val user = User(
                     body.data?.username!!,
@@ -162,7 +162,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.forgotPasswordAPI(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
 
 
                 emit(BaseResult.Success("email sent"))
@@ -184,7 +184,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.verifyOtpApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
                 emit(BaseResult.Success("otp verified"))
             } else {
                 val type = object : TypeToken<WrappedResponse<String>>() {}.type
@@ -205,7 +205,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.resetPasswordApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
                 val body = response.body()!!
                 val user = User(
                     body.data?.username!!,
@@ -239,7 +239,7 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         return flow {
             val response = api.verifyUsernameApi(req)
             if (response.isSuccessful) {
-                println("response successfully")
+
                 emit(BaseResult.Success("otp verified"))
             } else {
                 val type = object : TypeToken<WrappedResponse<String>>() {}.type

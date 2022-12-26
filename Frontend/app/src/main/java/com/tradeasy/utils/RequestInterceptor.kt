@@ -11,7 +11,7 @@ class RequestInterceptor constructor(private val pref: SharedPrefs) : Intercepto
             val newRequest = chain.request().newBuilder()
                 .addHeader("jwt", token)
                 .build()
-            println("token: $newRequest")
+
             chain.proceed(newRequest)
         } else {
             val newRequest = chain.request().newBuilder()

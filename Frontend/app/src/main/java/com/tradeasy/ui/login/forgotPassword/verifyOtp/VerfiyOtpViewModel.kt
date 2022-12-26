@@ -48,7 +48,7 @@ class VerfiyOtpViewModel @Inject constructor(
                 when (baseResult) {
                     is BaseResult.Error -> {
                         state.value = VerifyOtpFragmentState.ErrorUpdate(baseResult.rawResponse)
-                        println("12121" + baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         VerifyOtpFragmentState.SuccessUpdate(baseResult.data)

@@ -48,7 +48,7 @@ class DeleteAccountViewModel @Inject constructor(
                     is BaseResult.Error -> {
                         state.value =
                             DeleteAccountState.ErrorDelete(baseResult.rawResponse)
-                        println(baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         DeleteAccountState.SuccessDelete("success")

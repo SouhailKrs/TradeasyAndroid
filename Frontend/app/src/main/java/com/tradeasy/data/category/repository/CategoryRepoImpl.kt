@@ -23,7 +23,7 @@ class CategoryRepoImpl @Inject constructor(private val api: CategoryApi) :
             if (response.isSuccessful) {
                 val body = response.body()!!
                 val data = body.data
-                println("data $data")
+
                 val category = mutableListOf<Category>()
                 body.data?.forEach { categoryResponse ->
                     category.add(

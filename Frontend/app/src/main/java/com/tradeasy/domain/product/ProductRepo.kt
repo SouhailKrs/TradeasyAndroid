@@ -2,6 +2,7 @@ package com.tradeasy.domain.product
 
 import com.tradeasy.data.product.remote.dto.AddToSavedReq
 import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.data.product.remote.dto.GetByCatReq
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.domain.product.entity.Bid
 import com.tradeasy.domain.product.entity.Product
@@ -48,4 +49,6 @@ interface ProductRepo {
 
     //buy now
     suspend fun buyNow(req: BuyNowReq): Flow<BaseResult<Product, WrappedResponse<Product>>>
+    // get products by category
+    suspend fun getProductByCategory(category: GetByCatReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 }
