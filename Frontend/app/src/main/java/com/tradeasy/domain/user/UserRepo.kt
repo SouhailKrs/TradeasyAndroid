@@ -41,6 +41,8 @@ interface UserRepo {
         image: MultipartBody.Part,
         ): Flow<BaseResult<User, WrappedResponse<User>>>
 suspend fun deleteAccount():Flow<BaseResult<String, WrappedResponse<String>>>
-suspend fun getUserNotifications(): Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>>
-}
 // get user notifications
+suspend fun getUserNotifications(): Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>>
+// delete user notification
+suspend fun deleteNotification( req: DeleteNotificationReq): Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>>
+}

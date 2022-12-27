@@ -61,5 +61,8 @@ interface ProductApi {
     // GET PRODUCTS BY CATEGORY
     @POST("/product/findbycat")
     suspend fun getProductByCategoryApi(@Body category: GetByCatReq): Response<WrappedListResponse<Product>>
+    // GET USER PRODUCTS API
+    @GET("/product/userproducts")
+    suspend fun getUserProducts(): Response<WrappedListResponse<Product>>
 
 }

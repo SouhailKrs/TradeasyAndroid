@@ -144,6 +144,9 @@
         <action
             android:id="@+id/action_sellingFragment_to_productItemFragment"
             app:destination="@id/productItemFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_userProductItemFragment"
+            app:destination="@id/userProductItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateUsernameFragment"
@@ -376,6 +379,24 @@
         <argument
             android:name="category"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProductItemFragment"
+        android:name="com.tradeasy.ui.selling.userSelling.UserProductItemFragment"
+        android:label="fragment_user_product_item"
+        tools:layout="@layout/fragment_user_product_item" >
+        <argument
+            android:name="userProdName"
+            app:argType="string" />
+        <argument
+            android:name="userProdImg"
+            app:argType="string[]" />
+        <argument
+            android:name="userProdPrice"
+            app:argType="float" />
+        <argument
+            android:name="selling"
+            app:argType="boolean" />
     </fragment>
 
 </navigation>

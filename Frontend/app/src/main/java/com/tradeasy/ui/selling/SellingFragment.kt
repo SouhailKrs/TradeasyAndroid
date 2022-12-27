@@ -11,15 +11,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentSellingBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
-import com.tradeasy.ui.home.SellingFragmentState
-import com.tradeasy.ui.home.UserSellingViewModel
+import com.tradeasy.ui.selling.userProducts.UserProductsAdapter
+import com.tradeasy.ui.selling.userProducts.UserProductsState
+import com.tradeasy.ui.selling.userProducts.UserProductsViewModel
+import com.tradeasy.ui.selling.userSelling.SellingFragmentState
 import com.tradeasy.ui.selling.userSelling.UserSellingAdapter
+import com.tradeasy.ui.selling.userSelling.UserSellingViewModel
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -33,23 +35,15 @@ class SellingFragment : Fragment() {
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     private val viewModel: UserSellingViewModel by viewModels()
+    private val userProdViewModel: UserProductsViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         binding = FragmentSellingBinding.inflate(inflater, container, false)
-        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
-        if(sharedPrefs.getUser() == null ){
-
-            findNavController().navigate(R.id.loginFragment)
-
-
-        }
-        binding.goToAddProduct.setOnClickListener {
-            findNavController().navigate(R.id.addProductFragment)
-        }
         setupRecyclerView()
-
+        observeUserProd()
+        setupUserProdRV()
         observe()
         return binding.root
     }
@@ -58,12 +52,10 @@ class SellingFragment : Fragment() {
         super.onResume()
         (activity as MainActivity?)?.setupToolBar("Selling", false, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-sharedPrefs.clearBidDuration()
-        sharedPrefs.clearProdCategory()
-
+        setupView()
 
     }
 
@@ -71,6 +63,7 @@ sharedPrefs.clearBidDuration()
         observeState()
         observeProducts()
     }
+
     private fun observeState() {
         viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
@@ -84,6 +77,7 @@ sharedPrefs.clearBidDuration()
                 handleProducts(products)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
+
     private fun handleState(state: SellingFragmentState) {
         when (state) {
             is SellingFragmentState.IsLoading -> handleLoading(state.isLoading)
@@ -96,25 +90,16 @@ sharedPrefs.clearBidDuration()
             }
         }
     }
+
     private fun setupRecyclerView() {
         val mAdapter = UserSellingAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-            val action = SellingFragmentDirections.actionSellingFragmentToProductItemFragment(
+            val action = SellingFragmentDirections.actionSellingFragmentToUserProductItemFragment(
 
                 it.name!!,
-                it.description!!,
-                it.category!!,
+                imagesArray,
                 it.price!!,
-                it.bidEndDate.toString(),
-                it.quantity!!,
-                it.addedDate.toString(),
-                it.forBid!!,
-                it.bidEndDate.toString(),
-                it.productId!!,
-                it.username!!,
-                it.userPhoneNumber!!,
-                it.userProfilePicture!!,
-                imagesArray
+                it.selling!!
 
                 )
 
@@ -125,8 +110,7 @@ sharedPrefs.clearBidDuration()
 
         binding.userSellingRV.apply {
             adapter = mAdapter
-            layoutManager =
-                GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
@@ -146,4 +130,89 @@ sharedPrefs.clearBidDuration()
 //        }
     }
 
+
+    private fun observeUserProd() {
+        observeUserProdState()
+        observeUserProducts()
+    }
+
+    private fun observeUserProdState() {
+        userProdViewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                handleUserProdState(state)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun observeUserProducts() {
+        userProdViewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { products ->
+                handleUserProd(products)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun handleUserProdState(state: UserProductsState) {
+        when (state) {
+            is UserProductsState.IsLoading -> handleUserProdLoading(state.isLoading)
+            is UserProductsState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is UserProductsState.Init -> Unit
+            else -> {
+                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupUserProdRV() {
+        val mAdapter = UserProductsAdapter(mutableListOf(), onItemClick = {
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
+            val action = SellingFragmentDirections.actionSellingFragmentToUserProductItemFragment(
+
+                it.name!!,
+                imagesArray,
+                it.price!!,
+                it.selling!!
+
+            )
+
+            findNavController().navigate(action)
+
+        })
+
+
+        binding.userProductsRV.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun handleUserProd(products: List<Product>) {
+        binding.userProductsRV.adapter?.let {
+            if (it is UserProductsAdapter) {
+                it.updateList(products)
+            }
+        }
+    }
+
+    private fun handleUserProdLoading(isLoading: Boolean) {
+//        if(isLoading){
+//            binding.loadingProgressBar.visible()
+//        }else{
+//            binding.loadingProgressBar.gone()
+//        }
+    }
+    private fun setupView(){
+        sharedPrefs.clearBidDuration()
+        sharedPrefs.clearProdCategory()
+        (activity as MainActivity?)?.setupToolBar("Selling", false, false)
+        if (sharedPrefs.getUser() == null) {
+
+            findNavController().navigate(R.id.loginFragment)
+
+        }
+        binding.goToAddProduct.setOnClickListener {
+            findNavController().navigate(R.id.addProductFragment)
+        }
+
+    }
 }

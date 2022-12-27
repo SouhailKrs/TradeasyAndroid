@@ -20,6 +20,7 @@ data class Product(
     @SerializedName("username") val username: String?,
     @SerializedName("userPhoneNumber") val userPhoneNumber: String?,
     @SerializedName("userProfilePicture") val userProfilePicture: String?,
+    @SerializedName("selling") val selling: Boolean?,
     @SerializedName("_id") val productId: String?,
 
 
@@ -42,6 +43,7 @@ data class Product(
         "",
         "",
         "",
+        false,
         ""
     )
 }

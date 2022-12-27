@@ -24,7 +24,9 @@ class SharedPrefs(private val context: Context) {
 
     fun setUser(user: User) {
         sharedPref.edit().putString(PREF_USER, gson.toJson(user)).apply()
+
     }
+
 
     fun getUser(): User? {
         return gson.fromJson(sharedPref.getString(PREF_USER, null), User::class.java)

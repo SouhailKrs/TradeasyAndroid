@@ -340,4 +340,33 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
 
     }
 
+    override suspend fun deleteNotification(req: DeleteNotificationReq):  Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>> {
+        return flow {
+            val response = api.deleteNotificationApi(req)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val notifications = mutableListOf<Notification>()
+
+                body.data?.forEach { notificationResponse ->
+                    notifications.add(
+                        Notification(
+                            notificationResponse.title,
+                            notificationResponse.description!!,
+                            notificationResponse.date,
+                        )
+                    )
+
+                }
+                emit(BaseResult.Success(notifications))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Notification>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Notification>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+
+    }
 }

@@ -107,6 +107,7 @@ class AdditionalInfoFragment : Fragment() {
     }
 
     private fun addProduct() {
+ // check if the user added images or not
 
         // get current time kotlin in mills
         val currentTime = System.currentTimeMillis()
@@ -114,15 +115,7 @@ class AdditionalInfoFragment : Fragment() {
 var test : String = ""
 
         binding.addProduct.setOnClickListener {
-            if (sharedPrefs.getBidDuration() == null) {
-
-                AlertDialog.Builder(requireContext())
-                    .setMessage("Please select bid duration")
-                    .setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
-            } else {
+            if (validate()) {
                 val bidState: Boolean = binding.forBid.isChecked
 // send images to server as a list
                 val imageList = mutableListOf<MultipartBody.Part>()
@@ -163,8 +156,25 @@ var test : String = ""
 
             }
         }
-    }
 
+    }
+private fun validate() : Boolean {
+    if(file.isEmpty()) {
+        Snackbar.make(binding.root, "Please add at least one image", Snackbar.LENGTH_SHORT).show()
+        return false
+    }
+    if (sharedPrefs.getBidDuration() == null && binding.forBid.isChecked) {
+
+        AlertDialog.Builder(requireContext())
+            .setMessage("Please select bid duration")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+        return false
+    }
+    return true
+    }
 
     private fun setupRecyclerView() {
         val mAdapter = ProductImagesAdapter(mutableListOf())

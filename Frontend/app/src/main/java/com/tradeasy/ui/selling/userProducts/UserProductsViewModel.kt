@@ -1,9 +1,9 @@
-package com.tradeasy.ui.selling.userSelling
+package com.tradeasy.ui.selling.userProducts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.domain.product.usecase.UserSellingUseCase
+import com.tradeasy.domain.product.usecase.GetUserProductsUseCase
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,43 +13,46 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 
-class UserSellingViewModel @Inject constructor(private val userSellingUseCase: UserSellingUseCase) : ViewModel(){
-    private val state = MutableStateFlow<SellingFragmentState>(SellingFragmentState.Init)
-    val mState: StateFlow<SellingFragmentState> get() = state
+
+@HiltViewModel
+class UserProductsViewModel @Inject constructor(private val getUserProductsUseCase: GetUserProductsUseCase) : ViewModel(){
+    private val state = MutableStateFlow<UserProductsState>(UserProductsState.Init)
+    val mState: StateFlow<UserProductsState> get() = state
 
     private val products = MutableStateFlow<List<Product>>(mutableListOf())
     val mProducts: StateFlow<List<Product>> get() = products
 
     init {
-        fetchUserSelling()
+        fetchUserProducts()
     }
 
 
     private fun setLoading(){
-        state.value = SellingFragmentState.IsLoading(true)
+        state.value = UserProductsState.IsLoading(true)
     }
 
     private fun hideLoading(){
-        state.value = SellingFragmentState.IsLoading(false)
+        state.value = UserProductsState.IsLoading(false)
     }
 
     private fun showToast(message: String){
-        state.value = SellingFragmentState.ShowToast(message)
+        state.value = UserProductsState.ShowToast(message)
     }
 
-         fun fetchUserSelling(){
+    fun fetchUserProducts(){
         viewModelScope.launch {
-            userSellingUseCase.invoke()
+            getUserProductsUseCase.invoke()
                 .onStart {
                     setLoading()
                 }
                 .catch { exception ->
+
                     hideLoading()
                     showToast(exception.message.toString())
                 }
                 .collect { result ->
+
                     hideLoading()
                     when(result){
                         is BaseResult.Success -> {
@@ -65,8 +68,8 @@ class UserSellingViewModel @Inject constructor(private val userSellingUseCase: U
 
 }
 
-sealed class SellingFragmentState {
-    object Init : SellingFragmentState()
-    data class IsLoading(val isLoading: Boolean) : SellingFragmentState()
-    data class ShowToast(val message : String) : SellingFragmentState()
+sealed class UserProductsState {
+    object Init : UserProductsState()
+    data class IsLoading(val isLoading: Boolean) : UserProductsState()
+    data class ShowToast(val message : String) : UserProductsState()
 }

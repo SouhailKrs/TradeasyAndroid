@@ -146,7 +146,7 @@ abstract class SwipeHelper(
 
         var width = getScreenSize(context).second
 
-        private val horizontalPadding = width / 10
+        private val horizontalPadding = width / 12
         val intrinsicWidth: Float
 
         init {

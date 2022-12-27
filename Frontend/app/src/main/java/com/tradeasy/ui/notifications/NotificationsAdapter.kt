@@ -3,11 +3,11 @@ package com.tradeasy.ui.notifications
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tradeasy.R
 import com.tradeasy.databinding.NotificationItemBinding
 import com.tradeasy.domain.user.entity.Notification
 
-class NotificationsAdapter(private val notification: MutableList<Notification>, val onItemClick:(Notification)->Unit) : RecyclerView.Adapter<NotificationsAdapter.MyViewHolder>(){
+
+class NotificationsAdapter(val notification: MutableList<Notification>, val onItemClick:(Notification)->Unit) : RecyclerView.Adapter<NotificationsAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
@@ -21,11 +21,14 @@ class NotificationsAdapter(private val notification: MutableList<Notification>, 
         holder.itemView.setOnClickListener{
             onItemClick(currentItem)
         }
+        // on swipe listener
+
+
 
     }
 
-    override fun getItemCount(): Int {
 
+    override fun getItemCount(): Int {
         return notification.size
 
     }
@@ -38,7 +41,6 @@ class NotificationsAdapter(private val notification: MutableList<Notification>, 
 
 
 
-
     class MyViewHolder(val binding : NotificationItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(notification: Notification) {
@@ -47,7 +49,8 @@ class NotificationsAdapter(private val notification: MutableList<Notification>, 
             binding.notificationTitle.text = notification.title
             binding.notificationDesc.text = notification.description
             binding.notificationDate.text = NotificationsFragment().getTimeAgo(notification.date!!.toLong())
-            binding.notificationIcon.setImageResource(R.drawable.notifications_gavel)
+            binding.notificationIcon.setImageResource(com.tradeasy.R.drawable.notifications_gavel)
+// print the size of the list
 
         }
 

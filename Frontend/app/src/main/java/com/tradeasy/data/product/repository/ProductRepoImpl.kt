@@ -64,6 +64,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                     body.data?.username!!,
                     body.data?.userPhoneNumber!!,
                     body.data?.userProfilePicture!!,
+                    body.data?.selling!!,
                     body.data?.productId!!
                 )
                 emit(BaseResult.Success(product))
@@ -125,6 +126,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.username,
                             productResponse.userPhoneNumber,
                             productResponse.userProfilePicture,
+                            productResponse.selling,
                             productResponse.productId
                         )
                     )
@@ -171,6 +173,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.username,
                             productResponse.userPhoneNumber,
                             productResponse.userProfilePicture,
+                            productResponse.selling,
                             productResponse.productId
                         )
                     )
@@ -247,6 +250,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.username,
                             productResponse.userPhoneNumber,
                             productResponse.userProfilePicture,
+                            productResponse.selling,
                             productResponse.productId
                         )
                     )
@@ -291,6 +295,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.username,
                             productResponse.userPhoneNumber,
                             productResponse.userProfilePicture,
+                            productResponse.selling,
                             productResponse.productId
                         )
                     )
@@ -331,6 +336,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                     body.data?.username!!,
                     body.data?.userPhoneNumber!!,
                     body.data?.userProfilePicture!!,
+                    body.data?.selling!!,
                     body.data?.productId!!
                 )
                 emit(BaseResult.Success(product))
@@ -373,6 +379,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                             productResponse.username,
                             productResponse.userPhoneNumber,
                             productResponse.userProfilePicture,
+                            productResponse.selling,
                             productResponse.productId
                         )
                     )
@@ -388,6 +395,52 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
                 emit(BaseResult.Error(err))
             }
         }
+    }
+
+
+    // get user products implementation
+    override suspend fun getUserProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.getUserProducts()
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
+                            productResponse.selling,
+                            productResponse.productId
+                        )
+                    )
+
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+
     }
 
 }

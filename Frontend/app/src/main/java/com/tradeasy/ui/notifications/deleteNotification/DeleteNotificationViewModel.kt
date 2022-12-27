@@ -1,9 +1,10 @@
-package com.tradeasy.ui.notifications
+package com.tradeasy.ui.notifications.deleteNotification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tradeasy.data.user.remote.dto.DeleteNotificationReq
 import com.tradeasy.domain.user.entity.Notification
-import com.tradeasy.domain.user.usecase.GetUserNotificationsUseCase
+import com.tradeasy.domain.user.usecase.DeleteNotificationUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,39 +17,37 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class NotificationsViewModel @Inject constructor(private val getUserNotificationsUseCase: GetUserNotificationsUseCase) :
+class DeleteNotificationViewModel @Inject constructor(private val deleteNotificationUseCase: DeleteNotificationUseCase) :
     ViewModel() {
     private val state =
-        MutableStateFlow<NotificationsFragmentState>(NotificationsFragmentState.Init)
-    val mState: StateFlow<NotificationsFragmentState> get() = state
+        MutableStateFlow<DeleteNotificationFragmentState>(DeleteNotificationFragmentState.Init)
+    val mState: StateFlow<DeleteNotificationFragmentState> get() = state
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-     val notifications = MutableStateFlow<List<Notification>>(mutableListOf())
+    private val notifications = MutableStateFlow<List<Notification>>(mutableListOf())
     val mNotifications: StateFlow<List<Notification>> get() = notifications
 
 
-    init {
-        fetchNotifications()
-
-    }
-
+//    init {
+//        fetchNotifications()
+//    }
 
     private fun setLoading() {
-        state.value = NotificationsFragmentState.IsLoading(true)
-        println("Loading")
+        state.value = DeleteNotificationFragmentState.IsLoading(true)
     }
 
     private fun hideLoading() {
-        state.value = NotificationsFragmentState.IsLoading(false)
+        state.value = DeleteNotificationFragmentState.IsLoading(false)
     }
 
     private fun showToast(message: String) {
-        state.value = NotificationsFragmentState.ShowToast(message)
+        state.value = DeleteNotificationFragmentState.ShowToast(message)
+        println("error is $message")
     }
 
-    fun fetchNotifications() {
+    fun deleteNotification(req:DeleteNotificationReq) {
         viewModelScope.launch {
-            getUserNotificationsUseCase.invoke().onStart {
+            deleteNotificationUseCase.execute(req).onStart {
                     setLoading()
                 }.catch { exception ->
 
@@ -59,10 +58,14 @@ class NotificationsViewModel @Inject constructor(private val getUserNotification
                     hideLoading()
                     when (result) {
                         is BaseResult.Success -> {
+
+
                             notifications.value = result.data
+
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)
+                            println("error is ${result.rawResponse.message}")
                         }
                     }
                 }
@@ -71,8 +74,10 @@ class NotificationsViewModel @Inject constructor(private val getUserNotification
 
 }
 
-sealed class NotificationsFragmentState {
-    object Init : NotificationsFragmentState()
-    data class IsLoading(val isLoading: Boolean) : NotificationsFragmentState()
-    data class ShowToast(val message: String) : NotificationsFragmentState()
+sealed class DeleteNotificationFragmentState {
+    object Init : DeleteNotificationFragmentState()
+    data class SuccessGettingNotification(val notification: Notification) :
+        DeleteNotificationFragmentState()
+    data class IsLoading(val isLoading: Boolean) : DeleteNotificationFragmentState()
+    data class ShowToast(val message: String) : DeleteNotificationFragmentState()
 }

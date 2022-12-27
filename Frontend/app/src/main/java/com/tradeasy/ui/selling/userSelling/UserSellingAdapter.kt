@@ -40,7 +40,6 @@ class UserSellingAdapter(private val products: MutableList<Product>, val onItemC
             binding.prodTitle.text = product.name
             binding.prodPrice.text = product.price.toString()
             val productImage= binding.prodImg
-
             imageLoader(product.image!![0],productImage)
 
         }

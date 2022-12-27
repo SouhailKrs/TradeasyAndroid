@@ -51,4 +51,9 @@ interface ProductRepo {
     suspend fun buyNow(req: BuyNowReq): Flow<BaseResult<Product, WrappedResponse<Product>>>
     // get products by category
     suspend fun getProductByCategory(category: GetByCatReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+
+    // get user products
+
+    // GET SAVED PRODUCTS
+    suspend fun getUserProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
 }
