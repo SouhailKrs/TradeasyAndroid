@@ -48,7 +48,7 @@ class VerifyUsernameViewModel @Inject constructor(
                 when (baseResult) {
                     is BaseResult.Error -> {
                         state.value = VerifyUsernameFragmentState.UsernameAvailable(baseResult.rawResponse)
-                        println("12121" + baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         VerifyUsernameFragmentState.UsernameExists(baseResult.data)

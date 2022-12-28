@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.updatePadding
@@ -14,10 +15,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
 import com.tradeasy.databinding.FragmentUpdateUsernameBinding
 import com.tradeasy.domain.user.entity.User
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,16 +50,8 @@ class UpdateUsernameFragment : Fragment() {
         }
 
         // change the custom toolbar title
-        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-        toolbar.text = "Update username"
 
-        val toolbarTxt: TextView =
-            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-        toolbarTxt.text = "Done"
-        toolbarTxt.visibility = View.VISIBLE
-// reduce toolbar text opacity
-        toolbarTxt.alpha = 0.5f
-
+        (activity as MainActivity?)?.setupToolBar("Update username", true, false,0.5f)
         return binding.root
     }
 
@@ -108,7 +103,7 @@ class UpdateUsernameFragment : Fragment() {
             is UpdateUsernameActivityState.ErrorUpdate -> handleErrorUpdate(state.rawResponse)
             is UpdateUsernameActivityState.SuccessUpdate -> handleSuccessUpdate(state.user)
             is UpdateUsernameActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
+                requireActivity(), "Network Error", Toast.LENGTH_SHORT
             ).show()
             is UpdateUsernameActivityState.IsLoading -> handleLoading(state.isLoading)
         }
@@ -118,7 +113,7 @@ class UpdateUsernameFragment : Fragment() {
 
         // snackbar
         snackBar(response.message)
-
+        (activity as MainActivity?)?.setupToolBar("Update username", true, false,0.5f)
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -128,16 +123,18 @@ class UpdateUsernameFragment : Fragment() {
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+        (activity as MainActivity?)?.setupToolBar("Update username", false, true,1f)
+
     }
 
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessUpdate(user: User) {
 
-        //sncakbar
         sharedPrefs.setUser(user)
-        Snackbar.make(requireView(), "Username Updated Successfully", Snackbar.LENGTH_LONG).show()
-        //findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
+        snackBar("Username Updated Successfully")
+val toolBar: TextView =
+            requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
+        findNavController().navigateUp()
     }
 
     private fun snackBar(message: String) {
@@ -157,6 +154,12 @@ class UpdateUsernameFragment : Fragment() {
             0,
             0
         )
+// get keyboard height
+
+        // set snackbar in a specific position
+        val params = snackbarView.layoutParams as FrameLayout.LayoutParams
+        params.setMargins(10, 0, 10,   100)
+        snackbarView.layoutParams = params
 
         snackbarText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
 

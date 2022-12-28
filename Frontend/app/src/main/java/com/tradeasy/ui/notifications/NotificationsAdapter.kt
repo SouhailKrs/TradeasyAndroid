@@ -7,59 +7,53 @@ import com.tradeasy.databinding.NotificationItemBinding
 import com.tradeasy.domain.user.entity.Notification
 
 
-class NotificationsAdapter(var notifications: List<Notification>) :
-    RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder>() {
-    class NotificationViewHolder(val binding: NotificationItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+class NotificationsAdapter(val notification: MutableList<Notification>, val onItemClick:(Notification)->Unit) : RecyclerView.Adapter<NotificationsAdapter.MyViewHolder>(){
 
-        //        val notificationContent : TextView = itemView.findViewById(com.tradeasy.R.id.notificationContent)
-//        val oneNotificationDate: TextView = itemView.findViewById(com.tradeasy.R.id.notificationDate)
-//        val notificationIcon: ImageView = itemView.findViewById(com.tradeasy.R.id.notificationIcon)
-        fun bind(notification: Notification) {
-            binding.notificationTitle.text = notification.title
-            binding.notificationDesc.text = notification.description
-            binding.notificationDate.text = notification.date.toString()
-        }
-
-
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
             NotificationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotificationViewHolder(itemView)
+        return MyViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val currentItem = notification[position]
+        holder.bind(currentItem)
+        holder.itemView.setOnClickListener{
+            onItemClick(currentItem)
+        }
+        // on swipe listener
+
+
 
     }
 
-
-    override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
-
-        val notification = notifications[position]
-        holder.bind(notification)
-
-//        if(notification.type=="Sold") {
-//            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.ic_baseline_sell_24)
-//        }
-//        if(notification.type=="Bid") {
-//            holder.notificationIcon.setImageResource(com.tradeasy.R.drawable.notifications_gavel)
-//        }
-
-
-    }
 
     override fun getItemCount(): Int {
+        return notification.size
 
-        return notifications.size
+    }
+    fun updateList(mnotification: List<Notification>){
+        notification.clear()
+        notification.addAll(mnotification)
+        notifyDataSetChanged()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
+
+
+
+    class MyViewHolder(val binding : NotificationItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(notification: Notification) {
+// convert number to long
+
+            binding.notificationTitle.text = notification.title
+            binding.notificationDesc.text = notification.description
+            binding.notificationDate.text = NotificationsFragment().getTimeAgo(notification.date!!.toLong())
+            binding.notificationIcon.setImageResource(com.tradeasy.R.drawable.notifications_gavel)
+// print the size of the list
+
+        }
+
     }
-
-//    fun updateNotifications(notifications: List<Notification>) {
-//        this.notifications = notifications
-//        notifyDataSetChanged()
-//    }
-
 
 }

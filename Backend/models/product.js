@@ -28,7 +28,7 @@ const product = new Schema(
       required: true,
     },
     image: {
-      type: String,
+      type: Array,
       required: false,
     },
 
@@ -41,6 +41,12 @@ const product = new Schema(
     bid_end_date: { type: Number },
     bade: { type: Boolean, default: false },
     sold: { type: Boolean, default: false },
+    username: { type: String },
+    userPhoneNumber: { type: String },
+    userProfilePicture: { type: String },
+    selling: { type: Boolean, default: false }, 
+
+
   },
   {
     timestamps: true,

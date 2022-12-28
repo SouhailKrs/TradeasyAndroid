@@ -1,45 +1,50 @@
 package com.tradeasy.ui.editProfile.updatePassword
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
-import com.tradeasy.databinding.FragmentUpdatePasswordBinding
 import com.tradeasy.data.user.remote.dto.UpdatePasswordRequest
+import com.tradeasy.databinding.FragmentUpdatePasswordBinding
 import com.tradeasy.domain.user.entity.User
+import com.tradeasy.ui.MainActivity
+import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UpdatePasswordFragment : Fragment() {
     private lateinit var binding: FragmentUpdatePasswordBinding
     private val viewModel: UpdatePasswordViewModel by viewModels()
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUpdatePasswordBinding.inflate(inflater, container, false)
 
-        val toolbar: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbar_title)
-        val toolbarTxt: TextView = requireActivity().findViewById(com.tradeasy.R.id.toolbarRightText)
-        toolbarTxt.visibility = View.GONE
-        toolbar.text = "Update Password"
-
+        (activity as MainActivity?)?.setupToolBar("Update password", false, false,0.5f)
+        updatePasswordBtnHandler()
         return binding.root
 
     }
@@ -80,6 +85,12 @@ class UpdatePasswordFragment : Fragment() {
                 binding.confirmPassword.requestFocus()
                 return@setOnClickListener
             }
+
+            if(newPassword.length<8){
+                binding.newPassword.error="Password must be at least 8 characters"
+                binding.newPassword.requestFocus()
+                return@setOnClickListener
+            }
             else{
                 val req = UpdatePasswordRequest(currentPassword,newPassword,"")
                 viewModel.updatePassword(req)
@@ -113,26 +124,61 @@ class UpdatePasswordFragment : Fragment() {
             setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
+                binding.updatePasswordBtn.hideProgress("Update password")
             }
         }.show()
     }
 
     // IF LOGGING IN IS LOADING
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+binding.updatePasswordBtn.showProgress {
+
+        progressColor = Color.WHITE
+
+
+}
     }
 
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessUpdate(user: User) {
-
+sharedPrefs.setUser(user)
         //sncakbar
         Snackbar.make(requireView(), "Password Updated Successfully", Snackbar.LENGTH_LONG).show()
-        findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
+        findNavController().navigateUp()
+    }
+    private  fun updatePasswordBtnHandler(){
+        val currentPassword = binding.currentPassword
+        val newPassword = binding.newPassword
+        val confirmPassword = binding.confirmPassword
+        val updatePasswordBtn = binding.updatePasswordBtn
+
+        updatePasswordBtn.isEnabled = false
+        updatePasswordBtn.alpha = 0.5f
+        currentPassword.addTextChangedListener {
+
+            updatePasswordBtn.isEnabled =
+                currentPassword.text!!.isNotEmpty() && newPassword.text!!.isNotEmpty() && confirmPassword.text!!.isNotEmpty()
+            updatePasswordBtn.alpha = if (updatePasswordBtn.isEnabled) 1f else 0.5f
+
+
+        }
+        newPassword.addTextChangedListener {
+
+            updatePasswordBtn.isEnabled =
+                currentPassword.text!!.isNotEmpty() && newPassword.text!!.isNotEmpty() && confirmPassword.text!!.isNotEmpty()
+            updatePasswordBtn.alpha = if (updatePasswordBtn.isEnabled) 1f else 0.5f
+
+        }
+        confirmPassword.addTextChangedListener {
+
+            updatePasswordBtn.isEnabled =
+                currentPassword.text!!.isNotEmpty() && newPassword.text!!.isNotEmpty() && confirmPassword.text!!.isNotEmpty()
+            updatePasswordBtn.alpha = if (updatePasswordBtn.isEnabled) 1f else 0.5f
+
+        }
+
+
+
+
     }
 }

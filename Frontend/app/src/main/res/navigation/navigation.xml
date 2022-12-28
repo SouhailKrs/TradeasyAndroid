@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productItemFragment"
             app:destination="@id/productItemFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productsByCategoryFragment"
+            app:destination="@id/productsByCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -96,6 +99,9 @@
         <action
             android:id="@+id/action_editProfileFragment_to_updateEmailFragment"
             app:destination="@id/updateEmailFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_cropProfilePicFragment"
+            app:destination="@id/cropProfilePicFragment" />
     </fragment>
     <fragment
         android:id="@+id/updatePasswordFragment"
@@ -135,6 +141,12 @@
         <action
             android:id="@+id/action_sellingFragment_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
+        <action
+            android:id="@+id/action_sellingFragment_to_userProductItemFragment"
+            app:destination="@id/userProductItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateUsernameFragment"
@@ -159,6 +171,9 @@
         <action
             android:id="@+id/action_addProductFragment_to_additionalInfoFragment"
             app:destination="@id/additionalInfoFragment" />
+        <action
+            android:id="@+id/action_addProductFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeBidFragment"
@@ -203,11 +218,12 @@
             app:argType="string" />
         <argument android:name="prodDesc"
             app:argType="string" />
-        <argument android:name="prodCategory"
-            app:argType="string" />
         <argument
             android:name="prodPrice"
             app:argType="string" />
+        <action
+            android:id="@+id/action_additionalInfoFragment_to_bidChoicesFragment"
+            app:destination="@id/bidChoicesFragment" />
     </fragment>
     <fragment
         android:id="@+id/productItemFragment"
@@ -244,9 +260,20 @@
         <argument
             android:name="productId"
             app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="userPhoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="userProfilePicture"
+            app:argType="string" />
         <action
             android:id="@+id/action_productItemFragment_to_placeBidFragment"
             app:destination="@id/placeBidFragment" />
+        <argument android:name="image"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/savedProductsFragment"
@@ -301,6 +328,75 @@
         <argument
             android:name="otp"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cropProfilePicFragment"
+        android:name="com.tradeasy.ui.editProfile.updateProfilePic.CropProfilePicFragment"
+        android:label="fragment_crop_profile_pic"
+        tools:layout="@layout/fragment_crop_profile_pic" >
+        <argument android:name="profilePic" />
+        <argument android:name="file" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.tradeasy.ui.selling.product.categories.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bidChoicesFragment"
+        android:name="com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment"
+        android:label="fragment_bid_choices"
+        tools:layout="@layout/fragment_bid_choices" >
+        <action
+            android:id="@+id/action_bidChoicesFragment_to_additionalInfoFragment"
+            app:destination="@id/additionalInfoFragment" >
+            <argument
+                android:name="prodName"
+                />
+            <argument
+                android:name="prodDesc"
+                />
+            <argument
+                android:name="prodCategory"
+                />
+            <argument
+                android:name="prodPrice"
+                />
+            <argument
+                android:name="bidDuration"
+                />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/productsByCategoryFragment"
+        android:name="com.tradeasy.ui.home.productsByCategory.ProductsByCategoryFragment"
+        android:label="fragment_products_by_category"
+        tools:layout="@layout/fragment_products_by_category" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProductItemFragment"
+        android:name="com.tradeasy.ui.selling.userSelling.UserProductItemFragment"
+        android:label="fragment_user_product_item"
+        tools:layout="@layout/fragment_user_product_item" >
+        <argument
+            android:name="userProdName"
+            app:argType="string" />
+        <argument
+            android:name="userProdImg"
+            app:argType="string[]" />
+        <argument
+            android:name="userProdPrice"
+            app:argType="float" />
+        <argument
+            android:name="selling"
+            app:argType="boolean" />
     </fragment>
 
 </navigation>

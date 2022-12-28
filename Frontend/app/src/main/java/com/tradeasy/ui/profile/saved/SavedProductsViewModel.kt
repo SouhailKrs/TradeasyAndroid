@@ -47,12 +47,12 @@ class SavedProductsViewModel @Inject constructor(private val getSavedProductsUse
                     setLoading()
                 }
                 .catch { exception ->
-                    println("aaaaa ${exception.message}")
+
                     hideLoading()
                     showToast(exception.message.toString())
                 }
                 .collect { result ->
-                    println("bbbb $result")
+
                     hideLoading()
                     when(result){
                         is BaseResult.Success -> {

@@ -51,6 +51,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    recentlyViewed: {
+      type: Array,
+      required: false,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

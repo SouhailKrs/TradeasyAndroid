@@ -22,11 +22,17 @@ export const addCategory = async (req, res) => {
     }
 };
 
-
-
+// a function that returns a list of all categories names
+export const getCategories = async (req, res) => {
+    try {
+        const categories = await Category.find();
+        res.status(200).json({ data: categories });
+    } catch (err) {
+        return res.status(500).json({ "message": err.message });
+    }
+}
 
   
-
 
 
 

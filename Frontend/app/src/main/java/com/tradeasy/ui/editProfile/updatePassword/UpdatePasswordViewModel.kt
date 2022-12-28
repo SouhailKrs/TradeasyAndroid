@@ -49,7 +49,7 @@ class UpdatePasswordViewModel @Inject constructor(
                 when (baseResult) {
                     is BaseResult.Error -> {
                         state.value = UpdatePasswordActivityState.ErrorUpdate(baseResult.rawResponse)
-                        println(baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         UpdatePasswordActivityState.SuccessUpdate(baseResult.data)

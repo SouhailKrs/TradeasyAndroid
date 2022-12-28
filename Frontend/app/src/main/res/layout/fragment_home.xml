@@ -87,8 +87,13 @@
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/electronicsConstraint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_weight="1">
 
                         <ImageButton
@@ -96,8 +101,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/red_circle"
-                            android:src="@drawable/icons8_iphone_se_48"
                             android:padding="10dip"
+                            android:src="@drawable/icons8_iphone_se_48"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +122,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/realestateConstraint"
                         android:layout_width="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
@@ -125,9 +135,9 @@
                             android:id="@+id/realEstateImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icons8_real_estate_48"
-                            android:padding="10dip"
                             android:background="@drawable/red_circle"
+                            android:padding="10dip"
+                            android:src="@drawable/icons8_real_estate_48"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +157,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/carsConstraint"
                         android:layout_width="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
@@ -155,8 +170,8 @@
                             android:id="@+id/carsImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dip"
                             android:background="@drawable/red_circle"
+                            android:padding="10dip"
                             android:src="@drawable/icons8_cars_48"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -188,16 +203,21 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clothingConstraint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_weight="1">
 
                         <ImageButton
                             android:id="@+id/clothingImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dip"
                             android:background="@drawable/red_circle"
+                            android:padding="10dip"
                             android:src="@drawable/icons8_clothes_48"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -218,7 +238,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/groceriesConstraint"
                         android:layout_width="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
@@ -226,8 +251,8 @@
                             android:id="@+id/groceriesImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dip"
                             android:background="@drawable/red_circle"
+                            android:padding="10dip"
                             android:src="@drawable/icons8_add_basket_48"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -250,6 +275,10 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:elevation="0dp"
+                        android:focusable="true"
                         android:layout_weight="1">
 
                         <ImageButton

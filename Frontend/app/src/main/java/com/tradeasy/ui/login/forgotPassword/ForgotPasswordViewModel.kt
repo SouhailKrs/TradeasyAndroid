@@ -48,7 +48,7 @@ class ForgotPasswordViewModel @Inject constructor(
                 when (baseResult) {
                     is BaseResult.Error -> {
                         state.value = ForgotPasswordActivityState.ErrorUpdate(baseResult.rawResponse)
-                        println("12121" + baseResult.rawResponse)
+
                     }
                     is BaseResult.Success -> state.value =
                         ForgotPasswordActivityState.SuccessUpdate(baseResult.data)

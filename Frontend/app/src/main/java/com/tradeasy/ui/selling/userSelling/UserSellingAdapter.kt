@@ -1,11 +1,11 @@
-package com.tradeasy.ui.home
+package com.tradeasy.ui.selling.userSelling
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.UserSellingItemBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.utils.ImageLoader
+import com.tradeasy.utils.imageLoader
 
 class UserSellingAdapter(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<UserSellingAdapter.MyViewHolder>(){
 
@@ -37,12 +37,10 @@ class UserSellingAdapter(private val products: MutableList<Product>, val onItemC
     class MyViewHolder(val binding : UserSellingItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-
-            binding.userSellingName.text = product.name
-            binding.userSellingPrice.text = product.price.toString()
-            val productImage= binding.userSellingImg
-
-            ImageLoader(product.image!!,productImage)
+            binding.prodTitle.text = product.name
+            binding.prodPrice.text = product.price.toString()
+            val productImage= binding.prodImg
+            imageLoader(product.image!![0],productImage)
 
         }
 

@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.SavedProductItemBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.utils.ImageLoader
+import com.tradeasy.utils.getScreenSize
+import com.tradeasy.utils.imageLoader
 
 class SavedProductsAdapter(
     private val products: MutableList<Product>,
@@ -50,8 +51,9 @@ class SavedProductsAdapter(
             binding.savedProdPrice.text = product.price.toString()
             binding.SavedProdCategory.text = product.category
             val productImage= binding.SavedProductImageView
-
-            ImageLoader(product.image!!,productImage)
+            binding.imgCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.17).toInt()
+            binding.imgCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.28).toInt()
+            imageLoader(product.image!![0],productImage)
 
         }
 

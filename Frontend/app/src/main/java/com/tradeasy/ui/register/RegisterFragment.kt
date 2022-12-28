@@ -24,6 +24,7 @@ import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
 import com.tradeasy.databinding.FragmentRegisterBinding
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.login.LoginFragment
 import com.tradeasy.ui.navigation.registerToHome
 import com.tradeasy.ui.navigation.registerToLogin
@@ -51,16 +52,14 @@ class RegisterFragment : Fragment() {
     ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
-        println(binding.countrycodePicker.detectLocaleCountry(false))
-// make the drawable spin
-println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+binding.countrycodePicker.detectSIMCountry(true)
         view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
             View.GONE
         binding.navToLogin.setOnClickListener {
@@ -71,7 +70,7 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
 
             registerToHome(requireView())
         }
-
+        (activity as MainActivity?)?.setupToolBar("", false, false)
         registerBtnHandler()
         verifyUsername()
 
@@ -95,7 +94,7 @@ println("aaaaa" + binding.countrycodePicker.selectedCountryCodeWithPlus)
                         phoneNumber.toInt(),
                         email,
                         password,
-                        "None",
+                        null,
                         true,
                         sharedPrefs.getNotificationToken(),
                         null,

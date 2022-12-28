@@ -1,10 +1,10 @@
 import express from "express";
 import { body } from "express-validator";
+import multer from "../middlewares/multer-config-single.js";
 
 import {
   login,
   register,
-  putOnce,
   logout,
   verifyEmail,
   updatePassword,
@@ -12,7 +12,13 @@ import {
   forgotPassword,
   resetPassword,
   verifyOtp,
-  verifyUsername
+  verifyUsername,
+  uploadProfilePicture,
+  getUserById,
+  deleteUser,
+  sendSms,
+  getUserNotifications,
+  deleteUserNotification,
 } from "../controllers/user.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 
@@ -22,15 +28,6 @@ router.route("/register").post(register);
 
 router.route("/login").post(login);
 
-router
-  .route("/:id")
-  .put(
-    body("username").isLength({ min: 5 }),
-    body("phoneNumber"),
-    body("email"),
-    body("password").isLength({ min: 8 }),
-    putOnce
-  );
 
 router.route("/logout").get(logout);
 router.route("/verify").post(verifyEmail);
@@ -40,5 +37,11 @@ router.route("/forgotPassword").post(forgotPassword);
 router.route("/resetpassword").post(resetPassword);
 router.route("/verifyOtp").post(verifyOtp);
 router.route("/verifyusername").post(verifyUsername);
+router.route("/uploadprofilepicture").post(requireAuth, multer("image"),uploadProfilePicture);
+router.route("/getuserbyid").post(getUserById);
+router.route("/deleteaccount").post(requireAuth , deleteUser);
+router.route("/sendsms").post(sendSms);
+router.route("/getnotifications").get(requireAuth,getUserNotifications);
+router.route("/deletenotification").post(requireAuth,deleteUserNotification);
 
 export default router;

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.SearchItemBinding
 import com.tradeasy.domain.product.entity.Product
 
+
 class SearchAdapter(
     private val products: MutableList<Product>,
     val onItemClick: (Product) -> Unit

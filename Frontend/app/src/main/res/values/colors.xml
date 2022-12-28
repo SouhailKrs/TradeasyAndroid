@@ -14,6 +14,8 @@
     <color name="grey3">#828282</color>
     <color name="blacksh">#353232</color>
     <color name="blue">#4B78A8</color>
+    <color name="grey4">#f8f4f4</color>
+    <color name="closeBtn">#f8f4f4</color>
 
     <color name="orange">#E05E07</color>
     <color name="strongreen">#3D8E41</color>

@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tradeasy.databinding.FragmentBidsBinding
+import com.tradeasy.ui.MainActivity
 
 class BidsFragment : Fragment() {
     private lateinit var binding:FragmentBidsBinding
@@ -30,6 +31,7 @@ class BidsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity?)?.setupToolBar("Bids", false, false)
         val fragmentList = arrayListOf(
        CurrentlyBiddingFragment(),
             WonBidsFragment()

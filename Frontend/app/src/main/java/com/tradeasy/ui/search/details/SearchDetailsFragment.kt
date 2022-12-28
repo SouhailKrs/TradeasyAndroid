@@ -14,9 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchDetailsBinding
 import com.tradeasy.domain.product.entity.Product
-import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.ui.search.SearchFragmentSate
 import com.tradeasy.ui.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +36,6 @@ class SearchDetailsFragment : Fragment() {
     ): View {
 
         binding = FragmentSearchDetailsBinding.inflate(inflater, container, false)
-        println("zzzzzz")
         observe()
         setupRecyclerView()
         setupSearchDetails()
@@ -59,6 +58,7 @@ private fun setupSearchDetails(){
 }
     private fun setupRecyclerView() {
         val mAdapter = SearchDetailsAdapter(mutableListOf(), onItemClick = {
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
 val action = SearchDetailsFragmentDirections.actionSearchDetailsFragmentToProductItemFragment(
 
     it.name!!,
@@ -71,7 +71,10 @@ val action = SearchDetailsFragmentDirections.actionSearchDetailsFragmentToProduc
     it.forBid!!,
     it.bidEndDate.toString(),
     it.productId!!,
-
+    it.username!!,
+    it.userPhoneNumber!!,
+    it.userProfilePicture!!,
+    imagesArray
 )
 findNavController().navigate(action)
         })
@@ -86,13 +89,13 @@ findNavController().navigate(action)
     }
 
     private fun observe() {
-        println("loadingggggggg7")
+
         observeState()
         observeSearchDetails()
     }
 
     private fun observeState() {
-        println("loadingggggggg6")
+
         viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 handleState(state)
@@ -100,7 +103,7 @@ findNavController().navigate(action)
     }
 
     private fun observeSearchDetails() {
-        println("loadingggggggg5")
+
         viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { products ->
                 handleSearch(products)
@@ -108,15 +111,15 @@ findNavController().navigate(action)
     }
 
     private fun handleState(state: SearchFragmentSate) {
-        println("loadingggggggg4")
+
         when (state) {
             is SearchFragmentSate.IsLoading -> handleLoading(state.isLoading)
             is SearchFragmentSate.ShowToast -> {
-                println("loadingggggggg3")
+
                 Toast.makeText(
                     requireActivity(), state.message, Toast.LENGTH_SHORT
                 ).show()
-                println(state.message)
+
             }
 
             is SearchFragmentSate.Init -> Unit
@@ -127,7 +130,7 @@ findNavController().navigate(action)
     }
 
     private fun handleSearch(products: List<Product>) {
-        println("loadingggggggg2")
+
         binding.searchDetailsRV.adapter?.let {
             if (it is SearchDetailsAdapter) {
                 it.updateList(products)
@@ -136,7 +139,7 @@ findNavController().navigate(action)
     }
 
     private fun handleLoading(isLoading: Boolean) {
-        println("loadingggggggg1")
+
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{

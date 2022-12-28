@@ -3,6 +3,7 @@ package com.tradeasy.data.product.remote.api
 
 import com.tradeasy.data.product.remote.dto.AddToSavedReq
 import com.tradeasy.data.product.remote.dto.BuyNowReq
+import com.tradeasy.data.product.remote.dto.GetByCatReq
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.domain.product.entity.Bid
 import com.tradeasy.domain.product.entity.Product
@@ -27,7 +28,7 @@ interface ProductApi {
         @Part name: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part price: MultipartBody.Part,
-        @Part image: MultipartBody.Part,
+        @Part image: List<MultipartBody.Part>,
         @Part quantity: MultipartBody.Part,
         @Part for_bid: MultipartBody.Part,
         @Part bid_end_date: MultipartBody.Part,
@@ -57,5 +58,11 @@ interface ProductApi {
     @POST("/product/buynow")
     suspend fun buyNowApi(@Body req: BuyNowReq): Response<WrappedResponse<Product>>
 
+    // GET PRODUCTS BY CATEGORY
+    @POST("/product/findbycat")
+    suspend fun getProductByCategoryApi(@Body category: GetByCatReq): Response<WrappedListResponse<Product>>
+    // GET USER PRODUCTS API
+    @GET("/product/userproducts")
+    suspend fun getUserProducts(): Response<WrappedListResponse<Product>>
 
 }

@@ -1,4 +1,4 @@
-package com.tradeasy.ui.home
+package com.tradeasy.ui.selling.userSelling
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+
 class UserSellingViewModel @Inject constructor(private val userSellingUseCase: UserSellingUseCase) : ViewModel(){
     private val state = MutableStateFlow<SellingFragmentState>(SellingFragmentState.Init)
     val mState: StateFlow<SellingFragmentState> get() = state

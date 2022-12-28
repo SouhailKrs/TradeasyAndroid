@@ -1,49 +1,23 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
-import session from "express-session";
 import jwt from "jsonwebtoken";
 //mailgun
 import mailgun from "mailgun-js";
-
+import Product from "../models/product.js";
 const DOMAIN = "sandbox507e3894f4c144a99bfbe463744c5c8e.mailgun.org";
 const MAILGUN_API_KEY = "e7b8db7cd772a6ccccd2ac5faf874ee4-48c092ba-1b9ee90c";
 const mg = mailgun({ apiKey: MAILGUN_API_KEY, domain: DOMAIN });
-const maxAge = 3 * 24 * 60 * 60;
+var sid = "AC7ec7b9ae75c7a280ebcf89a4d8555b21";
+var auth_token = "87f1188ceab5e3ee974646929f79271f";
+// imprt twilio
+import twilio from "twilio";
+
+const maxAge = 12 * 30 * 24 * 60 * 60;
 const createToken = (id) => {
   return jwt.sign({ id }, "access_secret", { expiresIn: maxAge });
 };
 
-export function putOnce(req, res) {
-  let newUser = {};
-  if (req.file == undefined) {
-    newUser = {
-      username: req.body.username,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      password: req.body.password,
-    };
-  } else {
-    newUser = {
-      username: req.body.username,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      password: req.body.password,
-    };
-  }
-  User.findByIdAndUpdate(req.params.id, newUser)
-    .then((doc1) => {
-      User.findById(req.params.id)
-        .then((doc2) => {
-          res.status(200).json(doc2);
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err });
-        });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
-}
+
 
 //logout
 export const logout = (req, res) => {
@@ -69,6 +43,9 @@ export const login = async (req, res) => {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
         const token = createToken(user._id);
+        // make jwt doesn't expire
+
+
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.header("jwt", token);
         // update notification token
@@ -81,7 +58,7 @@ export const login = async (req, res) => {
           token: token,
         });
       } else {
-        res.status(400).json({ "message": "Incorrect password" });
+        res.status(400).json({ "message": "invalid credentials" });
       }
     } else {
       res.status(404).json({ "message": "invalid credentials" });
@@ -92,6 +69,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+
   const {
     username,
     phoneNumber,
@@ -117,6 +95,7 @@ export const register = async (req, res) => {
       } else if (user.phoneNumber === phoneNumber) {
         return res.status(422).json({ "message": "Phone number already exists" });
       }
+      console.log("aaaa1");
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -130,6 +109,7 @@ export const register = async (req, res) => {
         notificationToken: notificationToken,
         countryCode: countryCode,
       });
+    // sendSms()
       newUser.save().then(() => {
         const token = createToken(newUser._id);
 
@@ -139,6 +119,7 @@ export const register = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log("aaaa3");
     res.status(400).json({ "message": err.message });
   }
 };
@@ -147,7 +128,7 @@ export const register = async (req, res) => {
 export function updatePassword(req, res) {
   const { currentPassword, newPassword } = req.body;
 
-  const user = session.user;
+  const user = req.user;
   bcrypt.compare(currentPassword, user.password).then((doMatch) => {
     if (doMatch) {
       bcrypt.hash(newPassword, 12).then((hashedPassword) => {
@@ -156,7 +137,7 @@ export function updatePassword(req, res) {
         res.status(200).json({ data: user });
       });
     } else {
-      res.status(400).json({ error: "Incorrect password" });
+      res.status(400).json({ "message": "Incorrect password" });
     }
   });
 }
@@ -168,7 +149,7 @@ export async function updateUsername(req, res) {
     username: newUsername,
   }).exec();
   if (user) {
-    return res.status(400).json({ "message": "Username already exists" });
+    return res.status(400).json({ "message": "Username already exists please try another" });
   }
   currentUser.username = newUsername;
   currentUser.save();
@@ -271,9 +252,9 @@ export function changeEmail(req, res) {
 export function forgotPassword(req, res) {
   const { email } = req.body;
   User.findOne({
-   
-     email: email 
-      
+
+    email: email
+
   }).then((user) => {
     if (!user) {
       return res.status(404).json({ "message": "User doesn't exist" });
@@ -284,11 +265,11 @@ export function forgotPassword(req, res) {
     const otp = Math.floor(100000 + Math.random() * 900000)
 
 
-      const data = {
-        from: "noreply@tradeasy.tn",
-        to: user.email,
-        subject: "Tradeasy Password Reset",
-        html: ` <style>
+    const data = {
+      from: "noreply@tradeasy.tn",
+      to: user.email,
+      subject: "Tradeasy Password Reset",
+      html: ` <style>
             .code {
               background-color: #4CAF50; /* Green */
               border: none;
@@ -308,60 +289,60 @@ export function forgotPassword(req, res) {
           <p>Enter the following code to reset your password</p>
           <P> Your code is ${otp} </P>
             </body>`,
-      };
-      mg.messages().send(data, function (error, body) {
-      });
+    };
+    mg.messages().send(data, function (error, body) {
+    });
 
-      //jwt token for otp
-      user.otp = otp;
-      user.save();
-     
-      res.status(200).json({ "message": "Email sent" });
-    }
-   )
+    //jwt token for otp
+    user.otp = otp;
+    user.save();
+
+    res.status(200).json({ "message": "Email sent" });
+  }
+  )
     .catch((err) => {
-          res.json({ "message": err.message });
+      res.json({ "message": err.message });
     }
     );
 }
 //set new password
 export function resetPassword(req, res) {
-  const {  email, otp, newPassword } = req.body;
-  
-  User.findOne({
-   
+  const { email, otp, newPassword } = req.body;
 
-      email: email ,
-   
-    
+  User.findOne({
+
+
+    email: email,
+
+
   })
     .then((user) => {
       if (!user) {
         return res.status(404).json({ "message": "User doesn't exist" });
       }
-     else
-      {if (user.otp == otp) {
-        bcrypt.hash(newPassword, 12).then((hashedpassword) => {
-          user.password = hashedpassword;
-          user.otp = 0;
-          user.save();
-          res.status(200).json({ "message": "Password changed" });
-        });
-      }
       else {
-        res.status(400).json({ "message": "Incorrect OTP" });
+        if (user.otp == otp) {
+          bcrypt.hash(newPassword, 12).then((hashedpassword) => {
+            user.password = hashedpassword;
+            user.otp = 0;
+            user.save();
+            res.status(200).json({ "message": "Password changed" });
+          });
+        }
+        else {
+          res.status(400).json({ "message": "Incorrect OTP" });
+        }
       }
-    }
     })
     .catch((err) => {
-     res.json({ "message": err.message });
+      res.json({ "message": err.message });
     });
 }
 
 // verify otp
 export function verifyOtp(req, res) {
-  const { email,otp } = req.body;
- 
+  const { email, otp } = req.body;
+
   User.findOne({
     email: email,
   })
@@ -369,17 +350,17 @@ export function verifyOtp(req, res) {
       if (!user) {
         return res.status(404).json({ "message": "User doesn't exist" });
       }
-      else
-      {if (user.otp == otp) {
-        res.status(200).json({ "message": "OTP verified" });
-      }
       else {
-        res.status(400).json({ "message": "Incorrect OTP" });
+        if (user.otp == otp) {
+          res.status(200).json({ "message": "OTP verified" });
+        }
+        else {
+          res.status(400).json({ "message": "Incorrect OTP" });
+        }
       }
-    }
     })
     .catch((err) => {
-     res.json({ "message": err.message });
+      res.json({ "message": err.message });
     });
 }
 
@@ -396,11 +377,146 @@ export function verifyUsername(req, res) {
       }
 
       else {
-      return res.status(200).json({ "message": "Username exists" });
-      }}
+        return res.status(200).json({ "message": "Username exists" });
+      }
+    }
     )
     .catch((err) => {
       res.json({ "message": err.message });
-      }
+    }
     );
 }
+// upload profile picture
+export const uploadProfilePicture = async (req, res) => {
+  const user = req.user;
+  // update user profile picture
+  // also update the user profile picture in products
+  const products = await Product.find
+    ({ user_id: req.user._id.toString() });
+  products.forEach(async (product) => {
+    product.userProfilePicture = `${req.protocol}://${req.get("host")}/img/${req.file.filename
+  }`;
+    await product.save();
+  });
+  user.profilePicture = `${req.protocol}://${req.get("host")}/img/${req.file.filename
+    }`;
+
+  await user.save();
+  res.status(200).json({ data: user });
+  //res.json({ "message": "Profile picture uploaded" });
+
+
+
+
+}
+// get user by id written in body
+export function getUserById(req, res) {
+  const { userId } = req.body;
+  User
+    .findById
+    (userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ "message": "User doesn't exist" });
+      }
+      res.status(200).json({ data: user });
+    }
+    )
+    .catch((err) => {
+      res.json({ "message": err.message });
+    }
+    );
+}
+
+// fucntion to set isdeleted to true
+export const  deleteUser = async (req, res) => {
+  const userId = req.user._id
+  // also delete the user products
+// search for products with the user id
+  const products = await Product.find
+    ({ user_id: userId.toString() });
+   products.forEach(async (product) => {
+     await product.remove();
+   });
+
+  User
+    .findById
+    (userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ "mmessage": "User doesn't exist" });
+      }
+      // delete user
+      user.isDeleted = true;
+
+    user.remove();
+      user.save();
+      res.status(200).json({ "message": "User deleted" });
+    }
+    )
+    .catch((err) => {
+      res.json({ "message": err.message });
+    }
+    );
+}
+// send sms with twilio
+export function sendSms(req, res) {
+  const otp = Math.floor(100000 + Math.random() * 900000)
+
+  twilio(sid,auth_token).messages
+  .create({  from: "TRADEASY",
+  to: "+21624876202",
+  body: `Please use ${otp} to verify you account` })
+  .then(message => console.log("message sent"));
+
+  //res.status(200).json({ "message": "SMS sent" });
+}
+
+// get user notifications list
+export function getUserNotifications(req, res) {
+  const userId = req.user._id;
+  User
+    .findById
+    (userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ "message": "User doesn't exist" });
+      }
+      res.status(200).json({ data: user.notifications });
+    }
+    )
+    .catch((err) => {
+      res.json({ "message": err.message });
+    }
+    );
+}
+// delete user notification by date
+export function deleteUserNotification(req, res) {
+  const userId = req.user._id;
+  const { date } = req.body
+  User
+    .findById
+    (userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ "message": "User doesn't exist" });
+      }
+    // search for the notification with the date
+      const notification = user.notifications.find((notification) => notification.date == date);
+      if (!notification) {
+        return res.status(404).json({ "message": "Notification doesn't exist" });
+      }
+      else {
+        // delete  notification
+        user.notifications = user.notifications.filter((notification) => notification.date != date);
+        user.save();
+        res.status(200).json({ data: user.notifications });
+      }
+    }
+    )
+    .catch((err) => {
+      res.json({ "message": err.message });
+    }
+    );
+}
+
