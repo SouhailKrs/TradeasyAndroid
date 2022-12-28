@@ -99,8 +99,8 @@ class SavedProductsFragment : Fragment() {
                     it.userPhoneNumber!!,
                     it.userProfilePicture!!,
                     imagesArray
-                    )
 
+                    )
             findNavController().navigate(action)
 
         })

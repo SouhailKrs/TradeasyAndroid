@@ -2,8 +2,6 @@ package com.tradeasy.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -18,7 +16,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUiSaveStateControl
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.DeviceViewModel
 import com.tradeasy.databinding.ActivityMainBinding
 import com.tradeasy.ui.home.HomeViewModel
@@ -49,7 +46,7 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         val view = binding.root
         setContentView(view)
 
-
+      // ask for notification permission with the new android 1
         val channel = NotificationChannel(
             "notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT
         )

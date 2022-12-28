@@ -44,7 +44,6 @@ class ProductItemFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductItemBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -71,12 +70,12 @@ class ProductItemFragment : Fragment() {
 
         binding.apply {
             val imageList = ArrayList<SlideModel>()
-            for (i in args.image.indices) {
-                imageList.add(SlideModel(args.image[i].toString()))
+            for (i in args.image!!.indices) {
+                imageList.add(SlideModel(args.image!![i].toString()))
             }
 
             imageSlider.setImageList(imageList)
-            productName.text = args.productName.replaceFirstChar {
+            productName.text = args.productName!!.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.ROOT
                 ) else it.toString()
@@ -84,8 +83,8 @@ class ProductItemFragment : Fragment() {
             productPrice.text = args.productPrice.toString() + " TND"
             sellerUsername.text = args.username
 
-            if (args.userProfilePicture.isNotEmpty()) {
-                imageLoader(args.userProfilePicture, binding.sellerProfilePicture)
+            if (args.userProfilePicture!!.isNotEmpty()) {
+                imageLoader(args.userProfilePicture!!, binding.sellerProfilePicture)
 
             } else {
                 binding.sellerProfilePicture.setImageResource(R.drawable.default_profile_picture)
@@ -126,7 +125,7 @@ class ProductItemFragment : Fragment() {
             if(isLoggedIn(sharedPrefs)) {
                 val action =
                     ProductItemFragmentDirections.actionProductItemFragmentToPlaceBidFragment(
-                        args.productId, args.bidTime, args.productPrice, args.forBid
+                        args.productId!!, args.bidTime!!, args.productPrice, args.forBid
                     )
                 findNavController().navigate(action)
             }

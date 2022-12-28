@@ -37,6 +37,7 @@ class HomeFragment : Fragment() {
     lateinit var price: Array<Int>
     private val forBidViewModel: HomeViewModel by viewModels()
     private val recentlyAddedVM: RecentlyAddedViewModel by viewModels()
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -49,27 +50,28 @@ class HomeFragment : Fragment() {
         setupView()
         fetchProductsForBid()
         setupForBidRecyclerView()
-        goToProductByCat ()
+        goToProductByCat()
         observeForBid()
-fetchRecentlyAdded()
+        fetchRecentlyAdded()
         observeRecentlyAdded()
         setupRecentlyAddedRecyclerView()
 
 
         return binding.root
     }
-private fun fetchProductsForBid() {
-    setFragmentResultListener("success_create") { _, bundle ->
-        if (bundle.getBoolean("success_create")) {
-            forBidViewModel.fetchProductsForBid()
+
+    private fun fetchProductsForBid() {
+        setFragmentResultListener("success_create") { _, bundle ->
+            if (bundle.getBoolean("success_create")) {
+                forBidViewModel.fetchProductsForBid()
+            }
         }
-    }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-        (activity as MainActivity?)?.setupToolBar("Home", false, )
+        // (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as MainActivity?)?.setupToolBar("Home", false)
 
 
 
@@ -83,17 +85,19 @@ private fun fetchProductsForBid() {
     }
 
     private fun observeForBidState() {
-        forBidViewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { state ->
-                handleForBidState(state)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        forBidViewModel.mState.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+        ).onEach { state ->
+            handleForBidState(state)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun observeProductsForBid() {
-        forBidViewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { products ->
-                handleProductsForBid(products)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        forBidViewModel.mProducts.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+        ).onEach { products ->
+            handleProductsForBid(products)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 
@@ -109,36 +113,34 @@ private fun fetchProductsForBid() {
             }
         }
     }
-private fun setupView(){
 
-    if(isWifiConnected(requireContext() )){
-        binding.noInternetConstraint.visibility = View.GONE
-        binding.contentConstraint.visibility = View.VISIBLE
+    private fun setupView() {
+
+        if (isWifiConnected(requireContext())) {
+            binding.noInternetConstraint.visibility = View.GONE
+            binding.contentConstraint.visibility = View.VISIBLE
+
+        } else {
+            binding.noInternetConstraint.visibility = View.VISIBLE
+            binding.contentConstraint.visibility = View.GONE
+        }
+        binding.tapToRetryBtn.setOnClickListener {
+            setupView()
+        }
 
     }
-    else{
-        binding.noInternetConstraint.visibility = View.VISIBLE
-        binding.contentConstraint.visibility = View.GONE
-    }
-    binding.tapToRetryBtn.setOnClickListener {
-        setupView()
-    }
 
-}
     private fun setupForBidRecyclerView() {
 
 
-
         val mAdapter = ProductsForBid(mutableListOf(), onItemClick = {
-           // declare a mutable list of string
-          // array of string
+            // declare a mutable list of string
+            // array of string
 
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
 
 
-
             val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
-
                 it.name!!,
                 it.description!!,
                 it.category!!,
@@ -154,14 +156,11 @@ private fun setupView(){
                 it.userProfilePicture!!,
                 imagesArray
 
-
-
-                )
+            )
 
             findNavController().navigate(action)
 
         })
-
 
         binding.itemsForBidRV.apply {
             adapter = mAdapter
@@ -187,29 +186,32 @@ private fun setupView(){
     }
 
 
-    private fun goToProductByCat (){
+    private fun goToProductByCat() {
         binding.carsImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("motors")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("motors")
             findNavController().navigate(action)
         }
         binding.electronicsImageBotton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("electronics")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("electronics")
             findNavController().navigate(action)
         }
         binding.clothingImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("clothing")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("clothing")
             findNavController().navigate(action)
         }
         binding.realEstateImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("real estate")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("real estate")
             findNavController().navigate(action)
         }
         binding.furnitureImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("furniture")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("furniture")
             findNavController().navigate(action)
         }
-
-
 
 
     }
@@ -221,17 +223,19 @@ private fun setupView(){
     }
 
     private fun observeRecentlyAddedState() {
-        recentlyAddedVM.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { state ->
-                handleRecentlyAddedState(state)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        recentlyAddedVM.mState.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+        ).onEach { state ->
+            handleRecentlyAddedState(state)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun observeRecentlyAddedProducts() {
-        forBidViewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { products ->
-                handleRecentlyAddedProducts(products)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        forBidViewModel.mProducts.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+        ).onEach { products ->
+            handleRecentlyAddedProducts(products)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 
@@ -256,7 +260,6 @@ private fun setupView(){
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
 
 
-
             val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
 
                 it.name!!,
@@ -275,8 +278,17 @@ private fun setupView(){
                 imagesArray
 
 
-
             )
+
+//            ).setProductName(it.name!!).setProductDesc(it.description!!)
+//                .setProductCategory(it.category!!).setProductPrice(it.price!!).setBidTime(
+//                    it.bidEndDate!!.toString()
+//                ).setProductQuantity(it.quantity!!).setAddedDate(it.addedDate!!.toString())
+//                .setForBid(it.forBid!!).setBidEndDate(
+//                    it.bidEndDate.toString()
+//                ).setProductId(it.productId!!).setUsername(it.username!!)
+//                .setUserPhoneNumber(it.userPhoneNumber!!)
+//                .setUserProfilePicture(it.userProfilePicture!!).setImage(imagesArray)
 
             findNavController().navigate(action)
 
@@ -303,6 +315,7 @@ private fun setupView(){
 //            binding.loadingProgressBar.gone()
 //        }
     }
+
     private fun fetchRecentlyAdded() {
         setFragmentResultListener("success_create") { _, bundle ->
             if (bundle.getBoolean("success_create")) {

@@ -14,11 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentPlaceBidBinding
 import com.tradeasy.domain.product.entity.Bid
+import com.tradeasy.ui.selling.product.item.ProductItemFragmentArgs
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -30,7 +31,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
     private lateinit var binding: FragmentPlaceBidBinding
     private val args: com.tradeasy.ui.selling.bid.PlaceBidFragmentArgs by navArgs()
     private val viewModel: PlaceBidViewModel by viewModels()
-
+    private val args1:  ProductItemFragmentArgs by navArgs()
     @Inject
     // shared preference
     lateinit var sharedPrefs: SharedPrefs
@@ -39,7 +40,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlaceBidBinding.inflate(inflater, container, false)
-
+      println("aaa " + args1.productName)
         return binding.root
     }
 
@@ -69,7 +70,12 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
             is PlaceBidFragmentState.IsLoading -> handleLoading(state.isLoading)
             is PlaceBidFragmentState.SuccessCreate -> {
                 setResultOkToPreviousFragment()
-                findNavController().navigateUp()
+//                findNavController().popBackStack(R.id.placeBidFragment, true)
+//                findNavController().popBackStack(R.id.productItemFragment, true)
+//                findNavController().navigate(R.id.productItemFragment)
+
+              //  findNavController().navigateUp()
+                Snackbar.make(requireView(), "You have bid for ", Snackbar.LENGTH_LONG).show()
             }
             is PlaceBidFragmentState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
@@ -110,7 +116,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                viewModel.placeBid(Bid(userId, args.productId, bidInput.toInt()))
+                viewModel.placeBid(Bid(userId, args.productId, bidInput.toFloat()))
             }
         }
     }

@@ -21,9 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -32,6 +34,8 @@ class SearchFragment : Fragment() {
 
 
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,7 +48,6 @@ class SearchFragment : Fragment() {
         observe()
         setupRecyclerView()
         setupSearchView()
-
 
 
         // search view text change listener
@@ -74,10 +77,7 @@ private fun setupView(){
     private fun setupRecyclerView() {
         val mAdapter = SearchAdapter(mutableListOf(), onItemClick = {
 val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragment(
-
-    it.name!!
-
-)
+).setSearchInput(it.name!!)
             findNavController().navigate(action)
 
 

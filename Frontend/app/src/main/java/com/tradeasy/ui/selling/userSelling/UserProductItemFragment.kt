@@ -105,7 +105,7 @@ binding.unlistProd.hideProgress("Unlist product")
     findNavController().popBackStack(R.id.sellingFragment, true)
         findNavController().navigate(R.id.sellingFragment)
         Snackbar.make(requireView(), "Product Unlisted Successfully", Snackbar.LENGTH_LONG).show()
-        println("loading done")
+
     }
 
     private fun handleUnlistLoading(isLoading: Boolean) {

@@ -6,14 +6,14 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class FirebaseMessageReceiver : FirebaseMessagingService() {
 
- var sharedPrefs: SharedPrefs? = null
-    // lazy
-    private val ADMIN_CHANNEL_ID = "admin_channel"
+@Inject
+lateinit var sharedPrefs: SharedPrefs
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         //FirebaseMessaging.getInstance().subscribeToTopic("general")
@@ -22,7 +22,7 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        if (message.notification != null) {
+        if (message.notification != null && sharedPrefs.getNotificationAllowed()) {
             notify(message.notification?.title, message.notification?.body)
         }
     }
@@ -43,6 +43,7 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
         val managerCompat = NotificationManagerCompat.from(this)
         managerCompat.notify(123, builder.build())
     }
+// function to disable firebase service
 
 
 }

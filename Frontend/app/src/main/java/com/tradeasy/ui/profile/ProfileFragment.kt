@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.MainActivity
@@ -48,12 +49,11 @@ class ProfileFragment : Fragment() {
         val user = sharedPrefs.getUser()
 
         (activity as MainActivity?)?.setupToolBar("Profile", false, false)
-
         if (user == null) {
             fragmentSetupOffline()
         } else {
 
-
+            disableFirebaseService()
             sharedPrefs.getUser()?.let {
                 binding.username.text = it.username
 
@@ -141,7 +141,9 @@ class ProfileFragment : Fragment() {
         binding.bidsConstraint.setOnClickListener {
             profileToLogin(requireView())
         }
-
+        binding.pushNotificationsConstraint.setOnClickListener {
+            findNavController().navigate(R.id.pushNotificationsFragment)
+        }
         binding.recentlyViewedConstraint.setOnClickListener {
             profileToLogin(requireView())
         }
@@ -156,7 +158,9 @@ class ProfileFragment : Fragment() {
         binding.bidsConstraint.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.bidsFragment)
         }
-
+binding.pushNotificationsConstraint.setOnClickListener {
+    findNavController().navigate(R.id.pushNotificationsFragment)
+}
         binding.recentlyViewedConstraint.setOnClickListener {
 
         }
@@ -265,5 +269,7 @@ class ProfileFragment : Fragment() {
         }
     }
     // function to change app language
-
+    fun disableFirebaseService() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("general")
+    }
 }

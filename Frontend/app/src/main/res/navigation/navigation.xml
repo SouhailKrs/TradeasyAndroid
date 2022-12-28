@@ -291,7 +291,9 @@
         tools:layout="@layout/fragment_search_details" >
         <argument
             android:name="searchInput"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
         <action
             android:id="@+id/action_searchDetailsFragment_to_productItemFragment"
             app:destination="@id/productItemFragment" />
