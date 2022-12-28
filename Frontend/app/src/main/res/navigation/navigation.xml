@@ -397,6 +397,9 @@
         <argument
             android:name="selling"
             app:argType="boolean" />
+        <argument
+            android:name="userProdId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

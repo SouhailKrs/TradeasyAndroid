@@ -31,8 +31,10 @@ import com.tradeasy.ui.navigation.registerToLogin
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -91,7 +93,7 @@ binding.countrycodePicker.detectSIMCountry(true)
                 if (username.isNotEmpty() || phoneNumber.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty()) {
                     val user = User(
                         username,
-                        phoneNumber.toInt(),
+                        phoneNumber,
                         email,
                         password,
                         null,
@@ -235,6 +237,8 @@ binding.countrycodePicker.detectSIMCountry(true)
            if(binding.usernameField.text!!.isBlank()){
                binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
            }
+           // check if the user stopped typing for 1 second
+
 
        }
     }
@@ -254,13 +258,20 @@ binding.countrycodePicker.detectSIMCountry(true)
         if(binding.usernameField.text.isNullOrBlank()){
             binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         }
+
     }
     private fun verifyUsername() {
        binding.usernameField.addTextChangedListener {
            val username = binding.usernameField.text.toString().trim()
+
            if (username.isNotBlank()) {
-               val req = UpdateUsernameReq(username)
-               verifyUsernameViewModel.verifyUsername(req)
+
+                lifecycleScope.launch {
+                     delay(3000)
+                    println("username is $username")
+                     verifyUsernameViewModel.verifyUsername(UpdateUsernameReq(username))
+                }
+
            }
        }
     }

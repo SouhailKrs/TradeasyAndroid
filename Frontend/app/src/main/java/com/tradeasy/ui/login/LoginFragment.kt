@@ -84,7 +84,7 @@ class LoginFragment : Fragment() {
             if (username.isNotEmpty() || password.isNotEmpty()) {
                 val user = User(
                     username,
-                    1,
+                    "",
                     "",
                     password,
                     null,

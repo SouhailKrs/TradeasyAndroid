@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -20,7 +19,11 @@ import com.tradeasy.databinding.FragmentHomeBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.home.forBid.ProductsForBid
+import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedAdapter
+import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedState
+import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedViewModel
 import com.tradeasy.utils.SharedPrefs
+import com.tradeasy.utils.isWifiConnected
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,9 +35,8 @@ class HomeFragment : Fragment() {
     lateinit var title: Array<String>
     lateinit var description: Array<String>
     lateinit var price: Array<Int>
-    lateinit var categoryLayout1: LinearLayout
-    lateinit var categoryLayout2: LinearLayout
-    private val viewModel: HomeViewModel by viewModels()
+    private val forBidViewModel: HomeViewModel by viewModels()
+    private val recentlyAddedVM: RecentlyAddedViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -44,12 +46,14 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        setupView()
         fetchProductsForBid()
-        setupRecyclerView()
+        setupForBidRecyclerView()
         goToProductByCat ()
-        observe()
-
+        observeForBid()
+fetchRecentlyAdded()
+        observeRecentlyAdded()
+        setupRecentlyAddedRecyclerView()
 
 
         return binding.root
@@ -57,65 +61,71 @@ class HomeFragment : Fragment() {
 private fun fetchProductsForBid() {
     setFragmentResultListener("success_create") { _, bundle ->
         if (bundle.getBoolean("success_create")) {
-            viewModel.fetchProductsForBid()
+            forBidViewModel.fetchProductsForBid()
         }
     }
     }
-    override fun onResume() {
-        super.onResume()
-       // (activity as MainActivity?)?.setupToolBar("Home", false, false)
-    }
-//    private fun getUserData() {
-//        for (i in imageId.indices) {
-//            val products = Products(title[i],description[i],price[i],imageId[i])
-//            newArrayList.add(products)
-//        }
-//        newRecycler.adapter = ProductsAdapter(newArrayList)
-//
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        // (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         (activity as MainActivity?)?.setupToolBar("Home", false, )
+
+
+
         view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
             View.VISIBLE
     }
 
-    private fun observe() {
-        observeState()
-        observeProducts()
+    private fun observeForBid() {
+        observeForBidState()
+        observeProductsForBid()
     }
 
-    private fun observeState() {
-        viewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+    private fun observeForBidState() {
+        forBidViewModel.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
-                handleState(state)
+                handleForBidState(state)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun observeProducts() {
-        viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+    private fun observeProductsForBid() {
+        forBidViewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach { products ->
-                handleProducts(products)
+                handleProductsForBid(products)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 
-    private fun handleState(state: HomeFragmentState) {
+    private fun handleForBidState(state: ForBidState) {
         when (state) {
-            is HomeFragmentState.IsLoading -> handleLoading(state.isLoading)
-            is HomeFragmentState.ShowToast -> Toast.makeText(
+            is ForBidState.IsLoading -> handleForBidLoading(state.isLoading)
+            is ForBidState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
-            is HomeFragmentState.Init -> Unit
+            is ForBidState.Init -> Unit
             else -> {
                 Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
             }
         }
     }
+private fun setupView(){
 
-    private fun setupRecyclerView() {
+    if(isWifiConnected(requireContext() )){
+        binding.noInternetConstraint.visibility = View.GONE
+        binding.contentConstraint.visibility = View.VISIBLE
+
+    }
+    else{
+        binding.noInternetConstraint.visibility = View.VISIBLE
+        binding.contentConstraint.visibility = View.GONE
+    }
+    binding.tapToRetryBtn.setOnClickListener {
+        setupView()
+    }
+
+}
+    private fun setupForBidRecyclerView() {
 
 
 
@@ -160,7 +170,7 @@ private fun fetchProductsForBid() {
         }
     }
 
-    private fun handleProducts(products: List<Product>) {
+    private fun handleProductsForBid(products: List<Product>) {
         binding.itemsForBidRV.adapter?.let {
             if (it is ProductsForBid) {
                 it.updateList(products)
@@ -168,7 +178,7 @@ private fun fetchProductsForBid() {
         }
     }
 
-    fun handleLoading(isLoading: Boolean) {
+    private fun handleForBidLoading(isLoading: Boolean) {
 //        if(isLoading){
 //            binding.loadingProgressBar.visible()
 //        }else{
@@ -179,7 +189,7 @@ private fun fetchProductsForBid() {
 
     private fun goToProductByCat (){
         binding.carsImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("cars")
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("motors")
             findNavController().navigate(action)
         }
         binding.electronicsImageBotton.setOnClickListener {
@@ -194,14 +204,111 @@ private fun fetchProductsForBid() {
             val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("real estate")
             findNavController().navigate(action)
         }
-        binding.groceriesImageButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("groceries")
+        binding.furnitureImageButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToProductsByCategoryFragment("furniture")
             findNavController().navigate(action)
         }
 
 
 
 
+    }
+
+
+    private fun observeRecentlyAdded() {
+        observeRecentlyAddedState()
+        observeRecentlyAddedProducts()
+    }
+
+    private fun observeRecentlyAddedState() {
+        recentlyAddedVM.mState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                handleRecentlyAddedState(state)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun observeRecentlyAddedProducts() {
+        forBidViewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { products ->
+                handleRecentlyAddedProducts(products)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+
+    private fun handleRecentlyAddedState(state: RecentlyAddedState) {
+        when (state) {
+            is RecentlyAddedState.IsLoading -> handleRecentlyAddedLoading(state.isLoading)
+            is RecentlyAddedState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is RecentlyAddedState.Init -> Unit
+            else -> {
+                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupRecentlyAddedRecyclerView() {
+        val mAdapter = RecentlyAddedAdapter(mutableListOf(), onItemClick = {
+            // declare a mutable list of string
+            // array of string
+
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
+
+
+
+            val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
+
+                it.name!!,
+                it.description!!,
+                it.category!!,
+                it.price!!,
+                it.bidEndDate.toString(),
+                it.quantity!!,
+                it.addedDate.toString(),
+                it.forBid!!,
+                it.bidEndDate.toString(),
+                it.productId!!,
+                it.username!!,
+                it.userPhoneNumber!!,
+                it.userProfilePicture!!,
+                imagesArray
+
+
+
+            )
+
+            findNavController().navigate(action)
+
+        })
+        binding.recentlyAddedRV.apply {
+            adapter = mAdapter
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun handleRecentlyAddedProducts(products: List<Product>) {
+        binding.recentlyAddedRV.adapter?.let {
+            if (it is RecentlyAddedAdapter) {
+                it.updateList(products)
+            }
+        }
+    }
+
+    private fun handleRecentlyAddedLoading(isLoading: Boolean) {
+//        if(isLoading){
+//            binding.loadingProgressBar.visible()
+//        }else{
+//            binding.loadingProgressBar.gone()
+//        }
+    }
+    private fun fetchRecentlyAdded() {
+        setFragmentResultListener("success_create") { _, bundle ->
+            if (bundle.getBoolean("success_create")) {
+                recentlyAddedVM.fetchRecentlyAdded()
+            }
+        }
     }
 }
 

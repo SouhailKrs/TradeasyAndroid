@@ -21,13 +21,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.models.SlideModel
 import com.tradeasy.R
-import com.tradeasy.data.product.remote.dto.AddToSavedReq
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.databinding.FragmentProductItemBinding
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
 
 
@@ -75,7 +76,11 @@ class ProductItemFragment : Fragment() {
             }
 
             imageSlider.setImageList(imageList)
-            productName.text = args.productName
+            productName.text = args.productName.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }
             productPrice.text = args.productPrice.toString() + " TND"
             sellerUsername.text = args.username
 
@@ -83,7 +88,7 @@ class ProductItemFragment : Fragment() {
                 imageLoader(args.userProfilePicture, binding.sellerProfilePicture)
 
             } else {
-                binding.sellerProfilePicture.setImageResource(com.tradeasy.R.drawable.default_profile_picture)
+                binding.sellerProfilePicture.setImageResource(R.drawable.default_profile_picture)
             }
             sellerPhoneNumber.text = args.userPhoneNumber
         }
@@ -139,9 +144,7 @@ class ProductItemFragment : Fragment() {
     private fun addProductToSaved() {
         binding.addToSavedBtn.setOnClickListener {
             binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
-
-            val req = AddToSavedReq(args.productId)
-            viewModel.addProductToSaved(req)
+            viewModel.addProductToSaved(ProdIdReq(args.productId))
         }
     }
 

@@ -99,7 +99,8 @@ class SellingFragment : Fragment() {
                 it.name!!,
                 imagesArray,
                 it.price!!,
-                it.selling!!
+                it.selling!!,
+                it.productId!!,
 
                 )
 
@@ -171,7 +172,8 @@ class SellingFragment : Fragment() {
                 it.name!!,
                 imagesArray,
                 it.price!!,
-                it.selling!!
+                it.selling!!,
+                it.productId!!
 
             )
 

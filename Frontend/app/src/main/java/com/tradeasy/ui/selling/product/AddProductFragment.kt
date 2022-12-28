@@ -91,10 +91,24 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product) {
                 name.text!!.isNotBlank() && description.text!!.isNotBlank() && price.text!!.isNotEmpty()
             nextBtn.alpha = if (nextBtn.isEnabled) 1f else 0.5f
 
+    if(name.text!!.isBlank() && name.text!!.contains(" ")) {
+// remove the last space
+        name.setText("")
+    }
 
+
+            if(name.text!!.isNotBlank() && name.text!!.contains("  ")) {
+
+
+                name.setText(name.text.toString().trimEnd())
+
+            }
         }
         description.addTextChangedListener {
+            if(description.text!!.isBlank() && description.text!!.contains(" ")) {
+                description.setText("")
 
+            }
             nextBtn.isEnabled =
                 name.text!!.isNotBlank() && description.text!!.isNotBlank() && price.text!!.isNotEmpty()
             nextBtn.alpha = if (nextBtn.isEnabled) 1f else 0.5f

@@ -2,7 +2,7 @@ package com.tradeasy.ui.selling.product.item
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tradeasy.data.product.remote.dto.AddToSavedReq
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.domain.product.usecase.AddProductToSavedUseCase
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.utils.BaseResult
@@ -36,7 +36,7 @@ class AddToSavedViewModel @Inject constructor(
     }
 
 
-    fun addProductToSaved(req: AddToSavedReq){
+    fun addProductToSaved(req: ProdIdReq){
         viewModelScope.launch {
             addProductToSavedUseCase.invoke(req)
                 .onStart {

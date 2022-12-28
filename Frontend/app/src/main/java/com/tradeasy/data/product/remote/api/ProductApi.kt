@@ -1,10 +1,7 @@
 package com.tradeasy.data.product.remote.api
 
 
-import com.tradeasy.data.product.remote.dto.AddToSavedReq
-import com.tradeasy.data.product.remote.dto.BuyNowReq
-import com.tradeasy.data.product.remote.dto.GetByCatReq
-import com.tradeasy.data.product.remote.dto.SearchReq
+import com.tradeasy.data.product.remote.dto.*
 import com.tradeasy.domain.product.entity.Bid
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.domain.user.entity.User
@@ -44,7 +41,7 @@ interface ProductApi {
 
     // ADD PRODUCT TO SAVED API
     @POST("/product/addprodtosaved")
-    suspend fun addProductToSavedApi(@Body addToSavedReq: AddToSavedReq): Response<WrappedResponse<User>>
+    suspend fun addProductToSavedApi(@Body req: ProdIdReq): Response<WrappedResponse<User>>
 
     // GET SAVED PRODUCTS API
     @GET("/product/getsavedprods")
@@ -54,15 +51,19 @@ interface ProductApi {
     @GET("/product/userSelling")
     suspend fun userSellingApi(): Response<WrappedListResponse<Product>>
 
-    //buy now
-    @POST("/product/buynow")
-    suspend fun buyNowApi(@Body req: BuyNowReq): Response<WrappedResponse<Product>>
 
     // GET PRODUCTS BY CATEGORY
     @POST("/product/findbycat")
     suspend fun getProductByCategoryApi(@Body category: GetByCatReq): Response<WrappedListResponse<Product>>
+
     // GET USER PRODUCTS API
     @GET("/product/userproducts")
     suspend fun getUserProducts(): Response<WrappedListResponse<Product>>
 
+    // Unlist product from selling
+    @POST("/product//unlistproduct")
+    suspend fun unlistProductApi(@Body req: ProdIdReq): Response<WrappedResponse<String>>
+    // recently added products api
+    @GET("/product/recentlyadded")
+    suspend fun getRecentlyAddedProdsApi(): Response<WrappedListResponse<Product>>
 }

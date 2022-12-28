@@ -369,4 +369,23 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
         }
 
     }
+    override suspend fun logout(): Flow<BaseResult<String, WrappedResponse<String>>> {
+        return flow {
+            val response = api.logoutApi()
+            if (response.isSuccessful) {
+
+                emit(BaseResult.Success("Logout successful"))
+            } else {
+                val type = object : TypeToken<WrappedResponse<String>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<String>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+
+
+            }
+        }
+    }
 }

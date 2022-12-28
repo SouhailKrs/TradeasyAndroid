@@ -86,19 +86,7 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        if ( isWifiConnected(this)  ) {
 
-
-
-        }
-        else if(!isWifiConnected(this)){
-            // make a snackbar that appears every 5 seconds
-
-
- Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_LONG).show()
-            // detect a user gesture
-
-        }
         deviceViewModel.resToken.observe(this){
             when (it){
                 is UiState.Success -> {
@@ -118,11 +106,7 @@ setKeepOnScreenCondition(viewModel._isLoading::value)
         deviceViewModel.getToken()
     }
 // function to check if device is connected to wifi
-private fun isWifiConnected(context: Context): Boolean {
-        val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        return mWifi!!.isConnected
-    }
+
     // bottom nav view items on click listener
 fun setupToolBar(title: String, doneVisibility: Boolean=false,progressVisibility: Boolean=false,opacity: Float=1f) {
         binding.toolbar.toolbarTitle.text = title
