@@ -121,13 +121,13 @@
         android:id="@+id/sellerPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/avenir_regular"
         android:text="24876202"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerCountryCode"
-        app:layout_constraintStart_toEndOf="@+id/sellerCountryCode"
-        app:layout_constraintTop_toTopOf="@+id/sellerCountryCode" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView31"
+        app:layout_constraintStart_toEndOf="@+id/imageView31"
+        app:layout_constraintTop_toTopOf="@+id/imageView31" />
 
     <Button
         android:id="@+id/goToPlaceBidBtn"
@@ -138,18 +138,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sellerPhoneNumber" />
-
-    <TextView
-        android:id="@+id/sellerCountryCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:fontFamily="@font/avenir_regular"
-        android:text="+"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView31"
-        app:layout_constraintStart_toEndOf="@+id/imageView31"
-        app:layout_constraintTop_toTopOf="@+id/imageView31" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradeasy.R
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchDetailsBinding
 import com.tradeasy.domain.product.entity.Product
@@ -59,24 +60,9 @@ private fun setupSearchDetails(){
     private fun setupRecyclerView() {
         val mAdapter = SearchDetailsAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-val action = SearchDetailsFragmentDirections.actionSearchDetailsFragmentToProductItemFragment(
 
-    it.name!!,
-    it.description!!,
-    it.category!!,
-    it.price!!,
-    it.bidEndDate.toString(),
-    it.quantity!!,
-    it.addedDate.toString(),
-    it.forBid!!,
-    it.bidEndDate.toString(),
-    it.productId!!,
-    it.username!!,
-    it.userPhoneNumber!!,
-    it.userProfilePicture!!,
-    imagesArray
-)
-findNavController().navigate(action)
+findNavController().navigate(R.id.action_searchDetailsFragment_to_productItemFragment)
+
         })
 
 

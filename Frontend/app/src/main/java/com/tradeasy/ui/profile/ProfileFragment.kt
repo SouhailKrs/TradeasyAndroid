@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -19,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountState
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountViewModel
@@ -41,13 +43,12 @@ class ProfileFragment : Fragment() {
     private val logoutVM: LogoutViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val user = sharedPrefs.getUser()
-
         (activity as MainActivity?)?.setupToolBar("Profile", false, false)
         if (user == null) {
             fragmentSetupOffline()

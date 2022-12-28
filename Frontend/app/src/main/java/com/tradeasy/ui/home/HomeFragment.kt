@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,6 +19,7 @@ import com.tradeasy.R
 import com.tradeasy.databinding.FragmentHomeBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.home.forBid.ProductsForBid
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedAdapter
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedState
@@ -37,7 +39,7 @@ class HomeFragment : Fragment() {
     lateinit var price: Array<Int>
     private val forBidViewModel: HomeViewModel by viewModels()
     private val recentlyAddedVM: RecentlyAddedViewModel by viewModels()
-
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -139,26 +141,21 @@ class HomeFragment : Fragment() {
 
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
 
+            sharedViewModel.setProdName(it.name!!)
+            sharedViewModel.setProdDesc(it.description!!)
+            sharedViewModel.setProdCat(it.category!!)
+            sharedViewModel.setProdPrice(it.price!!)
+            sharedViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedViewModel.setProdQuantity(it.quantity!!)
+            sharedViewModel.setAddedDate(it.addedDate!!)
+            sharedViewModel.setForBid(it.forBid!!)
+            sharedViewModel.setProdId(it.productId!!)
+            sharedViewModel.setOwnerUsername(it.username!!)
+            sharedViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedViewModel.setProdImages(imagesArray)
 
-            val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
-                it.name!!,
-                it.description!!,
-                it.category!!,
-                it.price!!,
-                it.bidEndDate.toString(),
-                it.quantity!!,
-                it.addedDate.toString(),
-                it.forBid!!,
-                it.bidEndDate.toString(),
-                it.productId!!,
-                it.username!!,
-                it.userPhoneNumber!!,
-                it.userProfilePicture!!,
-                imagesArray
-
-            )
-
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_homeFragment_to_productItemFragment)
 
         })
 
@@ -260,37 +257,21 @@ class HomeFragment : Fragment() {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
 
 
-            val action = HomeFragmentDirections.actionHomeFragmentToProductItemFragment(
+            sharedViewModel.setProdName(it.name!!)
+            sharedViewModel.setProdDesc(it.description!!)
+            sharedViewModel.setProdCat(it.category!!)
+            sharedViewModel.setProdPrice(it.price!!)
+            sharedViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedViewModel.setProdQuantity(it.quantity!!)
+            sharedViewModel.setAddedDate(it.addedDate!!)
+            sharedViewModel.setForBid(it.forBid!!)
+            sharedViewModel.setProdId(it.productId!!)
+            sharedViewModel.setOwnerUsername(it.username!!)
+            sharedViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedViewModel.setProdImages(imagesArray)
 
-                it.name!!,
-                it.description!!,
-                it.category!!,
-                it.price!!,
-                it.bidEndDate.toString(),
-                it.quantity!!,
-                it.addedDate.toString(),
-                it.forBid!!,
-                it.bidEndDate.toString(),
-                it.productId!!,
-                it.username!!,
-                it.userPhoneNumber!!,
-                it.userProfilePicture!!,
-                imagesArray
-
-
-            )
-
-//            ).setProductName(it.name!!).setProductDesc(it.description!!)
-//                .setProductCategory(it.category!!).setProductPrice(it.price!!).setBidTime(
-//                    it.bidEndDate!!.toString()
-//                ).setProductQuantity(it.quantity!!).setAddedDate(it.addedDate!!.toString())
-//                .setForBid(it.forBid!!).setBidEndDate(
-//                    it.bidEndDate.toString()
-//                ).setProductId(it.productId!!).setUsername(it.username!!)
-//                .setUserPhoneNumber(it.userPhoneNumber!!)
-//                .setUserProfilePicture(it.userProfilePicture!!).setImage(imagesArray)
-
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_homeFragment_to_productItemFragment)
 
         })
         binding.recentlyAddedRV.apply {

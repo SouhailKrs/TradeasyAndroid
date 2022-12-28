@@ -9,17 +9,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentPlaceBidBinding
 import com.tradeasy.domain.product.entity.Bid
-import com.tradeasy.ui.selling.product.item.ProductItemFragmentArgs
+import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -29,9 +31,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
     private lateinit var binding: FragmentPlaceBidBinding
-    private val args: com.tradeasy.ui.selling.bid.PlaceBidFragmentArgs by navArgs()
     private val viewModel: PlaceBidViewModel by viewModels()
-    private val args1:  ProductItemFragmentArgs by navArgs()
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     @Inject
     // shared preference
     lateinit var sharedPrefs: SharedPrefs
@@ -40,7 +41,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlaceBidBinding.inflate(inflater, container, false)
-      println("aaa " + args1.productName)
+
         return binding.root
     }
 
@@ -50,7 +51,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
 
         placeBid()
         observe()
-
+        (activity as MainActivity?)?.setupToolBar("Place bid ", false)
     }
 
     private fun setResultOkToPreviousFragment() {
@@ -70,9 +71,9 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
             is PlaceBidFragmentState.IsLoading -> handleLoading(state.isLoading)
             is PlaceBidFragmentState.SuccessCreate -> {
                 setResultOkToPreviousFragment()
-//                findNavController().popBackStack(R.id.placeBidFragment, true)
-//                findNavController().popBackStack(R.id.productItemFragment, true)
-//                findNavController().navigate(R.id.productItemFragment)
+                findNavController().popBackStack(R.id.placeBidFragment, true)
+                findNavController().popBackStack(R.id.productItemFragment, true)
+                findNavController().navigate(R.id.productItemFragment)
 
               //  findNavController().navigateUp()
                 Snackbar.make(requireView(), "You have bid for ", Snackbar.LENGTH_LONG).show()
@@ -88,36 +89,59 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun placeBid() {
 
-
+        var timer = 0
         val userId = sharedPrefs.getUser()?.username
-        val timer = args.bidTime
+
+        sharedViewModel.bidEndDate.observe(viewLifecycleOwner) { bidEndDate ->
+           timer = bidEndDate.toInt()
+        }
+
         val countdown = getTimeLeft(timer.toLong())
         binding.bidTimer.isCountDown = true
         binding.bidTimer.base = SystemClock.elapsedRealtime() + countdown
-        binding.lastBid.text = ("Last bid " + args.productPrice.toString())
-        binding.bidTimer.start()
 
-        if (!args.forBid) {
-            Toast.makeText(requireContext(), "Bid is closed", Toast.LENGTH_SHORT).show()
-
-
+        sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
+            binding.lastBid.text = ("Last bid " + prodPrice.toString())
         }
+
+
+        binding.bidTimer.start()
+sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
+    if (!forBid) {
+        Toast.makeText(requireContext(), "Bid is closed", Toast.LENGTH_SHORT).show()
+
+
+    }
+        }
+
 
         binding.placeBidBtn.setOnClickListener {
 
             val bidInput = binding.bidInput.text.toString().trim()
-            if (bidInput.isEmpty()) {
-                Toast.makeText(requireContext(), "Please enter bid amount", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (bidInput < args.productPrice.toString()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Bid should be greater than current price",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                viewModel.placeBid(Bid(userId, args.productId, bidInput.toFloat()))
+sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
+
+}
+
+            sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
+                if (bidInput.isEmpty()) {
+                    Toast.makeText(requireContext(), "Please enter bid amount", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (bidInput.toFloat() < prodPrice.toFloat()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Bid should be greater than current price",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    sharedViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
+                        viewModel.placeBid(Bid(userId, prodId, bidInput.toFloat()))
+                    }
+sharedViewModel.setProdPrice(bidInput.toFloat())
+
+                }
             }
+
+
         }
     }
 

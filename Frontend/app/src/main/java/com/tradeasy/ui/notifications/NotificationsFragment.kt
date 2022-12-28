@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -24,6 +25,7 @@ import com.tradeasy.databinding.FragmentNotificationsBinding
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.notifications.deleteNotification.DeleteNotificationFragmentState
 import com.tradeasy.ui.notifications.deleteNotification.DeleteNotificationViewModel
 import com.tradeasy.utils.SharedPrefs
@@ -42,9 +44,9 @@ class NotificationsFragment : Fragment() {
     private val deleteNotificationVM: DeleteNotificationViewModel by viewModels()
     val notificationList = mutableListOf<Notification>()
     var selectedItem: Number? = 0
-    var selectedItemPostion: Int? = 0
+    var selectedItemPosition: Int? = 0
     var nbrOfNotification: Number? = 0
-
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     private var nbrOfNotifications by Delegates.notNull<Int>()
@@ -101,7 +103,7 @@ class NotificationsFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 // get the data from the position
                 val notificationPosition = mAdapter.notification[position]
-                selectedItemPostion = position
+                selectedItemPosition = position
                 selectedItem = notificationPosition.date
 
                 super.onSwiped(viewHolder, direction)
