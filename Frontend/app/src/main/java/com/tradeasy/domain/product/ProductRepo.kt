@@ -58,4 +58,6 @@ interface ProductRepo {
     // recently added products
     // GET SAVED PRODUCTS
     suspend fun getRecentlyAddedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
+    //delete product
+    suspend fun deleteProduct(req: ProdIdReq): Flow<BaseResult<String, WrappedResponse<String>>>
 }

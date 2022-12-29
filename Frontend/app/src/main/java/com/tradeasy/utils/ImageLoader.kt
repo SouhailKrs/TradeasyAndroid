@@ -3,12 +3,13 @@ package com.tradeasy.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+
 
 fun imageLoader(url:String,img: ImageView){
 
 
-    Picasso.get().load(url).into(img)
+   Glide.with(img.context).load(url).into(img)
 
 }
 // fucntion that returns height and width of the screen
