@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.domain.product.usecase.GetProductsForBid
+import com.tradeasy.ui.RecentlyViewedDataViewModel
 import com.tradeasy.utils.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +19,14 @@ class HomeViewModel @Inject constructor(private val getProductsForBid: GetProduc
     private val state = MutableStateFlow<ForBidState>(ForBidState.Init)
     val mState: StateFlow<ForBidState> get() = state
  val _isLoading = MutableStateFlow(true)
+private var recentlyViewedDataViewModel: RecentlyViewedDataViewModel? = null
+
     private val products = MutableStateFlow<List<Product>>(mutableListOf())
     val mProducts: StateFlow<List<Product>> get() = products
 
     init {
         fetchProductsForBid()
+
     }
 
 

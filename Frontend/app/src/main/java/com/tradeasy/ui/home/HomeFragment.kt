@@ -42,6 +42,10 @@ class HomeFragment : Fragment() {
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
 
 
@@ -49,18 +53,14 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        setupView()
-        fetchProductsForBid()
-        setupForBidRecyclerView()
-        goToProductByCat()
-        observeForBid()
-        fetchRecentlyAdded()
-        observeRecentlyAdded()
-        setupRecentlyAddedRecyclerView()
 
 
         return binding.root
     }
+
+
+    // stop the view model from fetching data each time the fragment is recreated
+
 
     private fun fetchProductsForBid() {
         setFragmentResultListener("success_create") { _, bundle ->
@@ -75,7 +75,15 @@ class HomeFragment : Fragment() {
         // (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         (activity as MainActivity?)?.setupToolBar("Home", false)
 
+        setupView()
 
+        fetchProductsForBid()
+        setupForBidRecyclerView()
+        goToProductByCat()
+        observeForBid()
+        fetchRecentlyAdded()
+        observeRecentlyAdded()
+        setupRecentlyAddedRecyclerView()
 
         view.rootView?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
             View.VISIBLE
@@ -228,7 +236,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeRecentlyAddedProducts() {
-        forBidViewModel.mProducts.flowWithLifecycle(
+        recentlyAddedVM.mProducts.flowWithLifecycle(
             viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
         ).onEach { products ->
             handleRecentlyAddedProducts(products)

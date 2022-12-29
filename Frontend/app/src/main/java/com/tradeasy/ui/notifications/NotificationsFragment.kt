@@ -25,6 +25,7 @@ import com.tradeasy.databinding.FragmentNotificationsBinding
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.RecentlyViewedDataViewModel
 import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.notifications.deleteNotification.DeleteNotificationFragmentState
 import com.tradeasy.ui.notifications.deleteNotification.DeleteNotificationViewModel
@@ -42,6 +43,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var binding: FragmentNotificationsBinding
     private val notificationsViewModel: NotificationsViewModel by viewModels()
     private val deleteNotificationVM: DeleteNotificationViewModel by viewModels()
+    private val recentlyViewedDataViewModel: RecentlyViewedDataViewModel by activityViewModels()
     val notificationList = mutableListOf<Notification>()
     var selectedItem: Number? = 0
     var selectedItemPosition: Int? = 0

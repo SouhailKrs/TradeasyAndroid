@@ -73,6 +73,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                 setResultOkToPreviousFragment()
                 findNavController().popBackStack(R.id.placeBidFragment, true)
                 findNavController().popBackStack(R.id.productItemFragment, true)
+                findNavController().popBackStack(R.id.homeFragment, false)
                 findNavController().navigate(R.id.productItemFragment)
 
               //  findNavController().navigateUp()
@@ -118,9 +119,6 @@ sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
         binding.placeBidBtn.setOnClickListener {
 
             val bidInput = binding.bidInput.text.toString().trim()
-sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
-
-}
 
             sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
                 if (bidInput.isEmpty()) {
@@ -133,10 +131,15 @@ sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
+                    println("user is $userId")
+                    println("prod id is ${sharedViewModel.prodId.value}")
+                    println("bid is ${bidInput.toFloat()}")
+                //    viewModel.placeBid(Bid(userId, sharedViewModel.prodId.value, bidInput.toFloat()))
                     sharedViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
                         viewModel.placeBid(Bid(userId, prodId, bidInput.toFloat()))
+
                     }
-sharedViewModel.setProdPrice(bidInput.toFloat())
+
 
                 }
             }
