@@ -50,7 +50,7 @@ interface UserApi {
     ): Response<WrappedResponse<User>>
 
     // delete account
-    @POST("/user/deleteaccount")
+    @GET("/user/deleteaccount")
     suspend fun deleteAccountApi(): Response<WrappedResponse<String>>
 
     // get user notifications
@@ -60,6 +60,8 @@ interface UserApi {
     // delete notification api
     @POST("/user/deletenotification")
     suspend fun deleteNotificationApi(@Body req: DeleteNotificationReq): Response<WrappedListResponse<Notification>>
+    @GET("/user/logout")
+    suspend fun logoutApi(): Response<WrappedResponse<String>>
 
 
 }

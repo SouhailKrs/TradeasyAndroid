@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,9 +14,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradeasy.R
 import com.tradeasy.databinding.FragmentSavedProductsBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -27,6 +30,7 @@ class SavedProductsFragment : Fragment() {
     private lateinit var binding: FragmentSavedProductsBinding
 
     private val viewModel: SavedProductsViewModel by viewModels()
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -83,25 +87,24 @@ class SavedProductsFragment : Fragment() {
     private fun setupRecyclerView() {
         val mAdapter = SavedProductsAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-            val action =
-                SavedProductsFragmentDirections.actionSavedProductsFragmentToProductItemFragment(
-                    it.name!!,
-                    it.description!!,
-                    it.category!!,
-                    it.price!!,
-                    it.bidEndDate.toString(),
-                    it.quantity!!,
-                    it.addedDate.toString(),
-                    it.forBid!!,
-                    it.bidEndDate.toString(),
-                    it.productId!!,
-                    it.username!!,
-                    it.userPhoneNumber!!,
-                    it.userProfilePicture!!,
-                    imagesArray
-                    )
 
-            findNavController().navigate(action)
+
+            sharedViewModel.setProdName(it.name!!)
+            sharedViewModel.setProdDesc(it.description!!)
+            sharedViewModel.setProdCat(it.category!!)
+            sharedViewModel.setProdPrice(it.price!!)
+            sharedViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedViewModel.setProdQuantity(it.quantity!!)
+            sharedViewModel.setAddedDate(it.addedDate!!)
+            sharedViewModel.setForBid(it.forBid!!)
+            sharedViewModel.setProdId(it.productId!!)
+            sharedViewModel.setOwnerUsername(it.username!!)
+            sharedViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedViewModel.setProdImages(imagesArray)
+
+
+         findNavController().navigate(R.id.action_savedProductsFragment_to_productItemFragment)
 
         })
 

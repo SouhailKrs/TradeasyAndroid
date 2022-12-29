@@ -74,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
+                android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_.QWERTZUIOPASDFGHJKLYXCVBNM"
                 android:singleLine="true"
                 android:textSize="11sp" />
 

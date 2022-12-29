@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -16,12 +16,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountState
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountViewModel
+import com.tradeasy.ui.profile.logout.LogoutState
+import com.tradeasy.ui.profile.logout.LogoutViewModel
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
 import com.tradeasy.utils.imageLoader
@@ -36,30 +40,29 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: DeleteAccountViewModel by viewModels()
-
+    private val logoutVM: LogoutViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Your Title"
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val user = sharedPrefs.getUser()
-
         (activity as MainActivity?)?.setupToolBar("Profile", false, false)
-
         if (user == null) {
             fragmentSetupOffline()
         } else {
 
-
+            disableFirebaseService()
             sharedPrefs.getUser()?.let {
                 binding.username.text = it.username
 
             }
             fragmentSetupOnline()
         }
+// change app language
+
         return binding.root
     }
 
@@ -67,9 +70,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
       //  setupToolbar()
+   logout()
+        observeLogout()
         deleteAccount()
         observe()
-        logout()
 //HomeFragment().setupToolBar("test",true)
 
         // WHAT TO DO WHEN USER IS NOT LOGGED IN
@@ -82,8 +86,7 @@ class ProfileFragment : Fragment() {
                 .setMessage("Are you sure you want to delete your account?")
                 .setPositiveButton("Yes") { _, _ ->
                     viewModel.deleteAccount()
-                    findNavController().navigate(R.id.homeFragment)
-                    sharedPrefs.clearUser()
+
                 }.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
@@ -98,8 +101,8 @@ class ProfileFragment : Fragment() {
     private fun handleStateChange(state: DeleteAccountState) {
         when (state) {
             is DeleteAccountState.Init -> Unit
-            is DeleteAccountState.ErrorDelete -> handleErrorUpdate(state.rawResponse)
-            is DeleteAccountState.SuccessDelete -> handleSuccessUpdate()
+            is DeleteAccountState.ErrorDelete -> handleErrorDelete(state.rawResponse)
+            is DeleteAccountState.SuccessDelete -> handleSuccessDelete()
             is DeleteAccountState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT
             ).show()
@@ -107,17 +110,17 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun handleErrorUpdate(response: WrappedResponse<String>) {
+    private fun handleErrorDelete(response: WrappedResponse<String>) {
 
         // snackbar
         Snackbar.make(binding.root, response.message, Snackbar.LENGTH_SHORT).show()
 
     }
 
-    private fun handleSuccessUpdate() {
+    private fun handleSuccessDelete() {
+        findNavController().navigate(R.id.homeFragment)
         sharedPrefs.clearUser()
-        findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
-        Snackbar.make(requireView(), "Username Updated Successfully", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(requireView(), "Account deleted", Snackbar.LENGTH_LONG).show()
         //findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
     }
 
@@ -139,7 +142,9 @@ class ProfileFragment : Fragment() {
         binding.bidsConstraint.setOnClickListener {
             profileToLogin(requireView())
         }
-
+        binding.pushNotificationsConstraint.setOnClickListener {
+            findNavController().navigate(R.id.pushNotificationsFragment)
+        }
         binding.recentlyViewedConstraint.setOnClickListener {
             profileToLogin(requireView())
         }
@@ -154,7 +159,9 @@ class ProfileFragment : Fragment() {
         binding.bidsConstraint.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.bidsFragment)
         }
-
+binding.pushNotificationsConstraint.setOnClickListener {
+    findNavController().navigate(R.id.pushNotificationsFragment)
+}
         binding.recentlyViewedConstraint.setOnClickListener {
 
         }
@@ -167,7 +174,7 @@ class ProfileFragment : Fragment() {
         binding.editProfileBtn.text = "Edit Profile"
         binding.accountCardView.visibility = View.VISIBLE
         binding.accountTxtView.visibility = View.VISIBLE
-        binding.profileSpacer.layoutParams.height = resources.displayMetrics.heightPixels / 7
+      //  binding.profileSpacer.layoutParams.height = resources.displayMetrics.heightPixels / 7
 
 // get screen height
         if (!sharedPrefs.getUser()?.profilePicture.isNullOrEmpty()) {
@@ -191,7 +198,7 @@ class ProfileFragment : Fragment() {
         binding.editProfileBtn.text = "Login"
         binding.accountCardView.visibility = View.GONE
         binding.accountTxtView.visibility = View.GONE
-        binding.profileSpacer.layoutParams.height = resources.displayMetrics.heightPixels / 8
+       // binding.profileSpacer.layoutParams.height = resources.displayMetrics.heightPixels / 8
         constraintsOnClickOffline()
         binding.editProfileBtn.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
@@ -201,14 +208,60 @@ class ProfileFragment : Fragment() {
 
     }
 
+    private fun observeLogout() {
+        logoutVM.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleLogoutStateChange(state) }.launchIn(lifecycleScope)
+    }
+
+    private fun handleLogoutStateChange(state: LogoutState) {
+        when (state) {
+            is LogoutState.Init -> Unit
+            is LogoutState.ErrorLogout -> handleErrorLogout(state.rawResponse)
+            is LogoutState.SuccessLogout -> handleSuccessLogout()
+            is LogoutState.ShowToast -> Toast.makeText(
+                requireActivity(), state.message, Toast.LENGTH_SHORT
+            ).show()
+            is LogoutState.IsLoading -> handleLogoutLoading(state.isLoading)
+        }
+    }
+
+    private fun handleErrorLogout(response: WrappedResponse<String>) {
+
+        // snackbar
+        Snackbar.make(binding.root, response.message, Snackbar.LENGTH_SHORT).show()
+
+    }
+
+    private fun handleSuccessLogout() {
+        sharedPrefs.clearUser()
+        findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
+        Snackbar.make(requireView(), "Logout Successful", Snackbar.LENGTH_LONG).show()
+        //findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
+    }
+
+    private fun handleLogoutLoading(isLoading: Boolean) {
+        /*binding.loginButton.isEnabled = !isLoading
+        binding.registerButton.isEnabled = !isLoading
+        binding.loadingProgressBar.isIndeterminate = isLoading
+        if(!isLoading){
+            binding.loadingProgressBar.progress = 0
+        }*/
+        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+    }
+
+    // where to go when the user in offline
+
+
+
+
     private fun logout() {
         binding.logoutConstraint.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Logout")
             builder.setMessage("Are you sure you want to logout?")
             builder.setPositiveButton("Yes") { _, _ ->
-                sharedPrefs.clearUser()
-                findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
+                logoutVM.logout()
+
             }
             builder.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
@@ -216,5 +269,8 @@ class ProfileFragment : Fragment() {
             builder.show()
         }
     }
-    // give me a fucntion to get time ago in days and weeks and months and years
+    // function to change app language
+    fun disableFirebaseService() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("general")
+    }
 }

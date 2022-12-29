@@ -12,9 +12,10 @@ class SharedPrefs(private val context: Context) {
         private const val PREF = "TRADEASY_PREFS"
         private const val PREF_USER = "TRADEASY_USER"
         private const val PREF_TOKEN = "USER_TOKEN"
-        private const val PREF_NOTIFICATION_TOKEN = "NOTIFICATION_TOKEN"
         private const val PREF_BID_DURATION = "BID_DURATION"
         private const val PREF_PROD_CATEGORY = "PROD_CATEGORY"
+        private const val PREF_NOTIFICATION_TOKEN = "NOTIFICATION_TOKEN"
+        private const val PREF_NOTIFICATIONS_ALLOWED = "NOTIFICATIONS_ALLOWED"
 
     }
 
@@ -57,7 +58,12 @@ class SharedPrefs(private val context: Context) {
     fun setProdCategory(category: String) {
         sharedPref.edit().putString(PREF_PROD_CATEGORY, category).apply()
     }
-
+    fun getNotificationAllowed(): Boolean {
+        return sharedPref.getBoolean(PREF_NOTIFICATIONS_ALLOWED, false)
+    }
+    fun setNotificationAllowed(isAllowed: Boolean=true) {
+        sharedPref.edit().putBoolean(PREF_NOTIFICATIONS_ALLOWED, isAllowed).apply()
+    }
     private fun <T> get(key: String, clazz: Class<T>): T = when (clazz) {
         String::class.java -> sharedPref.getString(key, "")
         Boolean::class.java -> sharedPref.getBoolean(key, false)

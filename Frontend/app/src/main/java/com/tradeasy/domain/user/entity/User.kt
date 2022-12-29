@@ -7,7 +7,7 @@ import com.tradeasy.domain.product.entity.Product
 data class User(
 
     @SerializedName("username") val username: String?,
-    @SerializedName("phoneNumber") val phoneNumber: Number?,
+    @SerializedName("phoneNumber") val phoneNumber: String?,
     @SerializedName("email") val email: String?,
     @SerializedName("password") val password: String?,
     @SerializedName("profilePicture") val profilePicture: String?,
@@ -25,7 +25,7 @@ data class User(
 {
     constructor() : this(
         "",
-        0,
+        "",
         "",
         "",
         "",

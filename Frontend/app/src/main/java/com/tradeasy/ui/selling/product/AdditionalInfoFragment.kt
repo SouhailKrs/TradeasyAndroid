@@ -137,8 +137,8 @@ var test : String = ""
                 val category = MultipartBody.Part.createFormData(
                     "category", sharedPrefs.getProdCategory()!!
                 )
-                val name = MultipartBody.Part.createFormData("name", args.prodName)
-                val description = MultipartBody.Part.createFormData("description", args.prodDesc)
+                val name = MultipartBody.Part.createFormData("name", args.prodName.trimEnd())
+                val description = MultipartBody.Part.createFormData("description", args.prodDesc.trimEnd())
                 val price = MultipartBody.Part.createFormData("price", args.prodPrice)
                 val image = file.map {
                     MultipartBody.Part.createFormData(

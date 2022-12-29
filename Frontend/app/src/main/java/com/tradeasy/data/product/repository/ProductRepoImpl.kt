@@ -4,9 +4,8 @@ package com.tradeasy.data.product.repository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tradeasy.data.product.remote.api.ProductApi
-import com.tradeasy.data.product.remote.dto.AddToSavedReq
-import com.tradeasy.data.product.remote.dto.BuyNowReq
 import com.tradeasy.data.product.remote.dto.GetByCatReq
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.domain.product.ProductRepo
 import com.tradeasy.domain.product.entity.Bid
@@ -193,7 +192,7 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
     }
 
     // ADD PRODUCT TO SAVED  IMPLEMENTATION
-    override suspend fun addProductToSaved(req: AddToSavedReq): Flow<BaseResult<User, WrappedResponse<User>>> {
+    override suspend fun addProductToSaved(req: ProdIdReq): Flow<BaseResult<User, WrappedResponse<User>>> {
         return flow {
             val response = api.addProductToSavedApi(req)
             if (response.isSuccessful) {
@@ -314,47 +313,9 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
 
     }
 
-    // BUY NOW IMPLEMENTATION
-    override suspend fun buyNow(req: BuyNowReq): Flow<BaseResult<Product, WrappedResponse<Product>>> {
-        return flow {
-            val response = api.buyNowApi(req)
-            if (response.isSuccessful) {
-                val body = response.body()!!
-                val product = Product(
-                    body.data?.userId!!,
-                    body.data?.category!!,
-                    body.data?.name!!,
-                    body.data?.description!!,
-                    body.data?.price!!,
-                    body.data?.image!!,
-                    body.data?.quantity!!,
-                    body.data?.addedDate!!,
-                    body.data?.forBid!!,
-                    body.data?.bidEndDate!!,
-                    body.data?.bade!!,
-                    body.data?.sold!!,
-                    body.data?.username!!,
-                    body.data?.userPhoneNumber!!,
-                    body.data?.userProfilePicture!!,
-                    body.data?.selling!!,
-                    body.data?.productId!!
-                )
-                emit(BaseResult.Success(product))
-            } else {
-                val type = object : TypeToken<WrappedResponse<Product>>() {}.type
-                val err = Gson().fromJson<WrappedResponse<Product>>(
-                    response.errorBody()!!.charStream(),
-                    type
-                )!!
-                err.code = response.code()
-                emit(BaseResult.Error(err))
-
-            }
-        }
-    }
 
     // get product by category implementation
-    override suspend fun getProductByCategory(category : GetByCatReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+    override suspend fun getProductByCategory(category: GetByCatReq): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
         return flow {
             val response = api.getProductByCategoryApi(category)
             if (response.isSuccessful) {
@@ -443,4 +404,66 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
 
     }
 
+    override suspend fun unlistProduct(req: ProdIdReq): Flow<BaseResult<String, WrappedResponse<String>>> {
+        return flow {
+            val response = api.unlistProductApi(req)
+            if (response.isSuccessful) {
+
+                emit(BaseResult.Success("Product unlisted successfully"))
+            } else {
+                val type = object : TypeToken<WrappedResponse<String>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<String>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+
+
+            }
+        }
+    }
+
+    override suspend fun getRecentlyAddedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>> {
+        return flow {
+            val response = api.getRecentlyAddedProdsApi()
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val products = mutableListOf<Product>()
+
+                body.data?.forEach { productResponse ->
+                    products.add(
+                        Product(
+                            productResponse.userId,
+                            productResponse.category,
+                            productResponse.name,
+                            productResponse.description,
+                            productResponse.price,
+                            productResponse.image,
+                            productResponse.quantity,
+                            productResponse.addedDate,
+                            productResponse.forBid,
+                            productResponse.bidEndDate,
+                            productResponse.bade,
+                            productResponse.sold,
+                            productResponse.username,
+                            productResponse.userPhoneNumber,
+                            productResponse.userProfilePicture,
+                            productResponse.selling,
+                            productResponse.productId
+                        )
+                    )
+
+                }
+                emit(BaseResult.Success(products))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<Product>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
 }

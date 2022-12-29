@@ -3,10 +3,11 @@ package com.tradeasy.ui.home.forBid
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tradeasy.R
 import com.tradeasy.databinding.ForBidItemBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.utils.getScreenSize
 import com.tradeasy.utils.imageLoader
+import java.util.*
 
 class ProductsForBid(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<ProductsForBid.MyViewHolder>(){
 
@@ -38,12 +39,17 @@ class ProductsForBid(private val products: MutableList<Product>, val onItemClick
     class MyViewHolder(val binding : ForBidItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-       binding.productImageView.setImageResource(R.drawable.ic_baseline_bookmark_24)
-            binding.productNameTextView.text = product.name
-            binding.productPriceTextView.text = product.price.toString()
+            binding.productNameTextView.text = product.name!!.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }
+            binding.productPriceTextView.text = product.price.toString() + " TND"
             val productImage= binding.productImageView
-            val imageList = product.image
-            // load all images in imageList
+            binding.prodCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.30).toInt()
+            binding.productImageView.layoutParams.height = (getScreenSize(binding.root.context).first*0.14).toInt()
+            binding.prodCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.40).toInt()
+
 
             imageLoader(product.image!![0],productImage)
 
