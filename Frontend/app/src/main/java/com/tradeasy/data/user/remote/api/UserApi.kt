@@ -62,6 +62,8 @@ interface UserApi {
     suspend fun deleteNotificationApi(@Body req: DeleteNotificationReq): Response<WrappedListResponse<Notification>>
     @GET("/user/logout")
     suspend fun logoutApi(): Response<WrappedResponse<String>>
+    @POST("/user/verifyaccount")
+    suspend fun verifyAccountApi(@Body req: VerifyAccountReq):  Response<WrappedResponse<User>>
 
 
 }

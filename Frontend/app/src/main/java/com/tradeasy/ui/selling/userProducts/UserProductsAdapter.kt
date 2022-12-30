@@ -48,7 +48,7 @@ class UserProductsAdapter(
 
         fun bind(product: Product) {
             binding.userProdName.text = product.name
-
+            binding.prodPrice.text = product.price.toString()
             val productImage= binding.userProductImg
             binding.userProdCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.24).toInt()
          binding.userProductImg.layoutParams.height = (getScreenSize(binding.root.context).first*0.18).toInt()

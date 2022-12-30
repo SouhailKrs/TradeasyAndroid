@@ -1,5 +1,6 @@
 package com.tradeasy.ui.selling.userSelling
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.databinding.FragmentUserProductItemBinding
+import com.tradeasy.ui.selling.userSelling.deleteProd.DeleteProdState
+import com.tradeasy.ui.selling.userSelling.deleteProd.DeleteProdViewModel
 import com.tradeasy.ui.selling.userSelling.unlistProd.UnlistProdState
 import com.tradeasy.ui.selling.userSelling.unlistProd.UnlistProdtViewModel
 import com.tradeasy.utils.WrappedResponse
@@ -29,9 +32,10 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class UserProductItemFragment : Fragment() {
-private lateinit var binding: FragmentUserProductItemBinding
+    private lateinit var binding: FragmentUserProductItemBinding
     private val args: UserProductItemFragmentArgs by navArgs()
     private val unlistProdVM: UnlistProdtViewModel by viewModels()
+    private val deleteProdVM: DeleteProdViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +51,8 @@ private lateinit var binding: FragmentUserProductItemBinding
         setupView()
         unlistProd()
         observe()
+        deleteProd()
+        observeDelete()
     }
 
     private fun setupView() {
@@ -65,10 +71,26 @@ private lateinit var binding: FragmentUserProductItemBinding
 
         }
 // PLACE BID BTN VISIBILITY
-  binding.unlistProd.visibility = if (args.selling) View.VISIBLE else View.GONE
+        binding.unlistProd.text = if(args.selling) "Unlist Product" else "List Product"
     }
 
+    private fun deleteProd() {
 
+            binding.deleteProd.setOnClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setMessage("Are you sure you want to delete this product?")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        deleteProdVM.deleteProd(ProdIdReq(args.userProdId))
+                    }
+                    .setNegativeButton("No") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .show()
+
+
+
+        }
+    }
     private fun unlistProd() {
         binding.unlistProd.setOnClickListener {
             unlistProdVM.unlistProd(ProdIdReq(args.userProdId))
@@ -78,8 +100,10 @@ private lateinit var binding: FragmentUserProductItemBinding
     }
 
     private fun observe() {
+
         unlistProdVM.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state -> handleStateChange(state) }.launchIn(lifecycleScope)
+
     }
 
     private fun handleStateChange(state: UnlistProdState) {
@@ -95,25 +119,77 @@ private lateinit var binding: FragmentUserProductItemBinding
     }
 
     private fun handleErrorUnlist(response: WrappedResponse<String>) {
-binding.unlistProd.hideProgress("Unlist product")
+        binding.unlistProd.hideProgress("Unlist product")
         // snackbar
+        println("here 1 ")
         Snackbar.make(binding.root, response.message, Snackbar.LENGTH_SHORT).show()
 
     }
 
     private fun handleSuccessUnlist() {
-    findNavController().popBackStack(R.id.sellingFragment, true)
+        println("here 2 ")
+        findNavController().popBackStack(R.id.sellingFragment, true)
         findNavController().navigate(R.id.sellingFragment)
         Snackbar.make(requireView(), "Product Unlisted Successfully", Snackbar.LENGTH_LONG).show()
 
     }
 
     private fun handleUnlistLoading(isLoading: Boolean) {
-     binding.unlistProd.showProgress{
+        println("here 3 ")
+        binding.unlistProd.showProgress{
 
-         progressColor = Color.WHITE
+            progressColor = Color.WHITE
 
-     }
+        }
         Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
     }
+
+
+
+    private fun observeDelete() {
+
+        deleteProdVM.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> deleteStateChange(state) }.launchIn(lifecycleScope)
+
+    }
+
+    private fun deleteStateChange(state: DeleteProdState) {
+        when (state) {
+            is DeleteProdState.Init -> Unit
+            is DeleteProdState.ErrorDelete -> deleteErrorUnlist(state.rawResponse)
+            is DeleteProdState.SuccessDelete -> deleteSuccessUnlist()
+            is DeleteProdState.ShowToast -> {
+                println("here 5 ")
+                Toast.makeText(
+
+                            requireActivity (), state.message, Toast.LENGTH_SHORT
+                ).show()
+            }
+            is DeleteProdState.IsLoading -> deleteUnlistLoading(state.isLoading)
+        }
+    }
+
+    private fun deleteErrorUnlist(response: WrappedResponse<String>) {
+        binding.deleteProd.hideProgress("Delete product")
+        // snackbar
+        Snackbar.make(binding.root, response.message, Snackbar.LENGTH_SHORT).show()
+
+    }
+
+    private fun deleteSuccessUnlist() {
+        findNavController().popBackStack(R.id.sellingFragment, true)
+        findNavController().navigate(R.id.sellingFragment)
+        Snackbar.make(requireView(), "Product deleted Successfully", Snackbar.LENGTH_LONG).show()
+
+    }
+
+    private fun deleteUnlistLoading(isLoading: Boolean) {
+        binding.deleteProd.showProgress{
+
+            progressColor = Color.WHITE
+
+        }
+        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+    }
+
 }

@@ -2,13 +2,14 @@ package com.tradeasy.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.view.View
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 
 fun imageLoader(url:String,img: ImageView){
 
-
-    Picasso.get().load(url).into(img)
+   // Picasso.get().load(url).fit().centerInside().transform(CircleTransform()).into(img)
+    Glide.with(img.context).load(url).into(img)
 
 }
 // fucntion that returns height and width of the screen
@@ -27,4 +28,15 @@ fun isLoggedIn(sharedPrefs: SharedPrefs): Boolean {
     val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
     return mWifi!!.isConnected
 
+}
+fun View.gone(){
+    visibility = View.GONE
+}
+
+fun View.visible(){
+    visibility = View.VISIBLE
+}
+
+fun View.invisible(){
+    visibility = View.INVISIBLE
 }

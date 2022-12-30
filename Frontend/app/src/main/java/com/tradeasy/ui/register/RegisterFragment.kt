@@ -168,11 +168,13 @@ binding.countrycodePicker.detectSIMCountry(true)
         //save to shared prefs
         sharedPrefs.setUser(userRegisterEntity)
         userRegisterEntity.token?.let { sharedPrefs.setToken(it) }
+        if (sharedPrefs.getUser()!!.isVerified == false) {
+            findNavController().navigate(R.id.VerifyAccountFragment)
+        } else {
 
-
-    findNavController().navigate(R.id.homeFragment)
+            findNavController().navigate(R.id.homeFragment)
+        }
     }
-
     private fun registerBtnHandler() {
 
         val username = binding.usernameField

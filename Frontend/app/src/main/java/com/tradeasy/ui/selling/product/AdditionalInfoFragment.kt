@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -24,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentAdditionalInfoBinding
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.ProdImagesDataViewModel
 import com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +49,7 @@ class AdditionalInfoFragment : Fragment() {
     private val bidChoicesFragment = BidChoicesFragment()
     private val imageLink = mutableListOf<String>()
     private val images = mutableListOf<Uri>()
-
+    private val prodImagesViewModel: ProdImagesDataViewModel by activityViewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(
@@ -56,6 +59,8 @@ class AdditionalInfoFragment : Fragment() {
         binding = FragmentAdditionalInfoBinding.inflate(inflater, container, false)
         addProduct()
         observe()
+ val test : ImageButton? = requireActivity().findViewById(R.id.deleteImgBtn)
+
 
         return binding.root
     }
@@ -112,13 +117,13 @@ class AdditionalInfoFragment : Fragment() {
         // get current time kotlin in mills
         val currentTime = System.currentTimeMillis()
         var endTime: Long = 0
-var test : String = ""
+
 
         binding.addProduct.setOnClickListener {
             if (validate()) {
                 val bidState: Boolean = binding.forBid.isChecked
 // send images to server as a list
-                val imageList = mutableListOf<MultipartBody.Part>()
+                mutableListOf<MultipartBody.Part>()
 
 
                 when (sharedPrefs.getBidDuration()) {

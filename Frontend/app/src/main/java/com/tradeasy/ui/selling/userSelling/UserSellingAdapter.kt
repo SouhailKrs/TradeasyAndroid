@@ -3,15 +3,16 @@ package com.tradeasy.ui.selling.userSelling
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tradeasy.databinding.UserSellingItemBinding
+import com.tradeasy.databinding.UserProductItemBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.utils.getScreenSize
 import com.tradeasy.utils.imageLoader
 
 class UserSellingAdapter(private val products: MutableList<Product>, val onItemClick:(Product)->Unit) : RecyclerView.Adapter<UserSellingAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
-            UserSellingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            UserProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(itemView)
     }
 
@@ -34,12 +35,15 @@ class UserSellingAdapter(private val products: MutableList<Product>, val onItemC
     }
 
 
-    class MyViewHolder(val binding : UserSellingItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(val binding : UserProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-            binding.prodTitle.text = product.name
-            binding.prodPrice.text = product.price.toString()
-            val productImage= binding.prodImg
+            binding.userProdName.text = product.name
+binding.prodPrice.text = product.price.toString() + " TND"
+            val productImage= binding.userProductImg
+            binding.userProdCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.24).toInt()
+            binding.userProductImg.layoutParams.height = (getScreenSize(binding.root.context).first*0.18).toInt()
+            binding.userProdCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.38).toInt()
             imageLoader(product.image!![0],productImage)
 
         }

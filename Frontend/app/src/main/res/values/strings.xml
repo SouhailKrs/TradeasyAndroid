@@ -16,7 +16,7 @@
     <dimen name="font_size_12">12sp</dimen>
     <!-- Strings used for fragments for navigation -->
 
-        <string name="selected_language">English</string>
-        <string name="language">Hi, GFG</string>
+    <string name="selected_language">English</string>
+    <string name="language">Hi, GFG</string>
 
 </resources>

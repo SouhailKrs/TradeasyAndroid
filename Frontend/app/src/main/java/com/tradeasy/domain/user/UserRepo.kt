@@ -46,4 +46,6 @@ suspend fun getUserNotifications(): Flow<BaseResult<List<Notification>, WrappedL
 // delete user notification
 suspend fun deleteNotification( req: DeleteNotificationReq): Flow<BaseResult<List<Notification>, WrappedListResponse<Notification>>>
     suspend fun logout():Flow<BaseResult<String, WrappedResponse<String>>>
+    //verify account
+    suspend fun verifyAccount(req: VerifyAccountReq):Flow<BaseResult<User, WrappedResponse<User>>>
 }

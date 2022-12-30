@@ -11,6 +11,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wholeConstraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,6 +26,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/noNotificationsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_baseline_notifications_off_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notificationLoading" />
+
+        <TextView
+            android:id="@+id/noNotificationsTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/stem_medium"
+            android:text="NO NOTIFICATIONS "
+            android:textColor="#000000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/noNotificationsIcon"
+            app:layout_constraintStart_toStartOf="@+id/noNotificationsIcon"
+            app:layout_constraintTop_toBottomOf="@+id/noNotificationsIcon" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/notificationConstraint"
             android:layout_width="0dp"
@@ -33,17 +57,6 @@
             android:layout_marginBottom="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notificationLoading">
-
-            <ImageView
-                android:id="@+id/noNotificationsIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:src="@drawable/ic_baseline_notifications_off_24"
-                app:layout_constraintBottom_toBottomOf="@+id/notificationsRV"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/notificationsRV" />
 
             <TextView
                 android:id="@+id/notificationsDay"
@@ -67,23 +80,13 @@
                 android:divider="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/notificationsDay"
+                app:layout_constraintVertical_bias="0.0"
                 tools:itemCount="10"
                 tools:listitem="@layout/notification_item" />
 
-            <TextView
-                android:id="@+id/noNotificationsTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:fontFamily="@font/stem_medium"
-                android:text="NO NOTIFICATIONS "
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="@+id/noNotificationsIcon"
-                app:layout_constraintStart_toStartOf="@+id/noNotificationsIcon"
-                app:layout_constraintTop_toBottomOf="@+id/noNotificationsIcon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

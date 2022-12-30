@@ -349,5 +349,10 @@
             android:name="userProdId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/VerifyAccountFragment"
+        android:name="com.tradeasy.ui.register.verifyAccount.VerifyAccountFragment"
+        android:label="fragment_verify_account"
+        tools:layout="@layout/fragment_verify_account" />
 
 </navigation>

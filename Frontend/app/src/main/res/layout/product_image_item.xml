@@ -9,17 +9,13 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/additionalInfoCardView"
         android:layout_width="80dp"
         android:layout_height="85dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="5dp"
-        android:maxWidth="82dp"
-        android:maxHeight="83dp"
-        android:minWidth="82dp"
-        android:minHeight="100dp"
         app:cardBackgroundColor="@color/appBackground"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
@@ -29,13 +25,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/productImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
+            android:layout_height="wrap_content">
 
-            app:srcCompat="@drawable/screenshot_20221206_224435" />
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/screenshot_20221206_224435" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/deleteImgBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="3dp"
+                android:adjustViewBounds="true"
+                android:background="@color/closeBtn"
+
+                android:foregroundGravity="center"
+                android:scaleType="centerCrop"
+                app:contentPadding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/CornerCut"
+                app:srcCompat="@drawable/ic_baseline_close_24_smaller" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,4 +66,7 @@ interface ProductApi {
     // recently added products api
     @GET("/product/recentlyadded")
     suspend fun getRecentlyAddedProdsApi(): Response<WrappedListResponse<Product>>
+    //delete product api
+    @POST("/product/deleteproduct")
+    suspend fun deleteProductApi(@Body req: ProdIdReq): Response<WrappedResponse<String>>
 }

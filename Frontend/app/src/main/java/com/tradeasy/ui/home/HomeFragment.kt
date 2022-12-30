@@ -54,7 +54,6 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
         return binding.root
     }
 
@@ -135,7 +134,8 @@ class HomeFragment : Fragment() {
             binding.contentConstraint.visibility = View.GONE
         }
         binding.tapToRetryBtn.setOnClickListener {
-            setupView()
+         findNavController().popBackStack(R.id.homeFragment, true)
+            findNavController().navigate(R.id.homeFragment)
         }
 
     }

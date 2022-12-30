@@ -1,5 +1,6 @@
 package com.tradeasy.ui.selling
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.tradeasy.R
 import com.tradeasy.databinding.FragmentSellingBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.selling.userProducts.UserProductsAdapter
 import com.tradeasy.ui.selling.userProducts.UserProductsState
 import com.tradeasy.ui.selling.userProducts.UserProductsViewModel
@@ -36,6 +38,7 @@ class SellingFragment : Fragment() {
     lateinit var sharedPrefs: SharedPrefs
     private val viewModel: UserSellingViewModel by viewModels()
     private val userProdViewModel: UserProductsViewModel by viewModels()
+    private val sharedDataViewModel: SharedDataViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -103,10 +106,12 @@ class SellingFragment : Fragment() {
                 it.productId!!,
 
                 )
-
+            sharedDataViewModel.setProdId(it.productId!!)
             findNavController().navigate(action)
 
-        })
+        }
+
+        )
 
 
         binding.userSellingRV.apply {
@@ -176,7 +181,7 @@ class SellingFragment : Fragment() {
                 it.productId!!
 
             )
-
+            sharedDataViewModel.setProdId(it.productId!!)
             findNavController().navigate(action)
 
         })
@@ -213,7 +218,20 @@ class SellingFragment : Fragment() {
 
         }
         binding.goToAddProduct.setOnClickListener {
-            findNavController().navigate(R.id.addProductFragment)
+            if(sharedPrefs.getUser()!!.isVerified==true) {
+                findNavController().navigate(R.id.addProductFragment)
+            }else{
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Verify your account")
+                    .setMessage("Please verify your account so you can start selling items")
+                    .setPositiveButton("Verify") { _, _ ->
+                        findNavController().navigate(R.id.VerifyAccountFragment)
+                    }
+                    .setNegativeButton("Later") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
         }
 
     }
