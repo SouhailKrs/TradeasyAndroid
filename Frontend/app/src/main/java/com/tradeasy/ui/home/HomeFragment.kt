@@ -20,6 +20,7 @@ import com.tradeasy.databinding.FragmentHomeBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.SharedDataViewModel
+import com.tradeasy.ui.TestViewModel
 import com.tradeasy.ui.home.forBid.ProductsForBid
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedAdapter
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedState
@@ -40,6 +41,7 @@ class HomeFragment : Fragment() {
     private val forBidViewModel: HomeViewModel by viewModels()
     private val recentlyAddedVM: RecentlyAddedViewModel by viewModels()
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
+    private val sharedDataViewModel: TestViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +55,7 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        println("cccc " + sharedDataViewModel.prodId.value)
         return binding.root
     }
 

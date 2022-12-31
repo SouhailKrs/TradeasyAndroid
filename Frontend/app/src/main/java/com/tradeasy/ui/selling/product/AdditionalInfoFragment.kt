@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -26,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentAdditionalInfoBinding
 import com.tradeasy.ui.MainActivity
-import com.tradeasy.ui.ProdImagesDataViewModel
 import com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,10 +44,9 @@ class AdditionalInfoFragment : Fragment() {
     private val args: AdditionalInfoFragmentArgs by navArgs()
     private val requestGallery = 2121
     private val file = mutableListOf<File>()
-    private val bidChoicesFragment = BidChoicesFragment()
     private val imageLink = mutableListOf<String>()
     private val images = mutableListOf<Uri>()
-    private val prodImagesViewModel: ProdImagesDataViewModel by activityViewModels()
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreateView(

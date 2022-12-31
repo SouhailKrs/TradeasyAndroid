@@ -54,6 +54,7 @@ class ProductItemFragment : Fragment() {
         addProductToSaved()
         observe()
         // get screen size
+        println("aaaaa " + sharedViewModel.prodId.value)
         handleSavedButton()
         goToBidFragment()
         setupView()
@@ -106,6 +107,9 @@ class ProductItemFragment : Fragment() {
             }
             sharedViewModel.ownerPhoneNumber.observe(viewLifecycleOwner) { ownerPhoneNumber ->
                 sellerPhoneNumber.text = ownerPhoneNumber
+            }
+            sharedViewModel.prodDesc.observe(viewLifecycleOwner) { prodDesc ->
+                binding.prodDesc.text = prodDesc
             }
         }
 // PLACE BID BTN VISIBILITY

@@ -29,13 +29,13 @@
 
                 <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/userProdImgSlider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
+
                     android:layout_marginEnd="20dp"
                     app:iss_auto_cycle="false"
-
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userProdName" />
 
-
+        <TextView
+            android:id="@+id/prodDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/avenir_regular"
+            android:lineSpacingExtra="14sp"
+            android:lineSpacingMultiplier="0.4"
+            android:text="this is a product that heps in the that of lucky tof that if tjfjffefefefef"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userProdPrice" />
         <Button
             android:id="@+id/unlistProd"
             android:layout_width="wrap_content"
@@ -82,7 +96,7 @@
             android:text="Unlist Product"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProdPrice" />
+            app:layout_constraintTop_toBottomOf="@+id/prodDesc" />
 
         <Button
             android:id="@+id/editProd"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -38,7 +39,7 @@ class SellingFragment : Fragment() {
     lateinit var sharedPrefs: SharedPrefs
     private val viewModel: UserSellingViewModel by viewModels()
     private val userProdViewModel: UserProductsViewModel by viewModels()
-    private val sharedDataViewModel: SharedDataViewModel by viewModels()
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -97,18 +98,24 @@ class SellingFragment : Fragment() {
     private fun setupRecyclerView() {
         val mAdapter = UserSellingAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-            val action = SellingFragmentDirections.actionSellingFragmentToUserProductItemFragment(
 
-                it.name!!,
-                imagesArray,
-                it.price!!,
-                it.selling!!,
-                it.productId!!,
-                it.category!!
-
-                )
+            sharedDataViewModel.setProdName(it.name!!)
+            sharedDataViewModel.setProdDesc(it.description!!)
+            sharedDataViewModel.setProdCat(it.category!!)
+            sharedDataViewModel.setProdPrice(it.price!!)
+            sharedDataViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedDataViewModel.setProdQuantity(it.quantity!!)
+            sharedDataViewModel.setAddedDate(it.addedDate!!)
+            sharedDataViewModel.setForBid(it.forBid!!)
             sharedDataViewModel.setProdId(it.productId!!)
-            findNavController().navigate(action)
+            sharedDataViewModel.setOwnerUsername(it.username!!)
+            sharedDataViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedDataViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedDataViewModel.setProdImages(imagesArray)
+            sharedDataViewModel.setProdSelling(it.selling!!)
+            findNavController().navigate(R.id.action_sellingFragment_to_userProductItemFragment)
+
+println("bbb " + sharedDataViewModel.prodId.value)
 
         }
 
@@ -173,19 +180,21 @@ class SellingFragment : Fragment() {
     private fun setupUserProdRV() {
         val mAdapter = UserProductsAdapter(mutableListOf(), onItemClick = {
             val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
-            val action = SellingFragmentDirections.actionSellingFragmentToUserProductItemFragment(
-
-                it.name!!,
-                imagesArray,
-                it.price!!,
-                it.selling!!,
-                it.productId!!,
-            it.category!!
-
-
-            )
+            sharedDataViewModel.setProdName(it.name!!)
+            sharedDataViewModel.setProdDesc(it.description!!)
+            sharedDataViewModel.setProdCat(it.category!!)
+            sharedDataViewModel.setProdPrice(it.price!!)
+            sharedDataViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedDataViewModel.setProdQuantity(it.quantity!!)
+            sharedDataViewModel.setAddedDate(it.addedDate!!)
+            sharedDataViewModel.setForBid(it.forBid!!)
             sharedDataViewModel.setProdId(it.productId!!)
-            findNavController().navigate(action)
+            sharedDataViewModel.setOwnerUsername(it.username!!)
+            sharedDataViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedDataViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedDataViewModel.setProdImages(imagesArray)
+            sharedDataViewModel.setProdSelling(it.selling!!)
+            findNavController().navigate(R.id.action_sellingFragment_to_userProductItemFragment)
 
         })
 

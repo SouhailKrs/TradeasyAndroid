@@ -336,26 +336,9 @@
         android:name="com.tradeasy.ui.selling.userSelling.UserProductItemFragment"
         android:label="fragment_user_product_item"
         tools:layout="@layout/fragment_user_product_item" >
-        <argument
-            android:name="userProdName"
-            app:argType="string" />
-        <argument
-            android:name="userProdImg"
-            app:argType="string[]" />
-        <argument
-            android:name="userProdPrice"
-            app:argType="float" />
-        <argument
-            android:name="selling"
-            app:argType="boolean" />
-        <argument
-            android:name="userProdId"
-            app:argType="string" />
         <action
             android:id="@+id/action_userProductItemFragment_to_editProductFragment"
             app:destination="@id/editProductFragment" />
-        <argument android:name="category"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/VerifyAccountFragment"
@@ -371,13 +354,6 @@
         android:id="@+id/editProductFragment"
         android:name="com.tradeasy.ui.selling.userSelling.editProduct.EditProductFragment"
         android:label="fragment_edit_product"
-        tools:layout="@layout/fragment_edit_product" >
-        <argument
-            android:name="prodId"
-            app:argType="string" />
-        <argument
-            android:name="category"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_edit_product" />
 
 </navigation>

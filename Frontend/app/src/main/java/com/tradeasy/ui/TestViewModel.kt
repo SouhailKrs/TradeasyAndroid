@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SharedDataViewModel : ViewModel() {
+class TestViewModel : ViewModel() {
 
     private val _prodName = MutableLiveData<String>("")
     val prodName: LiveData<String> = _prodName

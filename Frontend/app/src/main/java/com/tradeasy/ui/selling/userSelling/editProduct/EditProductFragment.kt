@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -16,13 +15,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentEditProductBinding
 import com.tradeasy.ui.MainActivity
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.selling.product.ProductImagesAdapter
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +38,7 @@ class EditProductFragment : Fragment() {
     private lateinit var binding: FragmentEditProductBinding
     private val viewModel: EditProductViewModel by viewModels()
 
-    private val args: EditProductFragmentArgs by navArgs()
+    private val sharedDataViewModel: SharedDataViewModel by viewModels()
     private val requestGallery = 2121
     private val file = mutableListOf<File>()
     private val imageLink = mutableListOf<String>()
@@ -60,6 +59,7 @@ class EditProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupView()
         (activity as MainActivity?)?.setupToolBar("Edit Product",false,false)
 
         binding.productCategory.setOnClickListener {
@@ -108,7 +108,7 @@ class EditProductFragment : Fragment() {
         var endTime: Long = 0
         var test : String = ""
 
-        Toast.makeText(requireContext(), args.prodId, Toast.LENGTH_SHORT).show()
+
 
 
         binding.editProductBtn.setOnClickListener {
@@ -134,7 +134,13 @@ class EditProductFragment : Fragment() {
                 }
 
 
-                val prodId = MultipartBody.Part.createFormData("prod_id", args.prodId)
+                lateinit var prodId: MultipartBody.Part
+                sharedDataViewModel.prodId.observe(viewLifecycleOwner) { productId ->
+
+                    prodId =  MultipartBody.Part.createFormData("prod_id", productId)
+                }
+
+
                 val image = file.map {
                     MultipartBody.Part.createFormData(
                         "image", it.name, it.asRequestBody("image/*".toMediaTypeOrNull())
@@ -164,7 +170,7 @@ class EditProductFragment : Fragment() {
                 )
 
             }
-            println("after: "+ args.category)
+
         }
 
     }
@@ -245,5 +251,34 @@ class EditProductFragment : Fragment() {
         }
 
     }
+private fun setupView(){
+    sharedDataViewModel.prodCat.observe(viewLifecycleOwner) { prodCat ->
+        binding.productCategory.setText(prodCat)
 
+    }
+    sharedDataViewModel.prodName.observe(viewLifecycleOwner) { prodName ->
+        binding.productName.setText(prodName)
+
+    }
+    sharedDataViewModel.prodCat.observe(viewLifecycleOwner) { prodCat ->
+        binding.productCategory.setText(prodCat)
+
+    }
+
+    sharedDataViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
+        binding.productPrice.setText(prodPrice.toString())
+
+
+    }
+    sharedDataViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
+        binding.forBid.isChecked = forBid
+
+    }
+
+    sharedDataViewModel.selling.observe(viewLifecycleOwner) { selling ->
+ binding.forBidConstraint.visibility = if(selling) View.GONE else View.VISIBLE
+
+    }
+
+}
 }

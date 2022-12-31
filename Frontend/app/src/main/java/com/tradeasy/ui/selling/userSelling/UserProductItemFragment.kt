@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.models.SlideModel
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -21,21 +21,24 @@ import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.databinding.FragmentUserProductItemBinding
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.selling.userSelling.deleteProd.DeleteProdState
 import com.tradeasy.ui.selling.userSelling.deleteProd.DeleteProdViewModel
 import com.tradeasy.ui.selling.userSelling.unlistProd.UnlistProdState
 import com.tradeasy.ui.selling.userSelling.unlistProd.UnlistProdtViewModel
 import com.tradeasy.utils.WrappedResponse
+import com.tradeasy.utils.getScreenSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 
 @AndroidEntryPoint
 class UserProductItemFragment : Fragment() {
     private lateinit var binding: FragmentUserProductItemBinding
-    private val args: UserProductItemFragmentArgs by navArgs()
     private val unlistProdVM: UnlistProdtViewModel by viewModels()
     private val deleteProdVM: DeleteProdViewModel by viewModels()
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,31 +56,63 @@ class UserProductItemFragment : Fragment() {
         observe()
         deleteProd()
         observeDelete()
+
     }
 
     private fun setupView() {
 
+binding.cardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.40).toInt()
+
 
         binding.editProd.setOnClickListener {
-            val action = UserProductItemFragmentDirections.actionUserProductItemFragmentToEditProductFragment(args.userProdId,args.category)
-            findNavController().navigate(action)
+
+            findNavController().navigate(R.id.action_userProductItemFragment_to_editProductFragment)
         }
-        println("category is " + args.category)
+
         binding.apply {
             val imageList = ArrayList<SlideModel>()
-            for (i in args.userProdImg.indices) {
-                imageList.add(SlideModel(args.userProdImg[i].toString()))
+            sharedDataViewModel.prodImages.observe(viewLifecycleOwner) { prodImages ->
+
+                for (i in prodImages.indices) {
+                    imageList.add(SlideModel(prodImages[i].toString()))
+                }
+                userProdImgSlider.setImageList(imageList)
+            }
+            sharedDataViewModel.prodName.observe(viewLifecycleOwner) { prodName ->
+                userProdName.text = prodName.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }
+            }
+            sharedDataViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
+                userProdPrice.text = "$prodPrice TND"
+
+            }
+            sharedDataViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
+
+                binding.editProd.visibility = if (forBid) View.GONE else View.VISIBLE
+
+            }
+            sharedDataViewModel.selling.observe(viewLifecycleOwner) { selling ->
+
+                binding.editProd.visibility = if (selling) View.GONE else View.VISIBLE
+
+            }
+            sharedDataViewModel.prodDesc.observe(viewLifecycleOwner) { prodDesc ->
+                binding.prodDesc.text = prodDesc
             }
 
-            userProdImgSlider.setImageList(imageList)
-
-
-            userProdName.text = args.userProdName
-            userProdPrice.text = args.userProdPrice.toString() + " TND"
 
         }
 // PLACE BID BTN VISIBILITY
-        binding.unlistProd.text = if(args.selling) "Unlist Product" else "List Product"
+
+        sharedDataViewModel.selling.observe(viewLifecycleOwner) { selling ->
+
+            binding.unlistProd.text = if(selling) "Unlist Product" else "List Product"
+        }
+
+
     }
 
     private fun deleteProd() {
@@ -86,7 +121,12 @@ class UserProductItemFragment : Fragment() {
                 AlertDialog.Builder(requireContext())
                     .setMessage("Are you sure you want to delete this product?")
                     .setPositiveButton("Yes") { dialog, which ->
-                        deleteProdVM.deleteProd(ProdIdReq(args.userProdId))
+                        sharedDataViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
+println(
+    "aaaaa $prodId")
+                            deleteProdVM.deleteProd(ProdIdReq(prodId.toString()))
+                        }
+
                     }
                     .setNegativeButton("No") { dialog, which ->
                         dialog.dismiss()
@@ -99,8 +139,11 @@ class UserProductItemFragment : Fragment() {
     }
     private fun unlistProd() {
         binding.unlistProd.setOnClickListener {
-            unlistProdVM.unlistProd(ProdIdReq(args.userProdId))
-            println("id is " + args.userProdId)
+            sharedDataViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
+
+                unlistProdVM.unlistProd(ProdIdReq(prodId))
+            }
+
         }
 
     }
