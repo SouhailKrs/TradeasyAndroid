@@ -52,6 +52,14 @@ class UserProductItemFragment : Fragment() {
         deleteProd()
         observe()
         observeDelete()
+        goToEdit()
+    }
+
+    private  fun goToEdit(){
+        binding.editProd.setOnClickListener {
+            val action = UserProductItemFragmentDirections.actionUserProductItemFragmentToEditProdFragment(args.userProdId,args.category)
+            findNavController().navigate(action)
+        }
     }
 
     private fun setupView() {

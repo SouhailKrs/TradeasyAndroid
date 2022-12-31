@@ -348,6 +348,21 @@
         <argument
             android:name="userProdId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_userProductItemFragment_to_editProdFragment"
+            app:destination="@id/editProdFragment" />
+        <argument android:name="category"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProdFragment"
+        android:name="com.tradeasy.ui.selling.userProducts.EditProdFragment"
+        android:label="fragment_edit_prod"
+        tools:layout="@layout/fragment_edit_prod" >
+        <argument android:name="prodId"
+            app:argType="string" />
+        <argument android:name="category"
+            app:argType="string" />
     </fragment>
 
 </navigation>

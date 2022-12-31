@@ -12,8 +12,10 @@ import {
   usernameProducts,
   userSelling,
   recentlyViewed,
-  removeProductFromSelling,
+  unlistProduct,
   deleteProduct,
+  editProduct,
+  recentlyAddedProducts,
 } from "../controllers/productController.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 import multer from "../middlewares/multer-config.js";
@@ -31,8 +33,10 @@ router.route("/addprodtosaved").post(requireAuth, addProdToSaved);
 router.route("/getsavedprods").get(requireAuth, getSavedProds);
 router.route("/userselling").get(requireAuth, userSelling);
 router.route("/recentlyviewed").post(requireAuth, recentlyViewed);
-router.route("/removeproductfromselling").post(requireAuth, removeProductFromSelling);
+router.route("/unlistproduct").post(requireAuth, unlistProduct);
 router.route("/deleteproduct").post(requireAuth, deleteProduct);
+router.route("/recentlyadded").get(requireAuth, recentlyAddedProducts);
+router.route("/editproduct").post(requireAuth,multer("image"),editProduct);
 
 
 export default router;

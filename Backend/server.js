@@ -19,9 +19,8 @@ const databaseName = "tradeasy";
 mongoose.set("debug", true);
 mongoose.Promise = global.Promise;
 
-const dbOnline = `mongodb+srv://funest:s63a95s96i99@bidcluster.fams2fx.mongodb.net/${databaseName}`;
+const dbOnline = `mongodb+srv://souhail:xDGlTo3PN9NSaFF2@cluster0.mquygiu.mongodb.net/${databaseName}`;
 const dbOffline = `mongodb://0.0.0.0:27017/${databaseName}`;
-
 
 
 mongoose

@@ -2,10 +2,66 @@ import Category from "../models/category.js";
 import Product from "../models/product.js";
 import User from "../models/user.js";
 
-// ADD PRODUCT
 
-export const addProduct = async (req, res) => {
+
+
+
+
+
+//edit product
+export const editProduct = async (req, res) => {
   try {
+    let bid_end_date = req.body.bid_end_date;
+    let cat = await Category.findOne ({name:req.body.category});
+    
+    const imagePath = `${req.protocol}://${req.get("host")}/img/`;
+    if (!cat){
+      return res.status(400).json({ "message": "please select a category" });
+    } else {
+      await (async () => {
+        if (bid_end_date === "1 Hour") {
+          bid_end_date = new Date().getTime() + 3600000;
+        } else if (bid_end_date === "1 Day") {
+          bid_end_date = new Date().getTime() + 86400000;
+        } else if (bid_end_date === "1 Week") {
+          bid_end_date = new Date().getTime() + 86400000 * 7;
+        }
+        const product = await Product.findOne({ prod_id : req.body.prod_id, user_id: req.user._id });
+        if (product) {
+          product.name = req.body.name;
+          product.description = req.body.description;
+          product.price = req.body.price;
+          
+          product.image =
+            req.files.map((file) => {
+            return imagePath + file.filename;
+          }),
+          product.category = req.body.category,
+          product.quantity = req.body.quantity,
+          product.added_date = new Date().getTime(),
+          product.bid_end_date = bid_end_date,
+          product.for_bid = req.body.for_bid,
+          product.username = req.user.username,
+          product.userPhoneNumber = req.user.phoneNumber,
+          product.userProfilePicture = req.user.profilePicture,
+          product.selling = true,
+          product.updateOne(product).then((product) => {
+            res.json({ data: product });
+          });
+        } else {
+          res.status(400).json({ "message": "product not found" });
+        }
+      })();
+    }
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+// ADD PRODUCT
+export const addProduct = async (req, res) => {
+  try { 
+    if(req.user!==null){
+ 
     let bid_end_date = req.body.bid_end_date;
     const cat = await Category.findOne({ name: req.body.category });
     const imagePath = `${req.protocol}://${req.get("host")}/img/`;
@@ -48,6 +104,10 @@ export const addProduct = async (req, res) => {
           res.json({ data: product });
         });
       })();
+    }
+  
+    }else{
+      res.status(400).json({ "message": "please login" });
     }
   } catch (error) {
     res.status(500).json(error.message);
@@ -271,7 +331,7 @@ export const getProductsForBid = async (req, res) => {
     if (req.user) {
       const products = await Product.find
         ({
-          forBid: true,  user_id: { $ne: req.user._id }
+          forBid: true, selling:true,  user_id: { $ne: req.user._id }
         }).limit(10);
       if (products.length === 0) {
         res.status(500).json({ "message": "No products yet for bid" });
@@ -282,7 +342,8 @@ export const getProductsForBid = async (req, res) => {
     } else {
       const products = await Product.find
         ({
-          forBid: true
+          forBid: true,
+          selling:true,
         }).limit(10);
       if (products.length === 0) {
         res.status(500).json({ "message": "No products yet for bid" });
@@ -330,27 +391,34 @@ export const findProductByName = async (req, res) => {
 };
 
 // remove product from selling
-export const removeProductFromSelling = async (req, res) => {
+// 
+
+
+export const unlistProduct = async (req, res) => {
   try {
     // search for product of the connected user
 
 
     const { product_id } = req.body;
     const product = await Product.findOne({ _id: product_id, user_id: req.user._id });
-    if (product) {
+    if(product.selling==true){
       product.selling = false;
       await product.save();
-      res.send({ data: product });
+      res.status(200).json({ "message": "product unlisted" });
+ 
     }
-    else {
-      res.status(500).json({ "message": "product not found" });
+    else{
+      product.selling = true;
+      await product.save();
+      res.status(200).json({ "message": "product unlisted" });
+    
     }
+   
   } catch (err) {
     return res.status(500).json({ "message": err.message });
   }
 };
-
-
+// user_id: req.user._id 
 // delete product and check if product is in saved items or recently viewed and remove it
 export const deleteProduct = async (req, res) => {
   try {
@@ -359,31 +427,33 @@ export const deleteProduct = async (req, res) => {
       = await
         Product
           .
-            findOne({ _id: product_id, user_id: req.user._id });
+            findOne({ _id: product_id,});
     if (product) {
+      console.log("aaaa 1")
       // check if product is in saved items
-      const user = req.user;
-      const savedProducts = user.savedItems;
-      if (savedProducts.length > 0) {
-        for (var i = 0; i < savedProducts.length; i++) {
-          if (savedProducts[i]._id.toString() == product._id) {
-            savedProducts.splice(i, 1);
-            await user.save();
-          }
-        }
+// delete this product from saved items of all users
+  // get saved items of all users
+  const users = await User.find();
+  // loop on users
+  users.forEach(async (user) => {
+    console.log("aaaa 2")
+    // loop on saved items
+    user.savedProducts.forEach(async (savedProducts) => {
+      console.log("aaaa 3")
+      // check if product id is equal to the product id
+   
+      if (savedProducts._id.toString() == product_id && savedProducts.length > 0 ) {
+        // remove product from saved items
+        console.log("aaaa 4" + savedProducts)
+         user.savedProducts.splice(user.savedProducts.indexOf(savedProducts), 1);
+  
+        await user.save();
       }
-      // check if product is in recently viewed
-      const recentProducts = user.recentlyViewed;
-      if (recentProducts.length > 0) {
-        for (var i = 0; i < recentProducts.length; i++) {
-          if (recentProducts[i]._id.toString() == product._id) {
-            recentProducts.splice(i, 1);
-            await user.save();
-          }
-        }
-      }
+    });
+  });
+
       await product.remove();
-      res.send({ data: product });
+      res.status(200).json({ "message": "product not found" });
     }
     else {
       res.status(500).json({ "message": "product not found" });
@@ -392,3 +462,42 @@ export const deleteProduct = async (req, res) => {
     return res.status(500).json({ "message": err.message });
   }
 };
+// get recently added products in the last 24 hours if the user is connected get all products except of the connected user else get all products
+export const recentlyAddedProducts = async (req, res) => {
+  try {
+    const date = new Date();
+    date.setDate(date.getDate() - 7);
+    if (req.user) {
+      console.log("aaaaa");
+      const products = await Product.find
+        ({
+          added_date: { $gte: date }, selling:true , sold:false , user_id: { $ne: req.user._id}
+        }).sort({ added_date: -1 }).limit(15);
+      if (products.length === 0) {
+        res.status(500).json({ "message": "No products yet" });
+      }
+      else {
+        res.send({ data: products });
+      }
+    } else {
+      console.log("bbbb");
+      const products = await Product.find
+        ({
+          added_date: { $gte: date }
+        }).sort({ added_date: -1 }).limit(15);
+
+      if (products.length === 0) {
+        res.status(500).json({ "message": "No products yet" });
+      }
+      else {
+        res.send({ data: products });
+      }
+    }
+  } catch (err) {
+    return res.status(500).json({ "message": err.message });
+  }
+}
+
+// get recently added products in the last week if the user is connected get all products except of the connected user else get all products
+
+// get all products and sort them by added date

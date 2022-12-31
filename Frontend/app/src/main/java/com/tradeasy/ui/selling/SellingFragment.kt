@@ -101,8 +101,10 @@ class SellingFragment : Fragment() {
                 it.price!!,
                 it.selling!!,
                 it.productId!!,
+                it.category!!,
 
                 )
+            println("id: "+ it.productId)
 
             findNavController().navigate(action)
 
@@ -173,9 +175,12 @@ class SellingFragment : Fragment() {
                 imagesArray,
                 it.price!!,
                 it.selling!!,
-                it.productId!!
+                it.productId!!,
+                it.category!!,
 
-            )
+                )
+
+
 
             findNavController().navigate(action)
 

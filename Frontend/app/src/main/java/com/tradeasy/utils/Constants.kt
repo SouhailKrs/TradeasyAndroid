@@ -3,7 +3,7 @@ package com.tradeasy.utils
 
 object Constants {
 
-    const val BASE_URL = "http://192.168.0.19:9090"
+    const val BASE_URL = "http://192.168.0.20:9090"
 
   // notification channel id
     const val CHANNEL_ID = "notification_channel"

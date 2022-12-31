@@ -21,6 +21,15 @@ const createToken = (id) => {
 
 //logout
 export const logout = (req, res) => {
+// remove notification token from the connected user
+  const user = req.user;
+  if (!user) {
+    console.log("user not found");
+  }
+  else{
+  user.notificationToken = "";
+  user.save();
+  }
   res.cookie("jwt", "", { maxAge: 1 });
   res.header("jwt", "");
   res.send({
@@ -99,20 +108,27 @@ export const register = async (req, res) => {
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-
+  
       const newUser = new User({
         username: username,
-        phoneNumber: phoneNumber,
+        phoneNumber: countryCode+" "+phoneNumber,
         email: email,
         password: hashedPassword,
         profilePicture: profilePicture,
         notificationToken: notificationToken,
         countryCode: countryCode,
       });
-    // sendSms()
+    
       newUser.save().then(() => {
+        const otp = Math.floor(100000 + Math.random() * 900000)
+        // save the otp in the database
+        newUser.otp = otp;
+        newUser.save();
         const token = createToken(newUser._id);
-
+        let pn = countryCode+phoneNumber
+        console.log(countryCode+phoneNumber);
+        console.log("aaaaaaaa "+ pn);
+        sendSms(pn,otp);
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.header("jwt", token);
         res.status(201).json({ data: newUser, token: token });
@@ -429,7 +445,7 @@ export function getUserById(req, res) {
 }
 
 // fucntion to set isdeleted to true
-export const  deleteUser = async (req, res) => {
+export const  deleteAccount = async (req, res) => {
   const userId = req.user._id
   // also delete the user products
 // search for products with the user id
@@ -439,38 +455,54 @@ export const  deleteUser = async (req, res) => {
      await product.remove();
    });
 
-  User
-    .findById
-    (userId)
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ "mmessage": "User doesn't exist" });
-      }
-      // delete user
-      user.isDeleted = true;
+  const user
+    = await
+    User.findById
+    (userId);
+user.remove();
 
-    user.remove();
-      user.save();
-      res.status(200).json({ "message": "User deleted" });
-    }
-    )
-    .catch((err) => {
-      res.json({ "message": err.message });
-    }
-    );
+  res.status(200).json({ "message": "Account deleted" });
+
 }
 // send sms with twilio
-export function sendSms(req, res) {
-  const otp = Math.floor(100000 + Math.random() * 900000)
+export function sendSms(phoneNumber,otp) {
+  
 
   twilio(sid,auth_token).messages
   .create({  from: "TRADEASY",
-  to: "+21624876202",
+  to: phoneNumber,
   body: `Please use ${otp} to verify you account` })
   .then(message => console.log("message sent"));
 
   //res.status(200).json({ "message": "SMS sent" });
 }
+//verify acount with otp 
+export function verifyAccount(req, res) {
+  const {otp } = req.body;
+  const userId = req.user._id;
+  User
+    .findById
+    (userId)
+    .then((user) => {
+      console.log("user is " + user );
+        if (user.otp == otp) {
+          user.isVerified = true;
+          user.otp = 0;
+          user.save();
+          res.status(200).json({ data: user });
+        }
+        else {
+          res.status(400).json({ "message": "Incorrect OTP" });
+        }
+      
+    })
+    .catch((err) => {
+      
+      res.json({ "message": err.message });
+    });
+}
+
+
 
 // get user notifications list
 export function getUserNotifications(req, res) {
@@ -519,4 +551,3 @@ export function deleteUserNotification(req, res) {
     }
     );
 }
-

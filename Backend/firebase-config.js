@@ -4,12 +4,6 @@ import serviceAccount from "./serviceAccountKey.json" assert {type: "json"};
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
-const message = {
-    notification: {
-        title: "Message from ",
-        body: "hey ",
-    },
-};
 
 export const notificationContent=(title,body)=>{
     const message = {

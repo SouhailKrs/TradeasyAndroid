@@ -15,10 +15,11 @@ import {
   verifyUsername,
   uploadProfilePicture,
   getUserById,
-  deleteUser,
+  deleteAccount,
   sendSms,
   getUserNotifications,
   deleteUserNotification,
+  verifyAccount,
 } from "../controllers/user.js";
 import { requireAuth } from "../middlewares/authMiddleware.js";
 
@@ -29,7 +30,7 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 
 
-router.route("/logout").get(logout);
+router.route("/logout").get(requireAuth,logout);
 router.route("/verify").post(verifyEmail);
 router.route("/updatePassword").post(requireAuth, updatePassword);
 router.route("/updateusername").post(requireAuth, updateUsername);
@@ -39,9 +40,9 @@ router.route("/verifyOtp").post(verifyOtp);
 router.route("/verifyusername").post(verifyUsername);
 router.route("/uploadprofilepicture").post(requireAuth, multer("image"),uploadProfilePicture);
 router.route("/getuserbyid").post(getUserById);
-router.route("/deleteaccount").post(requireAuth , deleteUser);
+router.route("/deleteaccount").get(requireAuth , deleteAccount);
 router.route("/sendsms").post(sendSms);
 router.route("/getnotifications").get(requireAuth,getUserNotifications);
 router.route("/deletenotification").post(requireAuth,deleteUserNotification);
-
+router.route("/verifyaccount").post(requireAuth,verifyAccount);
 export default router;

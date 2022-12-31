@@ -20,10 +20,11 @@ const token = req.headers['jwt']
           }
       });
   } else {
-    //res.locals.user = null;
-   // next();
+    res.locals.user = null;
+    req.user = null;
+   next();
       console.log('No token');
-      res.status(400).send({"message": "not authorized"});
+     // res.status(400).send({"message": "not authorized"});
   }
 };
 

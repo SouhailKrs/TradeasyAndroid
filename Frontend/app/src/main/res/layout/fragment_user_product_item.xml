@@ -6,106 +6,110 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.selling.userSelling.UserProductItemFragment">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="-30dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        app:cardBackgroundColor="#EEF5F2"
-        app:cardCornerRadius="40dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="-30dp"
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            app:cardBackgroundColor="#EEF5F2"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.denzcoskun.imageslider.ImageSlider
-                android:id="@+id/userProdImgSlider"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                android:layout_marginEnd="20dp"
-                app:iss_auto_cycle="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/userProdImgSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
 
-            </com.denzcoskun.imageslider.ImageSlider>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginEnd="20dp"
+                    app:iss_auto_cycle="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.cardview.widget.CardView>
+                </com.denzcoskun.imageslider.ImageSlider>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/userProdName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/stem_medium"
-        android:text="Iphone 13 pro max"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        </androidx.cardview.widget.CardView>
 
-
-
+        <TextView
+            android:id="@+id/userProdName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/stem_medium"
+            android:text="Iphone 13 pro max"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 
-    <TextView
-        android:id="@+id/userProdPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/stem_medium"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProdName" />
+        <TextView
+            android:id="@+id/userProdPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/stem_medium"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userProdName" />
 
 
-    <Button
-        android:id="@+id/unlistProd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Unlist Product"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProdPrice" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/unlistProd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Unlist"
+            android:backgroundTint="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/editProd"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userProdPrice" />
 
-    <Button
-        android:id="@+id/editProd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Edit Product"
-        app:layout_constraintEnd_toEndOf="@+id/unlistProd"
-        app:layout_constraintStart_toStartOf="@+id/unlistProd"
-        app:layout_constraintTop_toBottomOf="@+id/unlistProd" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/editProd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:backgroundTint="@color/blacksh2"
+            app:layout_constraintEnd_toStartOf="@+id/deleteProd"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/unlistProd"
+            app:layout_constraintTop_toTopOf="@+id/unlistProd" />
 
-    <Button
-        android:id="@+id/deleteProd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Delete Product"
-        app:layout_constraintEnd_toEndOf="@+id/editProd"
-        app:layout_constraintStart_toStartOf="@+id/editProd"
-        app:layout_constraintTop_toBottomOf="@+id/editProd" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/deleteProd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:backgroundTint="@color/Redish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/editProd"
+            app:layout_constraintTop_toTopOf="@+id/editProd" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 

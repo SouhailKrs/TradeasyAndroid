@@ -127,5 +127,14 @@ dependencies {
 // shimmer effect
     implementation'com.facebook.shimmer:shimmer:0.5.0'
 
+    // Material Dialog Library
+    implementation 'dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.3'
+
+    // Material Design Library
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // Lottie Animation Library
+    implementation 'com.airbnb.android:lottie:3.3.6'
+
 
 }
