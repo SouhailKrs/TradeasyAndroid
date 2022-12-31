@@ -82,9 +82,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                 }
 
             }
-            is PlaceBidFragmentState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is PlaceBidFragmentState.ShowToast -> {}
             is PlaceBidFragmentState.Init -> Unit
         }
     }
@@ -112,7 +110,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
         binding.bidTimer.start()
 sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
     if (!forBid) {
-        Toast.makeText(requireContext(), "Bid is closed", Toast.LENGTH_SHORT).show()
+
 
 
     }
@@ -134,9 +132,7 @@ sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    println("user is $userId")
-                    println("prod id is ${sharedViewModel.prodId.value}")
-                    println("bid is ${bidInput.toFloat()}")
+
                 //    viewModel.placeBid(Bid(userId, sharedViewModel.prodId.value, bidInput.toFloat()))
                     sharedViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
                         viewModel.placeBid(Bid(userId, prodId, bidInput.toFloat()))

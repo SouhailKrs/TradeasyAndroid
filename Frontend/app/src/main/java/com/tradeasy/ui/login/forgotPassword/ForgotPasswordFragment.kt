@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -68,16 +67,14 @@ class ForgotPasswordFragment : Fragment() {
             is ForgotPasswordActivityState.Init -> Unit
             is ForgotPasswordActivityState.ErrorUpdate -> handleErrorUpdate(state.rawResponse)
             is ForgotPasswordActivityState.SuccessUpdate -> handleSent()
-            is ForgotPasswordActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is ForgotPasswordActivityState.ShowToast -> {}
             is ForgotPasswordActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }
     private fun handleErrorUpdate(response: WrappedResponse<String>) {
         AlertDialog.Builder(requireActivity()).apply {
             setMessage(response.message)
-            println("aaaa")
+
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
             }
@@ -91,7 +88,6 @@ class ForgotPasswordFragment : Fragment() {
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
-        Toast.makeText(requireActivity(), "Loeeading", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleSent() {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -103,9 +102,7 @@ class ProfileFragment : Fragment() {
             is DeleteAccountState.Init -> Unit
             is DeleteAccountState.ErrorDelete -> handleErrorDelete(state.rawResponse)
             is DeleteAccountState.SuccessDelete -> handleSuccessDelete()
-            is DeleteAccountState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is DeleteAccountState.ShowToast ->{}
             is DeleteAccountState.IsLoading -> handleLoading(state.isLoading)
         }
     }
@@ -125,13 +122,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+
+
     }
 
     // where to go when the user in offline
@@ -144,7 +136,9 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.pushNotificationsFragment)
         }
 
-
+binding.privacyPolicyConstraint.setOnClickListener {
+            findNavController().navigate(R.id.termsAndConditionsFragment)
+        }
 
     }
 
@@ -152,7 +146,9 @@ class ProfileFragment : Fragment() {
         binding.savedConstraint.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_savedProductsFragment)
         }
-
+        binding.privacyPolicyConstraint.setOnClickListener {
+            findNavController().navigate(R.id.termsAndConditionsFragment)
+        }
 binding.pushNotificationsConstraint.setOnClickListener {
     findNavController().navigate(R.id.pushNotificationsFragment)
 }
@@ -210,9 +206,7 @@ binding.pushNotificationsConstraint.setOnClickListener {
             is LogoutState.Init -> Unit
             is LogoutState.ErrorLogout -> handleErrorLogout(state.rawResponse)
             is LogoutState.SuccessLogout -> handleSuccessLogout()
-            is LogoutState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is LogoutState.ShowToast -> {}
             is LogoutState.IsLoading -> handleLogoutLoading(state.isLoading)
         }
     }
@@ -238,7 +232,7 @@ binding.pushNotificationsConstraint.setOnClickListener {
         if(!isLoading){
             binding.loadingProgressBar.progress = 0
         }*/
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+
     }
 
     // where to go when the user in offline

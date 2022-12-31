@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -55,7 +54,7 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        println("cccc " + sharedDataViewModel.prodId.value)
+
         return binding.root
     }
 
@@ -115,12 +114,10 @@ class HomeFragment : Fragment() {
     private fun handleForBidState(state: ForBidState) {
         when (state) {
             is ForBidState.IsLoading -> handleForBidLoading(state.isLoading)
-            is ForBidState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is ForBidState.ShowToast ->{}
             is ForBidState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
@@ -252,12 +249,12 @@ class HomeFragment : Fragment() {
     private fun handleRecentlyAddedState(state: RecentlyAddedState) {
         when (state) {
             is RecentlyAddedState.IsLoading -> handleRecentlyAddedLoading(state.isLoading)
-            is RecentlyAddedState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is RecentlyAddedState.ShowToast -> {
+
+            }
             is RecentlyAddedState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

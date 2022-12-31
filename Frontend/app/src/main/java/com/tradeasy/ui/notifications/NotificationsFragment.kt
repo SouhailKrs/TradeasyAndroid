@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -139,7 +138,7 @@ class NotificationsFragment : Fragment() {
                         }
 
                     }
-                    println("adapter size is " + binding.notificationsRV.adapter!!.itemCount)
+
                     setNewUser(notificationList)
 when (binding.notificationsRV.adapter!!.itemCount) {
                         1 -> {
@@ -152,7 +151,7 @@ when (binding.notificationsRV.adapter!!.itemCount) {
 
                     }
                     binding.notificationsRV.adapter!!.notifyDataSetChanged()
-                    println("shred pref size is " + sharedPrefs.getUser()!!.notifications!!.size)
+
                     Snackbar.make(binding.root, "Notification deleted ", Snackbar.LENGTH_LONG)
                         .show()
 
@@ -194,16 +193,14 @@ when (binding.notificationsRV.adapter!!.itemCount) {
             is NotificationsFragmentState.IsLoading -> handleLoading(state.isLoading)
             is NotificationsFragmentState.ShowToast -> {
                 binding.notificationLoading.visibility = View.GONE
-                Toast.makeText(
-                    requireActivity(), state.message, Toast.LENGTH_SHORT
-                ).show()
+
 
             }
           is NotificationsFragmentState.SuccessLoading-> handleSuccessLoadingNotification()
             is NotificationsFragmentState.Init -> Unit
             else -> {
                 binding.notificationLoading.visibility = View.GONE
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
@@ -211,7 +208,7 @@ when (binding.notificationsRV.adapter!!.itemCount) {
         binding.notificationConstraint.visibility = View.VISIBLE
         binding.notificationLoading.visibility = View.GONE
 
-        println("loading done ")
+
     }
     private fun handleNotifications(notification: List<Notification>) {
         binding.notificationsRV.adapter?.let {
@@ -226,7 +223,7 @@ when (binding.notificationsRV.adapter!!.itemCount) {
         binding.notificationLoading.visibility = View.VISIBLE
         binding.noNotificationsIcon.visibility = View.GONE
         binding.noNotificationsTxt.visibility =View.GONE
-        println("loading")
+
     }
 
     fun getTimeAgo(time: Long): String? {
@@ -340,13 +337,11 @@ when (binding.notificationsRV.adapter!!.itemCount) {
     private fun handleDeleteNotificationState(state: DeleteNotificationFragmentState) {
         when (state) {
             is DeleteNotificationFragmentState.IsLoading -> handleDeleteLoading(state.isLoading)
-            is DeleteNotificationFragmentState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is DeleteNotificationFragmentState.ShowToast ->{}
 
             is DeleteNotificationFragmentState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

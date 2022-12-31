@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -115,15 +114,18 @@ val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragmen
         when (state) {
             is SearchFragmentSate.IsLoading -> handleLoading(state.isLoading)
             is SearchFragmentSate.ShowToast -> {
-                Toast.makeText(
-                    requireActivity(), state.message, Toast.LENGTH_SHORT
-                ).show()
+                binding.searchTxt.visibility = View.VISIBLE
+                binding.searchTxt.text = " No results found for " + binding.searchView.query.toString() + " !"
+
 
             }
 
+
+
+
             is SearchFragmentSate.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
@@ -156,10 +158,11 @@ val searchView = binding.searchView
                     binding.searchRV.isVisible = false
                     binding.searchImg.visibility = View.VISIBLE
                     binding.searchTxt.visibility = View.VISIBLE
+                    binding.searchTxt.text = "Search for you next favourite item ! "
                     return false
                 }
                 else {
-                    binding.searchImg.visibility = View.GONE
+                    binding.searchImg.visibility = View.INVISIBLE
                     binding.searchTxt.visibility = View.GONE
                     binding.searchRV.isVisible = true
                     val searchReq = SearchReq(newText)
@@ -172,6 +175,7 @@ val searchView = binding.searchView
 // check if search view is focused
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             binding.searchRV.isVisible = hasFocus
+
         }
 
     }

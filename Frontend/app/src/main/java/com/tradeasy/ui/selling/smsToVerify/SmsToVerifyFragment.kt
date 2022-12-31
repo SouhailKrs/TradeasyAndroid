@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -60,9 +59,7 @@ binding.sendSmsBtn.setOnClickListener {
             is SmsToVerifyState.Init -> Unit
             is SmsToVerifyState.ErrorSent -> handleErrorSent(state.rawResponse)
             is SmsToVerifyState.SuccessSent -> handleSuccessSent()
-            is SmsToVerifyState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is SmsToVerifyState.ShowToast -> {}
             is SmsToVerifyState.IsLoading -> handleLoading(state.isLoading)
         }
     }
@@ -96,6 +93,5 @@ binding.sendSmsBtn.setOnClickListener {
             progressColor =  Color.WHITE
 
         }
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
     }
 }

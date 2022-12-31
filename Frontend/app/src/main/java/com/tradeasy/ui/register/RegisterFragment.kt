@@ -6,7 +6,6 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -131,9 +130,7 @@ binding.countrycodePicker.detectSIMCountry(true)
 
             is UserRegisterActivityState.RegisterSuccess -> handleRegisterSuccess(state.user)
             is UserRegisterActivityState.ShowToast -> {
-                Toast.makeText(
-                    requireActivity(), state.message, Toast.LENGTH_SHORT
-                ).show()
+
                 binding.registerButton.hideProgress("Login")
             }
             is UserRegisterActivityState.IsLoading -> handleLoading(state.isLoading)
@@ -226,9 +223,7 @@ binding.countrycodePicker.detectSIMCountry(true)
             is VerifyUsernameFragmentState.Init -> Unit
             is VerifyUsernameFragmentState.UsernameAvailable -> handleUsernameAvailable(state.rawResponse)
             is VerifyUsernameFragmentState.UsernameExists -> handleUsernameExists(state.message)
-            is VerifyUsernameFragmentState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is VerifyUsernameFragmentState.ShowToast ->{}
             is VerifyUsernameFragmentState.IsLoading -> handleVerificationLoading(state.isLoading)
         }
     }
@@ -246,13 +241,7 @@ binding.countrycodePicker.detectSIMCountry(true)
        }
     }
     private fun handleVerificationLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
-       // Toast.makeText(requireActivity(), "Loeeading", Toast.LENGTH_SHORT).show()
+
     }
     private fun handleUsernameExists(response: String) {
         binding.usernameField.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_close_24_red), null)
@@ -271,7 +260,6 @@ binding.countrycodePicker.detectSIMCountry(true)
 
                 lifecycleScope.launch {
                      delay(3000)
-                    println("username is $username")
                      verifyUsernameViewModel.verifyUsername(UpdateUsernameReq(username))
                 }
 

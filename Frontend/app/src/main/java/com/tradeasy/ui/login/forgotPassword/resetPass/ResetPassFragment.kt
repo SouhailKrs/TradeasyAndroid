@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -99,9 +98,7 @@ class ResetPassFragment : Fragment() {
             is ResetPasswordActivityState.Init -> Unit
             is ResetPasswordActivityState.ErrorUpdate -> handleErrorUpdate(state.rawResponse)
             is ResetPasswordActivityState.SuccessUpdate -> handleSuccessUpdate(state.message)
-            is ResetPasswordActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is ResetPasswordActivityState.ShowToast ->{}
             is ResetPasswordActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }

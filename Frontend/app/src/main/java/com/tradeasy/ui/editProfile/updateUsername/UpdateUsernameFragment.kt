@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -102,9 +101,7 @@ class UpdateUsernameFragment : Fragment() {
             is UpdateUsernameActivityState.Init -> Unit
             is UpdateUsernameActivityState.ErrorUpdate -> handleErrorUpdate(state.rawResponse)
             is UpdateUsernameActivityState.SuccessUpdate -> handleSuccessUpdate(state.user)
-            is UpdateUsernameActivityState.ShowToast -> Toast.makeText(
-                requireActivity(), "Network Error", Toast.LENGTH_SHORT
-            ).show()
+            is UpdateUsernameActivityState.ShowToast -> {}
             is UpdateUsernameActivityState.IsLoading -> handleLoading(state.isLoading)
         }
     }

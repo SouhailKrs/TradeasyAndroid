@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -70,15 +69,13 @@ private lateinit var binding:  FragmentCategoriesBinding
     private fun handleState(state: CategoriesFragmentState) {
         when (state) {
             is CategoriesFragmentState.IsLoading -> handleLoading(state.isLoading)
-            is CategoriesFragmentState.ShowToast -> {Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is CategoriesFragmentState.ShowToast -> {
 
 
             }
             is CategoriesFragmentState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

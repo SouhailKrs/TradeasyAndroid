@@ -355,5 +355,10 @@
         android:name="com.tradeasy.ui.selling.userSelling.editProduct.EditProductFragment"
         android:label="fragment_edit_product"
         tools:layout="@layout/fragment_edit_product" />
+    <fragment
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="com.tradeasy.ui.profile.termsAndConditions.TermsAndConditionsFragment"
+        android:label="fragment_terms_and_conditions"
+        tools:layout="@layout/fragment_terms_and_conditions" />
 
 </navigation>

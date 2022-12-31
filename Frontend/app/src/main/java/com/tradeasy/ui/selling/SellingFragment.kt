@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -85,12 +84,10 @@ class SellingFragment : Fragment() {
     private fun handleState(state: SellingFragmentState) {
         when (state) {
             is SellingFragmentState.IsLoading -> handleLoading(state.isLoading)
-            is SellingFragmentState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is SellingFragmentState.ShowToast -> {}
             is SellingFragmentState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
@@ -115,7 +112,7 @@ class SellingFragment : Fragment() {
             sharedDataViewModel.setProdSelling(it.selling!!)
             findNavController().navigate(R.id.action_sellingFragment_to_userProductItemFragment)
 
-println("bbb " + sharedDataViewModel.prodId.value)
+
 
         }
 
@@ -167,12 +164,10 @@ println("bbb " + sharedDataViewModel.prodId.value)
     private fun handleUserProdState(state: UserProductsState) {
         when (state) {
             is UserProductsState.IsLoading -> handleUserProdLoading(state.isLoading)
-            is UserProductsState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is UserProductsState.ShowToast -> {}
             is UserProductsState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

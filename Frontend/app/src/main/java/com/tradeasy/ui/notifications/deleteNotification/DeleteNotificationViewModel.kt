@@ -42,7 +42,7 @@ class DeleteNotificationViewModel @Inject constructor(private val deleteNotifica
 
     private fun showToast(message: String) {
         state.value = DeleteNotificationFragmentState.ShowToast(message)
-        println("error is $message")
+
     }
 
     fun deleteNotification(req:DeleteNotificationReq) {
@@ -65,7 +65,7 @@ class DeleteNotificationViewModel @Inject constructor(private val deleteNotifica
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)
-                            println("error is ${result.rawResponse.message}")
+
                         }
                     }
                 }

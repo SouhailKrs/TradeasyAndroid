@@ -106,7 +106,7 @@ private lateinit var binding: FragmentProductsByCategoryBinding
 
             is ProductsByCategoryState.Init -> Unit
             else -> {
-                Toast.makeText(requireActivity(), "Unknown State", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

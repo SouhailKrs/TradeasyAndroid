@@ -36,7 +36,7 @@ class NotificationsViewModel @Inject constructor(private val getUserNotification
 
     private fun setLoading() {
         state.value = NotificationsFragmentState.IsLoading(true)
-        println("Loading")
+
     }
 
     private fun hideLoading() {
@@ -63,7 +63,7 @@ class NotificationsViewModel @Inject constructor(private val getUserNotification
                             notifications.value = result.data
                             state.value = NotificationsFragmentState.SuccessLoading("success")
                             notificationList.addAll(result.data)
-                            println("notificationList content is  $notificationList")
+
                             if(sharedPrefs.getUser()!=null) {
                                 val user = User(
                                     sharedPrefs.getUser()?.username,

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -54,7 +53,7 @@ class ProductItemFragment : Fragment() {
         addProductToSaved()
         observe()
         // get screen size
-        println("aaaaa " + sharedViewModel.prodId.value)
+
         handleSavedButton()
         goToBidFragment()
         setupView()
@@ -179,9 +178,9 @@ class ProductItemFragment : Fragment() {
             is AddProductToSavedFragmentSate.Init -> Unit
             is AddProductToSavedFragmentSate.ErrorSaving -> handleErrorSaving(state.rawResponse)
             is AddProductToSavedFragmentSate.SuccessSaving -> handleSuccessSaving(state.user)
-            is AddProductToSavedFragmentSate.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is AddProductToSavedFragmentSate.ShowToast -> {
+
+            }
             is AddProductToSavedFragmentSate.IsLoading -> handleLoading(state.isLoading)
         }
     }
@@ -198,13 +197,7 @@ class ProductItemFragment : Fragment() {
 
     // IF LOGGING IN IS LOADING
     private fun handleLoading(isLoading: Boolean) {
-        /*binding.loginButton.isEnabled = !isLoading
-        binding.registerButton.isEnabled = !isLoading
-        binding.loadingProgressBar.isIndeterminate = isLoading
-        if(!isLoading){
-            binding.loadingProgressBar.progress = 0
-        }*/
-        // Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun handleSuccessSaving(user: User) {
@@ -238,7 +231,7 @@ class ProductItemFragment : Fragment() {
                 sharedViewModel.ownerPhoneNumber.observe(viewLifecycleOwner) { ownerPhoneNumber ->
                     // remove whitespace from phone number
                     val phoneNumber = ownerPhoneNumber.replace("\\s".toRegex(), "")
-              println("PHONE NUMBER $phoneNumber")
+
                     i.data = Uri.parse("tel:$phoneNumber")
                 }
 

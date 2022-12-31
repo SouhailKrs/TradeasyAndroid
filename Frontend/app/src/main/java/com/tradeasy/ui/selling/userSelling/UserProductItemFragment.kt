@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -122,8 +121,7 @@ binding.cardView.layoutParams.height = (getScreenSize(binding.root.context).firs
                     .setMessage("Are you sure you want to delete this product?")
                     .setPositiveButton("Yes") { dialog, which ->
                         sharedDataViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
-println(
-    "aaaaa $prodId")
+
                             deleteProdVM.deleteProd(ProdIdReq(prodId.toString()))
                         }
 
@@ -160,9 +158,7 @@ println(
             is UnlistProdState.Init -> Unit
             is UnlistProdState.ErrorUnlist -> handleErrorUnlist(state.rawResponse)
             is UnlistProdState.SuccessUnlist -> handleSuccessUnlist()
-            is UnlistProdState.ShowToast -> Toast.makeText(
-                requireActivity(), state.message, Toast.LENGTH_SHORT
-            ).show()
+            is UnlistProdState.ShowToast ->{}
             is UnlistProdState.IsLoading -> handleUnlistLoading(state.isLoading)
         }
     }
@@ -170,13 +166,13 @@ println(
     private fun handleErrorUnlist(response: WrappedResponse<String>) {
         binding.unlistProd.hideProgress("Unlist product")
         // snackbar
-        println("here 1 ")
+
         Snackbar.make(binding.root, response.message, Snackbar.LENGTH_SHORT).show()
 
     }
 
     private fun handleSuccessUnlist() {
-        println("here 2 ")
+
         findNavController().popBackStack(R.id.sellingFragment, true)
         findNavController().navigate(R.id.sellingFragment)
         Snackbar.make(requireView(), "Product Unlisted Successfully", Snackbar.LENGTH_LONG).show()
@@ -184,13 +180,13 @@ println(
     }
 
     private fun handleUnlistLoading(isLoading: Boolean) {
-        println("here 3 ")
+
         binding.unlistProd.showProgress{
 
             progressColor = Color.WHITE
 
         }
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+
     }
 
 
@@ -208,11 +204,8 @@ println(
             is DeleteProdState.ErrorDelete -> deleteErrorUnlist(state.rawResponse)
             is DeleteProdState.SuccessDelete -> deleteSuccessUnlist()
             is DeleteProdState.ShowToast -> {
-                println("here 5 ")
-                Toast.makeText(
 
-                            requireActivity (), state.message, Toast.LENGTH_SHORT
-                ).show()
+
             }
             is DeleteProdState.IsLoading -> deleteUnlistLoading(state.isLoading)
         }
@@ -238,7 +231,7 @@ println(
             progressColor = Color.WHITE
 
         }
-        Toast.makeText(requireActivity(), "Loading", Toast.LENGTH_SHORT).show()
+
     }
 
 }
