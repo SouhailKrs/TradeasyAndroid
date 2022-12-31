@@ -3,7 +3,6 @@ package com.tradeasy.ui.login.forgotPassword.resetPass
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.data.user.remote.dto.ResetPasswordReq
-import com.tradeasy.domain.user.entity.User
 import com.tradeasy.domain.user.usecase.ResetPasswordUseCase
 import com.tradeasy.utils.BaseResult
 import com.tradeasy.utils.WrappedResponse
@@ -63,6 +62,6 @@ sealed class ResetPasswordActivityState {
     object Init : ResetPasswordActivityState()
     data class IsLoading(val isLoading: Boolean) : ResetPasswordActivityState()
     data class ShowToast(val message: String) : ResetPasswordActivityState()
-    data class SuccessUpdate(val user: User) : ResetPasswordActivityState()
-    data class ErrorUpdate(val rawResponse: WrappedResponse<User>) : ResetPasswordActivityState()
+    data class SuccessUpdate(val message: String) : ResetPasswordActivityState()
+    data class ErrorUpdate(val rawResponse: WrappedResponse<String>) : ResetPasswordActivityState()
 }

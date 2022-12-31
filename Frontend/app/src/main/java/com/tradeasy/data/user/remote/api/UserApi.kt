@@ -36,7 +36,7 @@ interface UserApi {
     suspend fun verifyOtpApi(@Body req: VerifyOtpReq): Response<WrappedResponse<String>>
 
     @POST("/user/resetpassword")
-    suspend fun resetPasswordApi(@Body req: ResetPasswordReq): Response<WrappedResponse<User>>
+    suspend fun resetPasswordApi(@Body req: ResetPasswordReq): Response<WrappedResponse<String>>
 
     // Verify Username API
     @POST("/user/verifyusername")

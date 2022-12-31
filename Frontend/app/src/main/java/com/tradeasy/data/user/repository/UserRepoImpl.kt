@@ -201,32 +201,17 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
     }
 
     // reset password
-    override suspend fun resetPassword(req: ResetPasswordReq): Flow<BaseResult<User, WrappedResponse<User>>> {
+    override suspend fun resetPassword(req: ResetPasswordReq): Flow<BaseResult<String, WrappedResponse<String>>>{
         return flow {
             val response = api.resetPasswordApi(req)
             if (response.isSuccessful) {
 
                 val body = response.body()!!
-                val user = User(
-                    body.data?.username!!,
-                    body.data?.phoneNumber!!,
-                    body.data?.email!!,
-                    body.data?.password!!,
-                    body.data?.profilePicture!!,
-                    body.data?.isVerified!!,
-                    body.data?.notificationToken!!,
-                    body.data?.notifications!!,
-                    body.data?.savedProducts!!,
-                    body.data?.otp!!,
-                    body.data?.countryCode!!,
 
-
-                    body.token
-                )
-                emit(BaseResult.Success(user))
+                emit(BaseResult.Success("sucess"))
             } else {
-                val type = object : TypeToken<WrappedResponse<User>>() {}.type
-                val err = Gson().fromJson<WrappedResponse<User>>(
+                val type = object : TypeToken<WrappedResponse<String>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<String>>(
                     response.errorBody()!!.charStream(), type
                 )!!
                 err.code = response.code()

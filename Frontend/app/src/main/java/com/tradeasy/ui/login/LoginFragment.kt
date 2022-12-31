@@ -200,6 +200,10 @@ class LoginFragment : Fragment() {
                     View.VISIBLE
 
             }
+            else{
+                findNavController().navigate(R.id.homeFragment)
+
+            }
 
         }
     }

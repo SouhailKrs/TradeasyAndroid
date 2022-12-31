@@ -139,15 +139,11 @@ class ProfileFragment : Fragment() {
         binding.savedConstraint.setOnClickListener {
             profileToLogin(requireView())
         }
-        binding.bidsConstraint.setOnClickListener {
-            profileToLogin(requireView())
-        }
+
         binding.pushNotificationsConstraint.setOnClickListener {
             findNavController().navigate(R.id.pushNotificationsFragment)
         }
-        binding.recentlyViewedConstraint.setOnClickListener {
-            profileToLogin(requireView())
-        }
+
 
 
     }
@@ -156,15 +152,11 @@ class ProfileFragment : Fragment() {
         binding.savedConstraint.setOnClickListener {
             findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_savedProductsFragment)
         }
-        binding.bidsConstraint.setOnClickListener {
-            findNavController().navigate(com.tradeasy.R.id.bidsFragment)
-        }
+
 binding.pushNotificationsConstraint.setOnClickListener {
     findNavController().navigate(R.id.pushNotificationsFragment)
 }
-        binding.recentlyViewedConstraint.setOnClickListener {
 
-        }
 
 
     }

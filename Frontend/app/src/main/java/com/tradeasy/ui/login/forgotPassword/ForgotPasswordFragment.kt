@@ -13,8 +13,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.tradeasy.databinding.FragmentForgotPasswordBinding
 import com.tradeasy.data.user.remote.dto.ForgotPasswordReq
+import com.tradeasy.databinding.FragmentForgotPasswordBinding
 import com.tradeasy.utils.WrappedResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -77,6 +77,7 @@ class ForgotPasswordFragment : Fragment() {
     private fun handleErrorUpdate(response: WrappedResponse<String>) {
         AlertDialog.Builder(requireActivity()).apply {
             setMessage(response.message)
+            println("aaaa")
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
             }
@@ -98,7 +99,7 @@ class ForgotPasswordFragment : Fragment() {
        val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToVerifyOtpFragment(
 
 
-           binding.currentEmail.text.toString()
+           binding.currentEmail.text.toString().trim()
 
        )
         findNavController().navigate(action)

@@ -77,7 +77,7 @@ class VerifyOtpFragment : Fragment() {
 
 
             val otp = binding.pinView.text.toString()
-            val req= VerifyOtpReq(otp,"seifeddine.abdelkader@esprit.tn")
+            val req= VerifyOtpReq(otp,args.email)
             if (otp.isEmpty()) {
                 binding.pinView.error = "OTP is required"
                 binding.pinView.requestFocus()
