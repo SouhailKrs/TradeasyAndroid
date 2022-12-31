@@ -48,4 +48,5 @@ suspend fun deleteNotification( req: DeleteNotificationReq): Flow<BaseResult<Lis
     suspend fun logout():Flow<BaseResult<String, WrappedResponse<String>>>
     //verify account
     suspend fun verifyAccount(req: VerifyAccountReq):Flow<BaseResult<User, WrappedResponse<User>>>
+    suspend fun smsToVerify():Flow<BaseResult<String, WrappedResponse<String>>>
 }

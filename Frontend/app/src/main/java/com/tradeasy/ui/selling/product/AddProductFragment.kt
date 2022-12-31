@@ -14,6 +14,7 @@ import com.tradeasy.databinding.FragmentAddProductBinding
 import com.tradeasy.ui.MainActivity
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 
 
@@ -56,7 +57,11 @@ class AddProductFragment : Fragment(R.layout.fragment_add_product) {
     override fun onResume() {
         super.onResume()
         (activity as MainActivity?)?.setupToolBar("Selling", false, false)
-        binding.productCategory.setText(sharedPrefs.getProdCategory())
+        if(sharedPrefs.getProdCategory() != null) {
+            binding.productCategory.setText(sharedPrefs.getProdCategory()!!
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() })
+        }
+
     }
 
     private fun goToAdditionalDetails() {

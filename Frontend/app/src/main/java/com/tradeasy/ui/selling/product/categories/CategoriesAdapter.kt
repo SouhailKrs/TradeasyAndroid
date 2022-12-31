@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tradeasy.databinding.CategoryItemBinding
 import com.tradeasy.domain.category.entity.Category
+import java.util.*
 
 class CategoriesAdapter(private val categories: MutableList<Category>, val onItemClick:(Category)->Unit) : RecyclerView.Adapter<CategoriesAdapter.MyViewHolder>(){
 
@@ -37,7 +38,11 @@ class CategoriesAdapter(private val categories: MutableList<Category>, val onIte
 
         fun bind(category: Category) {
 
-            binding.categoryName.text = category.name
+            binding.categoryName.text = category.name!!.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }
 
         }
 

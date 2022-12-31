@@ -232,7 +232,10 @@ class ProductItemFragment : Fragment() {
             if (checkPhonePermission()) {
                 val i = Intent(Intent.ACTION_CALL)
                 sharedViewModel.ownerPhoneNumber.observe(viewLifecycleOwner) { ownerPhoneNumber ->
-                    i.data = Uri.parse("tel:$ownerPhoneNumber")
+                    // remove whitespace from phone number
+                    val phoneNumber = ownerPhoneNumber.replace("\\s".toRegex(), "")
+              println("PHONE NUMBER $phoneNumber")
+                    i.data = Uri.parse("tel:$phoneNumber")
                 }
 
                 startActivity(i)

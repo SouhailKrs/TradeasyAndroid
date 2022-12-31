@@ -65,5 +65,9 @@ interface UserApi {
     @POST("/user/verifyaccount")
     suspend fun verifyAccountApi(@Body req: VerifyAccountReq):  Response<WrappedResponse<User>>
 
+    // send sms to verify account
+    @POST("/user/smstoverify")
+    suspend fun smsToVerifyApi(): Response<WrappedResponse<String>>
+
 
 }

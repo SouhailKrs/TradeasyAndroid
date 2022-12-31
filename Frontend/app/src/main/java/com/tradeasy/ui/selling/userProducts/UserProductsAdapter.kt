@@ -50,9 +50,9 @@ class UserProductsAdapter(
             binding.userProdName.text = product.name
             binding.prodPrice.text = product.price.toString()
             val productImage= binding.userProductImg
-            binding.userProdCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.24).toInt()
-         binding.userProductImg.layoutParams.height = (getScreenSize(binding.root.context).first*0.18).toInt()
-            binding.userProdCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.38).toInt()
+            binding.userProdCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.30).toInt()
+         binding.userProductImg.layoutParams.height = (getScreenSize(binding.root.context).first*0.14).toInt()
+            binding.userProdCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.40).toInt()
             imageLoader(product.image!![0],productImage)
 
         }

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tradeasy.databinding.FragmentCategoriesBinding
 import com.tradeasy.domain.category.entity.Category
+import com.tradeasy.ui.MainActivity
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -35,6 +36,9 @@ private lateinit var binding:  FragmentCategoriesBinding
         savedInstanceState: Bundle?
     ): View {
       binding = FragmentCategoriesBinding.inflate(inflater, container, false)
+        (activity as MainActivity?)?.setupToolBar("Categories", false)
+        // get the last fragment in the backstack nav graph
+
         return binding.root
     }
 
@@ -81,12 +85,23 @@ private lateinit var binding:  FragmentCategoriesBinding
     private fun setupRecyclerView() {
 
         val mAdapter = CategoriesAdapter(mutableListOf(), onItemClick = {
+            val lastFragment = findNavController().previousBackStackEntry?.destination?.label
+            if (lastFragment == "fragment_home") {
+                val action = CategoriesFragmentDirections.actionCategoriesFragmentToProductsByCategoryFragment(
 
+                    it.name!!
 
-            sharedPrefs.setProdCategory(it.name!!)
+                )
+                findNavController().navigate(action)
 
-            findNavController().navigateUp()
-        })
+            } else {
+                sharedPrefs.setProdCategory(it.name!!)
+                findNavController().navigateUp()
+
+            }
+        }
+
+            )
 
 
         binding.categoriesRV.apply {

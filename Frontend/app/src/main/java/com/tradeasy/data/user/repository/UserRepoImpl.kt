@@ -420,5 +420,23 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
             }
         }
     }
+    override suspend fun smsToVerify(): Flow<BaseResult<String, WrappedResponse<String>>> {
+        return flow {
+            val response = api.smsToVerifyApi()
+            if (response.isSuccessful) {
 
+                emit(BaseResult.Success("sms sent"))
+            } else {
+                val type = object : TypeToken<WrappedResponse<String>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<String>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+
+
+            }
+        }
+    }
 }

@@ -59,4 +59,17 @@ interface ProductRepo {
     // GET SAVED PRODUCTS
     suspend fun getRecentlyAddedProducts(): Flow<BaseResult<List<Product>, WrappedListResponse<Product>>>
     suspend fun deleteProduct(req: ProdIdReq): Flow<BaseResult<String, WrappedResponse<String>>>
+    //edit product
+    suspend fun editProduct(
+        category: MultipartBody.Part,
+        name: MultipartBody.Part,
+        description: MultipartBody.Part,
+        price: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
+        quantity: MultipartBody.Part,
+        for_bid: MultipartBody.Part,
+        bid_end_date: MultipartBody.Part,
+        prod_id: MultipartBody.Part
+    ): Flow<BaseResult<Product, WrappedResponse<Product>>>
+
 }

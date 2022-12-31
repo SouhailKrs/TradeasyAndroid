@@ -210,6 +210,7 @@ when (binding.notificationsRV.adapter!!.itemCount) {
     private fun handleSuccessLoadingNotification() {
         binding.notificationConstraint.visibility = View.VISIBLE
         binding.notificationLoading.visibility = View.GONE
+
         println("loading done ")
     }
     private fun handleNotifications(notification: List<Notification>) {
@@ -223,6 +224,8 @@ when (binding.notificationsRV.adapter!!.itemCount) {
     private fun handleLoading(isLoading: Boolean) {
         binding.notificationConstraint.visibility = View.GONE
         binding.notificationLoading.visibility = View.VISIBLE
+        binding.noNotificationsIcon.visibility = View.GONE
+        binding.noNotificationsTxt.visibility =View.GONE
         println("loading")
     }
 

@@ -152,6 +152,7 @@ class LoginFragment : Fragment() {
 
     // IF LOGGED IN SUCCESSFULLY
     private fun handleSuccessLogin(loginEntity: User) {
+        sharedPrefs.setNotificationAllowed(true)
         sharedPrefs.setUser(loginEntity)
         sharedPrefs.setToken(loginEntity.token!!)
         //  shoppingCartVisibility()

@@ -46,15 +46,28 @@ private lateinit var binding: FragmentVerifyAccountBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity?)?.setupToolBar("Verify account", false, false)
-        binding.verifyLater.setOnClickListener {
-            findNavController().navigate(R.id.homeFragment)
-            findNavController().popBackStack(R.id.VerifyAccountFragment, true)
-        }
+
+        // get the last fragment in the backstack nav graph
+
+        setupView()
         validateOtp()
         verifyAccount()
         observe()
     }
+private fun setupView(){
+    binding.verifyLater.setOnClickListener {
+        findNavController().navigate(R.id.homeFragment)
 
+
+    }
+    val lastFragment = findNavController().previousBackStackEntry?.destination?.label
+    if (lastFragment == "fragment_register") {
+        binding.verifyLater.visibility = View.VISIBLE
+    } else {
+        binding.verifyLater.visibility = View.GONE
+    }
+
+}
     private fun verifyAccount() {
 
         binding.verifyAccountBtn.setOnClickListener {
@@ -96,13 +109,13 @@ private lateinit var binding: FragmentVerifyAccountBinding
 
     private fun handleErrorVerify(response: WrappedResponse<User>) {
         binding.verifyAccountBtn.hideProgress("Verify")
+
         // snackbar
     Snackbar.make(
         binding.root,
         response.message.toString(),
         Snackbar.LENGTH_LONG
     ).show()
-        (activity as MainActivity?)?.setupToolBar("Verify account", true, false,0.5f)
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -113,7 +126,7 @@ private lateinit var binding: FragmentVerifyAccountBinding
             binding.loadingProgressBar.progress = 0
         }*/
         binding.verifyAccountBtn.showProgress { progressColor = Color.WHITE }
-        (activity as MainActivity?)?.setupToolBar("Update username", false, true,1f)
+
 
     }
 
@@ -123,7 +136,7 @@ private lateinit var binding: FragmentVerifyAccountBinding
         sharedPrefs.setUser(user)
         Snackbar.make(
             binding.root,
-           "Yahoo ! Account verified successfully",
+           "Yahoo ! Account verified ",
             Snackbar.LENGTH_LONG
         ).show()
 

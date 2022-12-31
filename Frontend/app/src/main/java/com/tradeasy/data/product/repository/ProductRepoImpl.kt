@@ -483,4 +483,62 @@ class ProductRepoImpl @Inject constructor(private val api: ProductApi) :
             }
         }
     }
+    //edit product implementation
+    override suspend fun editProduct(
+        category: MultipartBody.Part,
+        name: MultipartBody.Part,
+        description: MultipartBody.Part,
+        price: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
+        quantity: MultipartBody.Part,
+        for_bid: MultipartBody.Part,
+        bid_end_date: MultipartBody.Part,
+        prod_id: MultipartBody.Part
+    ): Flow<BaseResult<Product, WrappedResponse<Product>>> {
+        return flow {
+            val response = api.editProductApi(
+                category,
+                name,
+                description,
+                price,
+                image,
+                quantity,
+                for_bid,
+                bid_end_date,
+                prod_id
+            )
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val product = Product(
+                    body.data?.userId,
+                    body.data?.category,
+                    body.data?.name,
+                    body.data?.description,
+                    body.data?.price,
+                    body.data?.image,
+                    body.data?.quantity,
+                    body.data?.addedDate,
+                    body.data?.forBid,
+                    body.data?.bidEndDate,
+                    body.data?.bade,
+                    body.data?.sold,
+                    body.data?.username,
+                    body.data?.userPhoneNumber,
+                    body.data?.userProfilePicture,
+                    body.data?.selling,
+                    body.data?.productId
+                )
+                emit(BaseResult.Success(product))
+            } else {
+                val type = object : TypeToken<WrappedResponse<Product>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<Product>>(
+                    response.errorBody()!!.charStream(),
+                    type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
 }

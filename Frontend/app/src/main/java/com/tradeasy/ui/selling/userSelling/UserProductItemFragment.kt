@@ -58,7 +58,11 @@ class UserProductItemFragment : Fragment() {
     private fun setupView() {
 
 
-
+        binding.editProd.setOnClickListener {
+            val action = UserProductItemFragmentDirections.actionUserProductItemFragmentToEditProductFragment(args.userProdId,args.category)
+            findNavController().navigate(action)
+        }
+        println("category is " + args.category)
         binding.apply {
             val imageList = ArrayList<SlideModel>()
             for (i in args.userProdImg.indices) {
@@ -66,6 +70,8 @@ class UserProductItemFragment : Fragment() {
             }
 
             userProdImgSlider.setImageList(imageList)
+
+
             userProdName.text = args.userProdName
             userProdPrice.text = args.userProdPrice.toString() + " TND"
 

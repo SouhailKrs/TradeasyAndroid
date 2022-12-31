@@ -77,7 +77,10 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                 findNavController().navigate(R.id.productItemFragment)
 
               //  findNavController().navigateUp()
-                Snackbar.make(requireView(), "You have bid for ", Snackbar.LENGTH_LONG).show()
+                sharedViewModel.prodName.observe(viewLifecycleOwner) { prodName ->
+                    Snackbar.make(requireView(), "You have bid for $prodName ", Snackbar.LENGTH_LONG).show()
+                }
+
             }
             is PlaceBidFragmentState.ShowToast -> Toast.makeText(
                 requireActivity(), state.message, Toast.LENGTH_SHORT

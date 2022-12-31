@@ -166,6 +166,7 @@ binding.countrycodePicker.detectSIMCountry(true)
     // SUCCESS HANDLER
     private fun handleRegisterSuccess(userRegisterEntity: User) {
         //save to shared prefs
+        sharedPrefs.setNotificationAllowed(true)
         sharedPrefs.setUser(userRegisterEntity)
         userRegisterEntity.token?.let { sharedPrefs.setToken(it) }
         if (sharedPrefs.getUser()!!.isVerified == false) {

@@ -69,4 +69,20 @@ interface ProductApi {
     //delete product api
     @POST("/product/deleteproduct")
     suspend fun deleteProductApi(@Body req: ProdIdReq): Response<WrappedResponse<String>>
+    // edit product api
+    @Multipart
+    @POST("/product/editproduct")
+    suspend fun editProductApi(
+        @Part category: MultipartBody.Part,
+        @Part name: MultipartBody.Part,
+        @Part description: MultipartBody.Part,
+        @Part price: MultipartBody.Part,
+        @Part image: List<MultipartBody.Part>,
+        @Part quantity: MultipartBody.Part,
+        @Part for_bid: MultipartBody.Part,
+        @Part bid_end_date: MultipartBody.Part,
+        @Part product_id: MultipartBody.Part
+    ): Response<WrappedResponse<Product>>
+
+
 }

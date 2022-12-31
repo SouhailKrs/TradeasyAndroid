@@ -104,6 +104,7 @@ class SellingFragment : Fragment() {
                 it.price!!,
                 it.selling!!,
                 it.productId!!,
+                it.category!!
 
                 )
             sharedDataViewModel.setProdId(it.productId!!)
@@ -178,7 +179,9 @@ class SellingFragment : Fragment() {
                 imagesArray,
                 it.price!!,
                 it.selling!!,
-                it.productId!!
+                it.productId!!,
+            it.category!!
+
 
             )
             sharedDataViewModel.setProdId(it.productId!!)
@@ -225,7 +228,7 @@ class SellingFragment : Fragment() {
                     .setTitle("Verify your account")
                     .setMessage("Please verify your account so you can start selling items")
                     .setPositiveButton("Verify") { _, _ ->
-                        findNavController().navigate(R.id.VerifyAccountFragment)
+                        findNavController().navigate(R.id.smsToVerifyFragment)
                     }
                     .setNegativeButton("Later") { dialog, _ ->
                         dialog.dismiss()

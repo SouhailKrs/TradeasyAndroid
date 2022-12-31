@@ -137,6 +137,9 @@ class HomeFragment : Fragment() {
          findNavController().popBackStack(R.id.homeFragment, true)
             findNavController().navigate(R.id.homeFragment)
         }
+        binding.ShowAllImageButton.setOnClickListener {
+            findNavController().navigate(R.id.categoriesFragment)
+        }
 
     }
 

@@ -293,6 +293,9 @@
         <action
             android:id="@+id/action_categoriesFragment_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_productsByCategoryFragment"
+            app:destination="@id/productsByCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/bidChoicesFragment"
@@ -348,11 +351,33 @@
         <argument
             android:name="userProdId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_userProductItemFragment_to_editProductFragment"
+            app:destination="@id/editProductFragment" />
+        <argument android:name="category"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/VerifyAccountFragment"
         android:name="com.tradeasy.ui.register.verifyAccount.VerifyAccountFragment"
         android:label="fragment_verify_account"
         tools:layout="@layout/fragment_verify_account" />
+    <fragment
+        android:id="@+id/smsToVerifyFragment"
+        android:name="com.tradeasy.ui.selling.smsToVerify.SmsToVerifyFragment"
+        android:label="fragment_sms_to_verify"
+        tools:layout="@layout/fragment_sms_to_verify" />
+    <fragment
+        android:id="@+id/editProductFragment"
+        android:name="com.tradeasy.ui.selling.userSelling.editProduct.EditProductFragment"
+        android:label="fragment_edit_product"
+        tools:layout="@layout/fragment_edit_product" >
+        <argument
+            android:name="prodId"
+            app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
