@@ -2,7 +2,6 @@ package com.tradeasy.ui.selling.bid
 
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,7 +81,11 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                 }
 
             }
-            is PlaceBidFragmentState.ShowToast -> {}
+            is PlaceBidFragmentState.ShowToast -> {
+
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+
+            }
             is PlaceBidFragmentState.Init -> Unit
         }
     }
@@ -90,31 +93,23 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun placeBid() {
-
-        var timer = 0
         val userId = sharedPrefs.getUser()?.username
+        val currentTime = System.currentTimeMillis()
 
         sharedViewModel.bidEndDate.observe(viewLifecycleOwner) { bidEndDate ->
-           timer = bidEndDate.toInt()
+
+            binding.bidTimeLeft.text = getTimeLeft(bidEndDate.toLong() -currentTime)
         }
-
-        val countdown = getTimeLeft(timer.toLong())
-        binding.bidTimer.isCountDown = true
-        binding.bidTimer.base = SystemClock.elapsedRealtime() + countdown
-
         sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
-            binding.lastBid.text = ("Last bid " + prodPrice.toString())
+
+            binding.lastBid.text = "Last bid: $prodPrice"
+            binding.bidInput.setText(prodPrice.toString())
         }
-
-
-        binding.bidTimer.start()
-sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
-    if (!forBid) {
+        // get current time in milliseconds
 
 
 
-    }
-        }
+
 
 
         binding.placeBidBtn.setOnClickListener {
@@ -152,10 +147,54 @@ sharedViewModel.forBid.observe(viewLifecycleOwner) { forBid ->
         //   binding.saveButton.isEnabled = !isLoading
     }
 
-    private fun getTimeLeft(time: Long): Long {
-        return time - System.currentTimeMillis()
+
+    private fun getTimeLeft(time: Long): String {
+        val SECOND_MILLIS = 1000
+        val MINUTE_MILLIS = 60 * SECOND_MILLIS
+        val HOUR_MILLIS = 60 * MINUTE_MILLIS
+        val DAY_MILLIS = 24 * HOUR_MILLIS
+        val WEEK_MILLIS = 7 * DAY_MILLIS
+        var timeLeft = time
+        if (timeLeft < 1000) {
+            return "0s"
+        }
+        val weeks = timeLeft / WEEK_MILLIS
+        timeLeft %= WEEK_MILLIS
+        val days = timeLeft / DAY_MILLIS
+        timeLeft %= DAY_MILLIS
+        val hours = timeLeft / HOUR_MILLIS
+        timeLeft %= HOUR_MILLIS
+        val minutes = timeLeft / MINUTE_MILLIS
+        timeLeft %= MINUTE_MILLIS
+        val seconds = timeLeft / SECOND_MILLIS
+        val timeLeftBuilder = StringBuilder()
+        if (weeks > 0) {
+            timeLeftBuilder.append(weeks)
+            timeLeftBuilder.append("w ")
+        }
+        if (days > 0) {
+            timeLeftBuilder.append(days)
+            timeLeftBuilder.append("d ")
+        }
+        if (hours > 0) {
+            timeLeftBuilder.append(hours)
+            timeLeftBuilder.append("h ")
+        }
+        if (minutes > 0) {
+            timeLeftBuilder.append(minutes)
+            timeLeftBuilder.append("m ")
+        }
+        if (seconds > 0) {
+            timeLeftBuilder.append(seconds)
+            timeLeftBuilder.append("s ")
+        }
+        return timeLeftBuilder.toString()
+
+
+
     }
 
-
 }
+
+// fucntion to get days left
 

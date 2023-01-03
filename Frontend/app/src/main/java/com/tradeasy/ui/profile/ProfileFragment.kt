@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -19,7 +18,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentProfileBinding
 import com.tradeasy.ui.MainActivity
-import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.navigation.profileToLogin
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountState
 import com.tradeasy.ui.profile.deleteAccount.DeleteAccountViewModel
@@ -27,6 +25,7 @@ import com.tradeasy.ui.profile.logout.LogoutState
 import com.tradeasy.ui.profile.logout.LogoutViewModel
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.WrappedResponse
+import com.tradeasy.utils.getScreenSize
 import com.tradeasy.utils.imageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -42,28 +41,35 @@ class ProfileFragment : Fragment() {
     private val logoutVM: LogoutViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-    private val sharedViewModel: SharedDataViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val user = sharedPrefs.getUser()
-        (activity as MainActivity?)?.setupToolBar("Profile", false, false)
-        if (user == null) {
-            fragmentSetupOffline()
-        } else {
-
-            disableFirebaseService()
-            sharedPrefs.getUser()?.let {
-                binding.username.text = it.username
-
-            }
-            fragmentSetupOnline()
-        }
+        setupView()
 // change app language
 
         return binding.root
     }
+
+private fun setupView() {
+
+binding.profilePicture.layoutParams.height = (getScreenSize(requireContext()).first *0.2).toInt()
+    binding.profilePicture.layoutParams.width = (getScreenSize(requireContext()).first *0.2).toInt()
+
+    val user = sharedPrefs.getUser()
+    (activity as MainActivity?)?.setupToolBar("Profile", false, false)
+    if (user == null) {
+        fragmentSetupOffline()
+    } else {
+
+        disableFirebaseService()
+        sharedPrefs.getUser()?.let {
+            binding.username.text = it.username
+
+        }
+        fragmentSetupOnline()
+    }
+}
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -220,7 +226,7 @@ binding.pushNotificationsConstraint.setOnClickListener {
 
     private fun handleSuccessLogout() {
         sharedPrefs.clearUser()
-        findNavController().navigate(com.tradeasy.R.id.action_profileFragment_to_loginFragment)
+        findNavController().navigate(R.id.loginFragment)
         Snackbar.make(requireView(), "Logout Successful", Snackbar.LENGTH_LONG).show()
         //findNavController().navigate(R.id.action_updatePasswordFragment_to_editProfileFragment)
     }

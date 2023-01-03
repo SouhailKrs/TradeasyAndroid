@@ -6,29 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.selling.bid.PlaceBidFragment">
 
-    <Chronometer
-        android:id="@+id/bidTimer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/bidtimer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bidtimer"
-        app:layout_constraintTop_toTopOf="@+id/bidtimer">
-
-
-    </Chronometer>
-
     <TextView
         android:id="@+id/bidtimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/stem_medium"
         android:text="Time left for bid: "
         android:textColor="@color/blacksh"
-        android:textSize="30dp"
-        android:textStyle="bold"
 
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +26,7 @@
         android:id="@+id/lastBid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="Last bid 100TND"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,10 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:fontFamily="@font/stem_medium"
         android:text="Place your bid"
-        android:textColor="@color/blacksh"
 
-        android:textSize="30dp"
+        android:textColor="@color/blacksh"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,5 +95,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bidInput" />
+
+    <TextView
+        android:id="@+id/bidTimeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/avenir_regular"
+        android:text="1 day 2w 3d"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/bidtimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bidtimer"
+        app:layout_constraintTop_toTopOf="@+id/bidtimer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

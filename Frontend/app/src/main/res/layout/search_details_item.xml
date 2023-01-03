@@ -35,7 +35,7 @@
 
                 android:layout_gravity="center"
 
-                app:srcCompat="@drawable/_023_chevrolet_corvette_front_15" />
+                app:srcCompat="@drawable/ic_baseline_close_24" />
         </androidx.cardview.widget.CardView>
 
         <TextView

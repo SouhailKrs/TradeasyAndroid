@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,9 +18,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tradeasy.R
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -30,7 +33,7 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
-
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
 
     @Inject
@@ -75,11 +78,23 @@ private fun setupView(){
     }
     private fun setupRecyclerView() {
         val mAdapter = SearchAdapter(mutableListOf(), onItemClick = {
-val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailsFragment(
-).setSearchInput(it.name!!)
-            findNavController().navigate(action)
-
-
+            val imagesArray = Array(it.image!!.size) { i -> it.image[i] }
+            sharedDataViewModel.setProdName(it.name!!)
+            sharedDataViewModel.setProdDesc(it.description!!)
+            sharedDataViewModel.setProdCat(it.category!!)
+            sharedDataViewModel.setProdPrice(it.price!!)
+            sharedDataViewModel.setBidEndDate(it.bidEndDate!!)
+            sharedDataViewModel.setProdQuantity(it.quantity!!)
+            sharedDataViewModel.setAddedDate(it.addedDate!!)
+            sharedDataViewModel.setForBid(it.forBid!!)
+            sharedDataViewModel.setProdId(it.productId!!)
+            sharedDataViewModel.setOwnerUsername(it.username!!)
+            sharedDataViewModel.setOwnerPhoneNumber(it.userPhoneNumber!!)
+            sharedDataViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
+            sharedDataViewModel.setProdImages(imagesArray)
+            sharedDataViewModel.setProdSelling(it.selling!!)
+            sharedDataViewModel.setProdBade(it.bade!!)
+            findNavController().navigate(R.id.action_searchFragment_to_searchDetailsFragment)
         })
 
 

@@ -49,7 +49,7 @@ class BidChoicesFragment : Fragment() {
             val selectedItem = parent.getItemAtPosition(position).toString()
 sharedPrefs.setBidDuration(selectedItem)
 
-findNavController().navigateUp()
+            findNavController().navigateUp()
 
         }
 

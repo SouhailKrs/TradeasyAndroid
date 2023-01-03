@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/productName"
+                android:id="@+id/editProductName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Name"
@@ -39,7 +39,7 @@
 
                 android:maxLength="35"
                 android:singleLine="true"
-                android:textColor="@color/grey" />
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,45 +69,10 @@
                 android:hint="Description"
                 android:inputType="textMultiLine"
                 android:maxLength="100"
-                android:textColor="@color/grey" />
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/productCategoryField"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:elevation="0dp"
-            android:hint="Name"
-            app:boxBackgroundColor="@color/appBackground"
-            app:boxStrokeColor="@color/black"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeWidthFocused="1.3dp"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productDescriptionField">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/productCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Category"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:clickable="true"
-                android:drawableEnd="@drawable/edit_profile_btn_arrow_smaller"
-                android:singleLine="false"
-                android:textColor="@color/grey" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/priceField"
@@ -124,19 +89,19 @@
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="1.3dp"
-            app:hintEnabled="false"
 
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productCategoryField">
+            app:layout_constraintTop_toBottomOf="@+id/productDescriptionField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/productPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Price"
-                android:maxLength="9"
                 android:inputType="number"
+                android:maxLength="9"
                 android:singleLine="false" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -176,7 +141,7 @@
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/avenir_regular"
                     android:text="Bid"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +191,7 @@
                 android:focusable="false"
                 android:hint="Duration"
                 android:singleLine="false"
-                android:textColor="@color/grey" />
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton

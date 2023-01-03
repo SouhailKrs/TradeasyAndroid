@@ -127,6 +127,7 @@ dependencies {
 // shimmer effect
     implementation'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8'
-    // image slider
+    // alert dialog
+    implementation 'com.github.muigukenneth:ElegantDialog:1.1.5'
 
 }

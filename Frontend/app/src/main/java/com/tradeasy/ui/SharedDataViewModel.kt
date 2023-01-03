@@ -34,6 +34,8 @@ class SharedDataViewModel : ViewModel() {
     val prodImages: LiveData<Array<String>> = _prodImages
     private val _selling = MutableLiveData<Boolean>(false)
     val selling: LiveData<Boolean> = _selling
+    private val _bade = MutableLiveData<Boolean>(false)
+    val bade: LiveData<Boolean> = _bade
 
     fun setProdName(name: String) {
         _prodName.value = name
@@ -90,6 +92,9 @@ class SharedDataViewModel : ViewModel() {
 
     fun setProdSelling(selling: Boolean) {
         _selling.value = selling
+    }
+    fun setProdBade(bade: Boolean) {
+        _bade.value = bade
     }
 }
 

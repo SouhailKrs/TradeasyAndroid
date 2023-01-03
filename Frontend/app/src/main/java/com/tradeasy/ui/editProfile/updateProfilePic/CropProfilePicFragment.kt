@@ -88,6 +88,8 @@ binding.doneCrop.visibility = View.GONE
         sharedPrefs.setUser(user)
         Snackbar.make(requireView(), "Profile Picture  Updated Successfully", Snackbar.LENGTH_LONG)
             .show()
+        // make toolbar visible
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         findNavController().navigateUp()
     }
 

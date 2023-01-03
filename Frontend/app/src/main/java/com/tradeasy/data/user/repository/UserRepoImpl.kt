@@ -3,6 +3,7 @@ package com.tradeasy.data.user.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.data.user.remote.api.UserApi
 import com.tradeasy.data.user.remote.dto.*
 import com.tradeasy.domain.user.UserRepo
@@ -424,4 +425,37 @@ class UserRepoImpl @Inject constructor(private val api: UserApi) :
             }
         }
     }
+    override suspend fun getBidWinner(req: ProdIdReq): Flow<BaseResult<User, WrappedResponse<User>>> {
+        return flow {
+            val response = api.getBidWinnerApi(req)
+            if (response.isSuccessful) {
+
+                val body = response.body()!!
+                val user = User(
+                    body.data?.username!!,
+                    body.data?.phoneNumber!!,
+                    body.data?.email!!,
+                    body.data?.password!!,
+                    body.data?.profilePicture!!,
+                    body.data?.isVerified!!,
+                    body.data?.notificationToken!!,
+                    body.data?.notifications!!,
+                    body.data?.savedProducts!!,
+                    body.data?.otp!!,
+                    body.data?.countryCode!!,
+                    body.token
+                )
+                emit(BaseResult.Success(user))
+            } else {
+                val type = object : TypeToken<WrappedResponse<User>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<User>>(
+                    response.errorBody()!!.charStream(), type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+
+            }
+        }
+    }
+
 }

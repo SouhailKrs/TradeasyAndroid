@@ -1,5 +1,6 @@
 package com.tradeasy.data.user.remote.api
 
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.data.user.remote.dto.*
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
@@ -68,6 +69,7 @@ interface UserApi {
     // send sms to verify account
     @POST("/user/smstoverify")
     suspend fun smsToVerifyApi(): Response<WrappedResponse<String>>
-
-
+// get bid winner
+@POST("/bid/getwinner")
+    suspend fun getBidWinnerApi(@Body req: ProdIdReq): Response<WrappedResponse<User>>
 }

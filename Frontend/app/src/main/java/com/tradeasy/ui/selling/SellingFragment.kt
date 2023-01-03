@@ -110,6 +110,8 @@ class SellingFragment : Fragment() {
             sharedDataViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
             sharedDataViewModel.setProdImages(imagesArray)
             sharedDataViewModel.setProdSelling(it.selling!!)
+            sharedDataViewModel.setProdBade(it.bade!!)
+
             findNavController().navigate(R.id.action_sellingFragment_to_userProductItemFragment)
 
 
@@ -189,6 +191,7 @@ class SellingFragment : Fragment() {
             sharedDataViewModel.setOwnerProfilePicture(it.userProfilePicture!!)
             sharedDataViewModel.setProdImages(imagesArray)
             sharedDataViewModel.setProdSelling(it.selling!!)
+            sharedDataViewModel.setProdBade(it.bade!!)
             findNavController().navigate(R.id.action_sellingFragment_to_userProductItemFragment)
 
         })

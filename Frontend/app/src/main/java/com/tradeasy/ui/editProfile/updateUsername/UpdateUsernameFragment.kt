@@ -69,6 +69,8 @@ class UpdateUsernameFragment : Fragment() {
         val newUsername = binding.newUsername
 
         newUsername.addTextChangedListener {
+
+
             if (newUsername.text!!.isEmpty() || newUsername.text.toString().lowercase()
                     .trim() == sharedPrefs.getUser()?.username
             ) {

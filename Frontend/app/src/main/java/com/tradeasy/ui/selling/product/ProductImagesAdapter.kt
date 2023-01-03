@@ -34,6 +34,7 @@ import com.tradeasy.utils.getScreenSize
 
         fun bind(image: Uri) {
             binding.productImage.setImageURI(image)
+            println("image uri is $image")
             binding.additionalInfoCardView.layoutParams.height = (getScreenSize(binding.root.context).first*0.20).toInt()
             binding.productImage.layoutParams.height = (getScreenSize(binding.root.context).first*0.14).toInt()
             binding.additionalInfoCardView.layoutParams.width = (getScreenSize(binding.root.context).second * 0.35).toInt()

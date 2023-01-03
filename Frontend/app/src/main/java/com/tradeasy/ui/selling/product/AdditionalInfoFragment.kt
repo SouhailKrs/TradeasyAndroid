@@ -25,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.tradeasy.R
 import com.tradeasy.databinding.FragmentAdditionalInfoBinding
 import com.tradeasy.ui.MainActivity
-import com.tradeasy.ui.selling.product.bidChoices.BidChoicesFragment
 import com.tradeasy.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -125,7 +124,7 @@ class AdditionalInfoFragment : Fragment() {
 
                 when (sharedPrefs.getBidDuration()) {
                     "1 Hour" -> {
-                        endTime = currentTime + 3600000
+                        endTime = currentTime + 40000
 
                     }
                     "1 Day" -> {

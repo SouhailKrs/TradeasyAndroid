@@ -41,6 +41,7 @@ class ProductItemFragment : Fragment() {
     private val viewModel: AddToSavedViewModel by viewModels()
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
     private var PERMISSION_CODE = 100
+    private var isSaved = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -128,6 +129,7 @@ class ProductItemFragment : Fragment() {
                     sharedViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
                         if (sharedPrefs.getUser()!!.savedProducts!![i].productId == prodId) {
                             binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
+                            println("saved item is ${sharedPrefs.getUser()!!.savedProducts!![i].productId}")
                         } else {
                             binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_outline_bookmark_border_24)
                         }
@@ -153,6 +155,22 @@ class ProductItemFragment : Fragment() {
             } else {
                 findNavController().navigate(R.id.loginFragment)
             }
+
+//                if(sharedPrefs.getUser()!!.isVerified==true) {
+//                    findNavController().navigate(R.id.addProductFragment)
+//                }else{
+//                    android.app.AlertDialog.Builder(requireContext())
+//                        .setTitle("Verify your account")
+//                        .setMessage("Please verify your account so you can start bidding items")
+//                        .setPositiveButton("Verify") { _, _ ->
+//                            findNavController().navigate(R.id.smsToVerifyFragment)
+//                        }
+//                        .setNegativeButton("Later") { dialog, _ ->
+//                            dialog.dismiss()
+//                        }
+//                        .show()
+//
+//            }
         }
     }
 
@@ -163,9 +181,20 @@ class ProductItemFragment : Fragment() {
 
     private fun addProductToSaved() {
         binding.addToSavedBtn.setOnClickListener {
-            binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
+            isSaved = !isSaved
+            println("saved $isSaved")
+            if (isSaved) {
+                binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_baseline_bookmark_24_filled)
+            } else {
+
+
+                binding.addToSavedBtn.setImageResource(com.tradeasy.R.drawable.ic_outline_bookmark_border_24)
+
+            }
+
 
             sharedViewModel.prodId.observe(viewLifecycleOwner) { prodId ->
+
                 viewModel.addProductToSaved(ProdIdReq(prodId))
             }
         }
@@ -201,7 +230,6 @@ class ProductItemFragment : Fragment() {
     }
 
     private fun handleSuccessSaving(user: User) {
-
         sharedPrefs.setUser(user)
 
     }

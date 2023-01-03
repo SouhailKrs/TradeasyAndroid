@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +18,7 @@ import com.tradeasy.R
 import com.tradeasy.data.product.remote.dto.SearchReq
 import com.tradeasy.databinding.FragmentSearchDetailsBinding
 import com.tradeasy.domain.product.entity.Product
+import com.tradeasy.ui.SharedDataViewModel
 import com.tradeasy.ui.search.SearchFragmentSate
 import com.tradeasy.ui.search.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,7 @@ class SearchDetailsFragment : Fragment() {
     private lateinit var binding: FragmentSearchDetailsBinding
     private val args: com.tradeasy.ui.search.details.SearchDetailsFragmentArgs by navArgs()
     private val viewModel: SearchViewModel by viewModels()
-
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,8 +52,14 @@ class SearchDetailsFragment : Fragment() {
         return binding.root
     }
 private fun setupSearchDetails(){
-    val searchReq = SearchReq(args.searchInput)
-    viewModel.fetchSearchedProducts(searchReq)
+
+    sharedDataViewModel.prodName.observe(viewLifecycleOwner) { prodName ->
+
+        viewModel.fetchSearchedProducts(SearchReq(prodName))
+
+    }
+
+
 
 
 

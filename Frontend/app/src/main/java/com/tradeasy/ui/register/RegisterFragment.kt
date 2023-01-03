@@ -131,7 +131,7 @@ binding.countrycodePicker.detectSIMCountry(true)
             is UserRegisterActivityState.RegisterSuccess -> handleRegisterSuccess(state.user)
             is UserRegisterActivityState.ShowToast -> {
 
-                binding.registerButton.hideProgress("Login")
+                binding.registerButton.hideProgress("Sign Up")
             }
             is UserRegisterActivityState.IsLoading -> handleLoading(state.isLoading)
         }
@@ -143,7 +143,7 @@ binding.countrycodePicker.detectSIMCountry(true)
             setMessage(response.message)
             setPositiveButton("ok") { dialog, _ ->
                 dialog.dismiss()
-                binding.registerButton.hideProgress("Login")
+                binding.registerButton.hideProgress("Sign Up")
             }
         }.show()
     }

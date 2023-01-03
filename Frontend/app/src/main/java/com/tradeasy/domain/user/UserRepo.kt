@@ -1,5 +1,6 @@
 package com.tradeasy.domain.user
 
+import com.tradeasy.data.product.remote.dto.ProdIdReq
 import com.tradeasy.data.user.remote.dto.*
 import com.tradeasy.domain.user.entity.Notification
 import com.tradeasy.domain.user.entity.User
@@ -8,6 +9,7 @@ import com.tradeasy.utils.WrappedListResponse
 import com.tradeasy.utils.WrappedResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
+import retrofit2.Response
 
 interface UserRepo {
 
@@ -49,4 +51,5 @@ suspend fun deleteNotification( req: DeleteNotificationReq): Flow<BaseResult<Lis
     //verify account
     suspend fun verifyAccount(req: VerifyAccountReq):Flow<BaseResult<User, WrappedResponse<User>>>
     suspend fun smsToVerify():Flow<BaseResult<String, WrappedResponse<String>>>
+    suspend fun getBidWinner( req: ProdIdReq): Flow<BaseResult<User, WrappedResponse<User>>>
 }

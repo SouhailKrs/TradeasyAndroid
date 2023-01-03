@@ -18,6 +18,7 @@ import com.tradeasy.ui.navigation.editProfileToUpdatePassword
 import com.tradeasy.ui.navigation.editProfileToUpdatePn
 import com.tradeasy.ui.navigation.editProfileToUpdateUsername
 import com.tradeasy.utils.SharedPrefs
+import com.tradeasy.utils.getScreenSize
 import com.tradeasy.utils.imageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -33,6 +34,7 @@ class EditProfileFragment : Fragment() {
     private var link: Uri? = null
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+
 // make this fragment a child of ProfileFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +49,8 @@ class EditProfileFragment : Fragment() {
 
 
 private fun fragmentSetup(){
-
+    binding.editProfilePicture.layoutParams.height = (getScreenSize(requireContext()).first *0.2).toInt()
+    binding.editProfilePicture.layoutParams.width = (getScreenSize(requireContext()).first *0.2).toInt()
     sharedPrefs.getUser()?.let {
         binding.usernameView.text = it.username
         binding.emailView.text = it.email

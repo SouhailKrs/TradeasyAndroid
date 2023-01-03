@@ -330,6 +330,9 @@
         <argument
             android:name="category"
             app:argType="string" />
+        <action
+            android:id="@+id/action_productsByCategoryFragment_to_productItemFragment"
+            app:destination="@id/productItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProductItemFragment"
