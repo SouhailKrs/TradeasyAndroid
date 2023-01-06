@@ -298,14 +298,18 @@ app:cardElevation="0dp"
 
                 <TextView
                     android:id="@+id/emailView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="150dp"
                     android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/avenir_regular"
-                    android:text="souhail@gmail.com"
+                    android:maxLines="1"
+                    android:text="111111111llllllllllaaaaaaajjjjjjjjjjj"
                     android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView520"
+                    app:layout_constraintStart_toEndOf="@+id/textView1220"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

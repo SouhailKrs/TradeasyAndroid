@@ -94,11 +94,20 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun placeBid() {
         val userId = sharedPrefs.getUser()?.username
-        val currentTime = System.currentTimeMillis()
-
+        var currentTime = 0
+        sharedViewModel.addedDate.observe(viewLifecycleOwner) { addedDate ->
+            currentTime = addedDate.toInt()
+        }
         sharedViewModel.bidEndDate.observe(viewLifecycleOwner) { bidEndDate ->
 
-            binding.bidTimeLeft.text = getTimeLeft(bidEndDate.toLong() -currentTime)
+
+
+            sharedViewModel.addedDate.observe(viewLifecycleOwner) { addedDate ->
+val time= bidEndDate.toLong()-addedDate.toLong()
+                binding.bidTimeLeft.text = getTimeLeft(time)
+
+            }
+
         }
         sharedViewModel.prodPrice.observe(viewLifecycleOwner) { prodPrice ->
 
@@ -120,7 +129,7 @@ class PlaceBidFragment : Fragment(R.layout.fragment_place_bid) {
                 if (bidInput.isEmpty()) {
                     Toast.makeText(requireContext(), "Please enter bid amount", Toast.LENGTH_SHORT)
                         .show()
-                } else if (bidInput.toFloat() < prodPrice.toFloat()) {
+                } else if (bidInput.toFloat() <= prodPrice.toFloat()) {
                     Toast.makeText(
                         requireContext(),
                         "Bid should be greater than current price",

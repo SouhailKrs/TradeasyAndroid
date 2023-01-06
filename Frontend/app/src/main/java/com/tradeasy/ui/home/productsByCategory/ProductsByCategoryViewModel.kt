@@ -1,5 +1,7 @@
 package com.tradeasy.ui.home.productsByCategory
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.data.product.remote.dto.GetByCatReq
@@ -19,9 +21,10 @@ class ProductsByCategoryViewModel @Inject constructor(private val productByCateg
     private val state = MutableStateFlow<ProductsByCategoryState>(ProductsByCategoryState.Init)
     val mState: StateFlow<ProductsByCategoryState> get() = state
 
-    private val products = MutableStateFlow<List<Product>>(mutableListOf())
-    val mProducts: StateFlow<List<Product>> get() = products
 
+    private val _products = MutableLiveData<List<Product>>()
+    val products: LiveData<List<Product>>
+        get() = _products
 //    init {
 //       fetchProdByCat( GetByCatReq("cars"))
 //    }
@@ -55,7 +58,7 @@ class ProductsByCategoryViewModel @Inject constructor(private val productByCateg
                     when(result){
                         is BaseResult.Success -> {
 
-                            products.value = result.data
+                            _products.value = result.data
                         }
                         is BaseResult.Error -> {
 

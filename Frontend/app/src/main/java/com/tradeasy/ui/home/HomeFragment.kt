@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +18,6 @@ import com.tradeasy.databinding.FragmentHomeBinding
 import com.tradeasy.domain.product.entity.Product
 import com.tradeasy.ui.MainActivity
 import com.tradeasy.ui.SharedDataViewModel
-import com.tradeasy.ui.TestViewModel
 import com.tradeasy.ui.home.forBid.ProductsForBid
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedAdapter
 import com.tradeasy.ui.home.recentlyAdded.RecentlyAddedState
@@ -37,15 +35,15 @@ class HomeFragment : Fragment() {
     lateinit var title: Array<String>
     lateinit var description: Array<String>
     lateinit var price: Array<Int>
-    private val forBidViewModel: HomeViewModel by viewModels()
-    private val recentlyAddedVM: RecentlyAddedViewModel by viewModels()
+    private val forBidViewModel: ForBidViewModel by activityViewModels()
+    private val recentlyAddedVM: RecentlyAddedViewModel by activityViewModels()
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
-    private val sharedDataViewModel: TestViewModel by viewModels()
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        fetchProductsForBid()
+fetchRecentlyAdded()
     }
     override fun onCreateView(
 
@@ -77,7 +75,7 @@ class HomeFragment : Fragment() {
 
         setupView()
 
-        fetchProductsForBid()
+
         setupForBidRecyclerView()
         goToProductByCat()
         observeForBid()
@@ -103,11 +101,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeProductsForBid() {
-        forBidViewModel.mProducts.flowWithLifecycle(
-            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
-        ).onEach { products ->
+
+        forBidViewModel.products.observe(viewLifecycleOwner) { products ->
             handleProductsForBid(products)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
 
@@ -238,11 +235,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeRecentlyAddedProducts() {
-        recentlyAddedVM.mProducts.flowWithLifecycle(
-            viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
-        ).onEach { products ->
+
+        recentlyAddedVM.products.observe(viewLifecycleOwner) { products ->
             handleRecentlyAddedProducts(products)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
 

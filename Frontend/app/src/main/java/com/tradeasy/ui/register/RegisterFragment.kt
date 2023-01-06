@@ -1,11 +1,13 @@
 package com.tradeasy.ui.register
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -18,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.hbb20.CountryCodePicker
 import com.tradeasy.R
 import com.tradeasy.data.user.remote.dto.UpdateUsernameReq
 import com.tradeasy.databinding.FragmentRegisterBinding
@@ -57,21 +60,11 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-binding.countrycodePicker.detectSIMCountry(true)
-        view.rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
-            View.GONE
-        binding.navToLogin.setOnClickListener {
-            registerToLogin(requireView())
-
-        }
-        binding.closeRegisterFragment.setOnClickListener {
-
-            registerToHome(requireView())
-        }
-        (activity as MainActivity?)?.setupToolBar("", false, false)
+        setupView()
         registerBtnHandler()
         verifyUsername()
 
@@ -79,7 +72,51 @@ binding.countrycodePicker.detectSIMCountry(true)
         register()
         observe()
     }
+@RequiresApi(Build.VERSION_CODES.O)
+private fun setupView(){
 
+    binding.countrycodePicker.detectSIMCountry(true)
+    requireView().rootView.findViewById<BottomNavigationView>(com.tradeasy.R.id.bottomNavigationView).visibility =
+        View.GONE
+
+    binding.countrycodePicker.setCustomDialogTextProvider(object :
+        CountryCodePicker.CustomDialogTextProvider {
+
+
+        override fun getCCPDialogTitle(
+            language: CountryCodePicker.Language?,
+            defaultTitle: String?
+        ): String {
+            return "Select a country/region"
+        }
+
+        override fun getCCPDialogSearchHintText(
+            language: CountryCodePicker.Language?,
+            defaultSearchHintText: String?
+        ): String {
+            return "Search"
+        }
+
+        override fun getCCPDialogNoResultACK(
+            language: CountryCodePicker.Language?,
+            defaultNoResultACK: String?
+        ): String {
+            return "No Result Found"
+        }
+
+    })
+
+    binding.navToLogin.setOnClickListener {
+        registerToLogin(requireView())
+
+    }
+    binding.closeRegisterFragment.setOnClickListener {
+
+        registerToHome(requireView())
+    }
+    (activity as MainActivity?)?.setupToolBar("", false, false)
+
+}
     // REGISTER
     private fun register() {
         binding.registerButton.setOnClickListener {

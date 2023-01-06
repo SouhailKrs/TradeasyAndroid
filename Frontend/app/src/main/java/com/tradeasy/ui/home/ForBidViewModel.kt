@@ -1,5 +1,7 @@
 package com.tradeasy.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.product.entity.Product
@@ -14,14 +16,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getProductsForBid: GetProductsForBid) : ViewModel(){
+class ForBidViewModel @Inject constructor(private val getProductsForBid: GetProductsForBid) : ViewModel(){
     private val state = MutableStateFlow<ForBidState>(ForBidState.Init)
     val mState: StateFlow<ForBidState> get() = state
  val _isLoading = MutableStateFlow(true)
-
-
-    private val products = MutableStateFlow<List<Product>>(mutableListOf())
-    val mProducts: StateFlow<List<Product>> get() = products
+    private val _products = MutableLiveData<List<Product>>()
+    val products: LiveData<List<Product>>
+        get() = _products
+//    private val products = MutableStateFlow<List<Product>>(mutableListOf())
+//    val mProducts: StateFlow<List<Product>> get() = products
 
     init {
         fetchProductsForBid()
@@ -57,7 +60,7 @@ class HomeViewModel @Inject constructor(private val getProductsForBid: GetProduc
                     when(result){
                         is BaseResult.Success -> {
 
-                            products.value = result.data
+                            _products.value = result.data
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)

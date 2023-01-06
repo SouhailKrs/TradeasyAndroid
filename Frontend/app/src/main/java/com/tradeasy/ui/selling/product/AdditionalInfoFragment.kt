@@ -124,7 +124,8 @@ class AdditionalInfoFragment : Fragment() {
 
                 when (sharedPrefs.getBidDuration()) {
                     "1 Hour" -> {
-                        endTime = currentTime + 40000
+                        endTime = currentTime + 60000
+
 
                     }
                     "1 Day" -> {

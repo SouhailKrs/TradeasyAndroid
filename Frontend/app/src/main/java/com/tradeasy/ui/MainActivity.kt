@@ -18,7 +18,8 @@ import androidx.navigation.ui.NavigationUiSaveStateControl
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tradeasy.DeviceViewModel
 import com.tradeasy.databinding.ActivityMainBinding
-import com.tradeasy.ui.home.HomeViewModel
+import com.tradeasy.ui.home.ForBidViewModel
+
 import com.tradeasy.utils.SharedPrefs
 import com.tradeasy.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +29,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val deviceViewModel: DeviceViewModel by viewModels()
-private val viewModel: HomeViewModel by viewModels()
+private val viewModel: ForBidViewModel by viewModels()
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
@@ -41,6 +42,8 @@ private val viewModel: HomeViewModel by viewModels()
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
 setKeepOnScreenCondition(viewModel._isLoading::value)
+            // set it for 3 seconds
+
         }
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root

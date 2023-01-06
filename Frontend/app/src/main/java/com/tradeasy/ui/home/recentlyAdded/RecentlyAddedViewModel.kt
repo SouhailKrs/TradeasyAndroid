@@ -1,5 +1,7 @@
 package com.tradeasy.ui.home.recentlyAdded
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradeasy.domain.product.entity.Product
@@ -19,9 +21,11 @@ import javax.inject.Inject
 class RecentlyAddedViewModel @Inject constructor(private val getRecentlyAddedViewModel: GetRecentlyAddedProductsUseCase) : ViewModel(){
     private val state = MutableStateFlow<RecentlyAddedState>(RecentlyAddedState.Init)
     val mState: StateFlow<RecentlyAddedState> get() = state
-
-    private val products = MutableStateFlow<List<Product>>(mutableListOf())
-    val mProducts: StateFlow<List<Product>> get() = products
+    private val _products = MutableLiveData<List<Product>>()
+    val products: LiveData<List<Product>>
+        get() = _products
+//    private val products = MutableStateFlow<List<Product>>(mutableListOf())
+//    val mProducts: StateFlow<List<Product>> get() = products
 
     init {
         fetchRecentlyAdded()
@@ -56,7 +60,7 @@ class RecentlyAddedViewModel @Inject constructor(private val getRecentlyAddedVie
                     hideLoading()
                     when(result){
                         is BaseResult.Success -> {
-                            products.value = result.data
+                            _products.value = result.data
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)

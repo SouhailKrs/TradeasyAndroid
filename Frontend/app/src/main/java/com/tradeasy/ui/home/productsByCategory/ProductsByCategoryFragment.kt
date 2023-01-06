@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,9 +27,14 @@ import kotlinx.coroutines.flow.onEach
 class ProductsByCategoryFragment : Fragment() {
 
 private lateinit var binding: FragmentProductsByCategoryBinding
-    private val viewModel: ProductsByCategoryViewModel by viewModels()
+    private val viewModel: ProductsByCategoryViewModel by activityViewModels()
     private val args : ProductsByCategoryFragmentArgs by navArgs()
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fetchProductsByCategory()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +43,7 @@ private lateinit var binding: FragmentProductsByCategoryBinding
         binding = FragmentProductsByCategoryBinding.inflate(inflater, container, false)
         observe()
         setupRecyclerView()
-        fetchProductsByCategory()
+
         return binding.root
     }
     // fucntion to capitialize the first letter of the category
@@ -105,10 +109,10 @@ private lateinit var binding: FragmentProductsByCategoryBinding
     }
 
     private fun observeProducts() {
-        viewModel.mProducts.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { products ->
-                handleProducts(products)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.products.observe(viewLifecycleOwner) { products ->
+            handleProducts(products)
+        }
+
     }
 
     private fun handleState(state: ProductsByCategoryState) {
