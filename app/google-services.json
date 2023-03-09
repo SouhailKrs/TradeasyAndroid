@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "680941226328",
+    "project_id": "tradeasy-push",
+    "storage_bucket": "tradeasy-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680941226328:android:ba9c6bade9e7d929e03d2d",
+        "android_client_info": {
+          "package_name": "com.tradeasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680941226328-j5f1883ku3b059bk8848usmh9frulg84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0IZC-nozEgEpFP4-DSCcs7dyMzzpCuU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680941226328-j5f1883ku3b059bk8848usmh9frulg84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

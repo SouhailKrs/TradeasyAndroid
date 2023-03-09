@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="ui.register.verifyAccount.VerifyAccountFragment">
+
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/avenir_regular"
+        android:gravity="center"
+        android:text="Enter the 6-digit code sent to your phone number."
+        android:textAllCaps="true"
+        android:textColor="@color/blacksh"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/verifyAccountBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+
+
+        android:layout_marginTop="70dp"
+
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/avenir_regular"
+        android:paddingTop="10dp"
+
+        android:paddingBottom="10dp"
+
+        android:text="Verify"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:backgroundTint="@color/buttonColor"
+        app:cornerRadius="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+        <com.chaos.view.PinView
+            android:id="@+id/pinView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/text_field_round_corners"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/avenir_regular"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/blacksh"
+            android:textColorHint="@color/grey"
+            android:textSize="20sp"
+
+            app:itemCount="6"
+            app:itemRadius="10dp"
+            app:lineColor="@color/blacksh"
+            app:viewType="rectangle">
+
+        </com.chaos.view.PinView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/verifyLater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/stem_medium"
+        android:text="I want to verify later"
+        android:textAllCaps="false"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verifyAccountBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
