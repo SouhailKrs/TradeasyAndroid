@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="buttonColor">#EB4A5A</color>
+    <color name="appBackground">#FBFBFA</color>
+    <color name="grey">#ACABAD</color>
+    <color name="grey3">#828282</color>
+    <color name="blacksh">#353232</color>
+    <color name="blue">#4B78A8</color>
+    <color name="grey4">#f8f4f4</color>
+
+    <color name="closeBtn">#f8f4f4</color>
+
+    <!--    <color name="appBackground">#F5F7FA</color>-->
+
+</resources>
