@@ -84,14 +84,13 @@ This project was successfully developed with the collaboration of [Seifeddine Ab
 ## Build Process
 
 - Follow the [Android Guide](https://developer.android.com/guide) for getting started building a project with native code.
-- Additionally, to set up the backend , you can obtain the necessary resources and instructions [here](https://github.com/SouhailKrs/TradeasyBackend).
 - Clone or download the repo 
 
 ```{r klippy, echo=FALSE, include=TRUE}
-git clone https://github.com/SouhailKrs/TradeasyBackend
+git clone https://github.com/SouhailKrs/TradeasyAndroid
 
 ```
-
+- Additionally, to set up the backend, you can obtain the necessary resources and instructions [here](https://github.com/SouhailKrs/TradeasyBackend).
 
 
 
