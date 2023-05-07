@@ -14,7 +14,7 @@
     <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
   </a>
 
-  <a href="https://play.google.com/store/apps/details?id=com.gitpoint">
+  <a href="https://appgallery.huawei.com/app/C107547423">
     <img alt="Get it on Google Play" title="Google Play" src="https://i.imgur.com/eiGqNZx.png" width="140">
   </a>
 </p>
