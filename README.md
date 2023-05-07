@@ -38,6 +38,20 @@ Treadeasy allows you to find products that fits your needs , sell yours , make a
 
 **Available for both iOS and Android.**
 
+## App structure
+Tradeasy is built using a **clean architecutre.** , with a focus on separation of concerns and maintainability. The clean architecture provides a clear structure and helps to keep the codebase organized and modular.
+
+The application follows the principles of clean architecture by dividing the codebase into distinct layers, each with its own responsibilities and dependencies. These layers include:
+
+* **Presentation Layer** : This layer handles the user interface components, such as activities, fragments, and views. It is responsible for displaying data to the user and capturing user interactions. The presentation layer communicates with the other layers through interfaces or abstractions.
+
+* **Domain Layer** : The domain layer contains the core business logic of the application. It defines the use cases and business rules that govern the behavior of the application. This layer is independent of any framework or technology-specific implementation details.
+
+* **Data Layer** : The data layer is responsible for managing data access and storage. It includes repositories, data sources, and network clients. The data layer abstracts the details of data retrieval and storage, allowing the domain layer to work with data through interfaces and models.
+
+Dependency Injection (DI) is used in Tradeasy to provide a clean and decoupled way of managing dependencies between components. It helps to reduce tight coupling and promotes testability and flexibility thanks to **Hilt**
+
+
 
 ## Features
 
