@@ -49,7 +49,7 @@ The application follows the principles of clean architecture by dividing the cod
 
 * **Data Layer** : The data layer is responsible for managing data access and storage. It includes repositories, data sources, and network clients. The data layer abstracts the details of data retrieval and storage, allowing the domain layer to work with data through interfaces and models.
 
-Dependency Injection (DI) is used in Tradeasy to provide a clean and decoupled way of managing dependencies between components. It helps to reduce tight coupling and promotes testability and flexibility thanks to **Hilt**
+**Dependency Injection (DI)** is used in Tradeasy to provide a clean and decoupled way of managing dependencies between components. It helps to reduce tight coupling and promotes testability and flexibility thanks to **Hilt**
 
 
 
