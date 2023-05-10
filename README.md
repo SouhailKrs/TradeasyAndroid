@@ -36,7 +36,8 @@
 
 Treadeasy allows you to find products that fits your needs , sell yours , make auctions and so on. This app will help you become a better reseller and start your shopping spree easily.
 
-**Available for both iOS and Android.**
+
+**Available for both [iOS](https://github.com/saifKader/TradeasySwiftUI) and  [Android](https://github.com/SouhailKrs/TradeasyAndroid).**
 
 ## App structure
 Tradeasy is built using a **clean architecutre.** , with a focus on separation of concerns and maintainability. The clean architecture provides a clear structure and helps to keep the codebase organized and modular.
