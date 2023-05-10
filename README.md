@@ -1,7 +1,7 @@
 <h1 align="center"> Tradeasy </h1> <br>
 <p align="center">
   <a href="https://github.com/saifKader/TradeasyAndroid">
-       <img alt="GitPoint" title="GitPoint" src="https://raw.githubusercontent.com/saifKader/TradeasySwiftUI/49c3b36539a085bb9f0d35c6d853c5b440b60212/tradeasy/Assets.xcassets/app_logo_48.imageset/app_logo_48.svg" width="100">
+       <img alt="Tradeasy" title="Tradeasy" src="https://raw.githubusercontent.com/saifKader/TradeasySwiftUI/49c3b36539a085bb9f0d35c6d853c5b440b60212/tradeasy/Assets.xcassets/app_logo_48.imageset/app_logo_48.svg" width="100">
   </a>
 </p>
 
