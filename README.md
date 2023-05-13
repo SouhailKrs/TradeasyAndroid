@@ -77,11 +77,6 @@ The application follows the principles of clean architecture by dividing the cod
 
 
 
-## Contributors
-
-
-This project was successfully developed with the collaboration of [Seifeddine Abdelkader](https://github.com/saifKader).
-
 ## Build Process
 
 - Follow the [Android Guide](https://developer.android.com/guide) for getting started building a project with native code.
