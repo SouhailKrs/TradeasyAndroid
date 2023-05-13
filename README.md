@@ -40,7 +40,7 @@ Treadeasy allows you to find products that fits your needs , sell yours , make a
 **Available for both [iOS](https://github.com/saifKader/TradeasySwiftUI) and  [Android](https://github.com/SouhailKrs/TradeasyAndroid).**
 
 ## App structure
-Tradeasy is built using a **clean architecutre.** , with a focus on separation of concerns and maintainability. The clean architecture provides a clear structure and helps to keep the codebase organized and modular.
+Tradeasy is built using a **Clean Architecutre.** , with a focus on separation of concerns and maintainability. The clean architecture provides a clear structure and helps to keep the codebase organized and modular.
 
 The application follows the principles of clean architecture by dividing the codebase into distinct layers, each with its own responsibilities and dependencies. These layers include:
 
